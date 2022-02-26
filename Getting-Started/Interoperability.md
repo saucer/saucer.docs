@@ -39,12 +39,15 @@ smartview.expose("synced_int", synced_int);
 Exposing functions is as easy as calling the `expose` function and giving it a <kbd>name</kbd> and a <kbd>function</kbd>.
 
 ||| Example
-```cpp
+```cpp C++
 smartview.expose("test_function", [](const std::string& some_string, int some_int)
 {
     std::cout << "Got" << some_string << std::endl;
     return some_int * 20 + 5;
 });
+```
+```js JavaScript
+console.log(await window.saucer.call("test_function", ["Test", 10])); // -> Will print 205
 ```
 |||
 
@@ -106,5 +109,17 @@ saucer::variable<std::vector<int>> a_vector;
 
 a_vector.assign(std::vector<int>{});
 std::vector<int> a_copy = a_vector.read();
+```
+|||
+
+## Evaluating JavaScript
+
+You can also evaluate JavaScript code and capture its result.
+To do so call the `eval` function.
+
+||| Example
+```cpp
+ smartview.eval<float>("Math.random()")->then([](float result) { std::cout << "Random: " << result << std::endl; });
+ smartview.eval<int>("Math.pow({},{})", 5, 2)->then([](int result) { std::cout << "Pow(5,2): " << result << std::endl; });
 ```
 |||
