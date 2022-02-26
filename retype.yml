@@ -1,15 +1,15 @@
 input: .
 output: .retype
-url: # Add your website address here
+url: saucer.github.io
 branding:
   logo: assets/logo_no_text.png
   title: Saucer
   label: Docs
 links:
-- text: GitHub
-  icon: mark-github
-  link: https://github.com/Saucer-Project/saucer
-  target: blank
+  - text: GitHub
+    icon: mark-github
+    link: https://github.com/Saucer-Project/saucer
+    target: blank
 
 footer:
   copyright: "&copy; Copyright {{ year }}. All rights reserved."
