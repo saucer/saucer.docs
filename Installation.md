@@ -11,21 +11,21 @@ You can also use other Build Systems but it is recommended to use CMake for the 
 
 +++ CPM
 ```cmake # CMakeLists.txt
-CPMAddPackage("gh:saucer-project/saucer#master")
+CPMAddPackage("gh:saucer/saucer#master")
 target_link_libraries(<target> saucer)
 ```
 +++ Fetch Content
 ```cmake # CMakeLists.txt
 include(FetchContent)
 
-FetchContent_Declare(saucer GIT_REPOSITORY "https://github.com/saucer-project/saucer")
+FetchContent_Declare(saucer GIT_REPOSITORY "https://github.com/saucer/saucer")
 FetchContent_MakeAvailable(saucer)
 
 target_link_libraries(<target> saucer)
 ```
 +++ Git Submodule
 ```bash # Command Line
-git clone https://github.com/saucer-project/saucer
+git clone https://github.com/saucer/saucer
 ```
 ```cmake # CMakeLists.txt
 add_subdirectory(saucer)
