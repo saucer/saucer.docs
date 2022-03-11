@@ -32,6 +32,9 @@ After generating the embed headers you just need to go ahead and include the gen
 ```cmake
 target_include_directories(<target> PRIVATE "path/to/generated/folder")
 ```
+```cpp
+#include <output_folder/all.hpp>
+```
 |||
 
 To then make saucer aware of the embedded files call `embedded::get_all_files()`
