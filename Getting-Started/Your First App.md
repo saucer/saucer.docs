@@ -14,6 +14,11 @@ We recommend using CMake as your build system.
 Start off with creating a folder for your project.  
 Continue with creating the required files.
 
+>💡 Instead of creating the required files manually you can also let the CLI set the project up for you automatically
+> ```
+> saucer init <name>
+> ```
+
 ==- CMakeLists.txt
 ```cmake
 cmake_minimum_required(VERSION 3.1)
