@@ -52,7 +52,7 @@ We provide easy methods to interact with <img src="https://cdn.worldvectorlogo.c
 - [ ] File-System Module
 
 ### `v1.0` [!badge text="BETA" variant="secondary"] [!badge text="CURRENT" variant="info"] 
-- [ ] CLI
+- [x] CLI
 - [x] Easy bundling
 - [x] Module support
 - [x] Multiple Windows
