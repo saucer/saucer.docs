@@ -59,59 +59,6 @@ In case one of your types is not supported by default you can [allow it to be se
 Function overloading is not allowed for exposed functions, meaning there can only be one function with the same name.
 !!!
 
-## Exposing Variables
-
-To expose a variable you need to wrap it in a <kbd>variable</kbd>.  
-`saucer::variable` is a container like wrapper that can detect changes on itself.
-
-Any changes to the <kbd>variable</kbd> on the c++ side will be automatically transferred to JavaScript.
-The exposed <kbd>variable</kbd> in JavaScript is wrapped in a <kbd>Proxy</kbd>, if you assign anything to it the c++ variable will also be updated.
-
-||| Example
-```cpp C++
-saucer::variable<int> test(10);
-smartview.expose("test", test);
-
-test.assign(30);
-```
-```js JavaScript
-console.log(window.test.valueOf()); // -> Will print 30
-window.test.value = 20;
-```
-```cpp C++
-std::cout << test.read() << std::endl; // -> Will print 20
-```
-|||
-
-### Usage of Variable
-
-To assign to a variable use the `assign` method.
-To read the current value of the variable use the `read` method.
-
-If you need to freely work with the variable you can make use of the `modify` method, it returns a proxy to the variable which will allow you to access the raw value and work with it.  
-The proxy will detect any changes when it is destructed.
-
-||| Example
-```cpp
-saucer::variable<std::vector<int>> a_vector;
-
-{
-    auto writable_vector = a_vector.modify();
-    writable_vector->push_back(10);
-    writable_vector->push_back(20);
-    writable_vector->push_back(30);
-
-    for (const auto& item : *writable_vector)
-    {
-        std::cout << item << std::endl;
-    }
-}
-
-a_vector.assign(std::vector<int>{});
-std::vector<int> a_copy = a_vector.read();
-```
-|||
-
 ## Evaluating JavaScript
 
 You can also evaluate JavaScript code and capture its result.
