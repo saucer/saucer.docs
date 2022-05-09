@@ -18,18 +18,14 @@ To work around this you can make use of the `simple_smartview`.
 ||| Example
 ```cpp
 saucer::smartview smartview;
-saucer::variable<int> synced_int;
-
-smartview.expose<saucer::serializers::json>("synced_int", synced_int);
+smartview.expose<saucer::serializers::json>("test", [](){return 10;});
 ```
 |||
 +++ Simple Smartview
 ||| Example
 ```cpp
 saucer::simple_smartview<saucer::serializers::json> smartview;
-saucer::variable<int> synced_int;
-
-smartview.expose("synced_int", synced_int);
+smartview.expose("test", [](){return 10;});
 ```
 |||
 +++
