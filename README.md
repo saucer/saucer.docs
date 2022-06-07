@@ -37,6 +37,7 @@ We provide easy methods to interact with <img src="https://cdn.worldvectorlogo.c
 ### `v1.3`
 - [ ] Clipboard Module
 - [x] Transparent Window
+- [ ] Offscreen Rendering
 - [ ] Input Module _(Keyboard / Mouse)_
 - [ ] Desktop Notifications Module
 
@@ -62,13 +63,13 @@ We provide easy methods to interact with <img src="https://cdn.worldvectorlogo.c
 
 ## Supported Platforms
 
-| Platform     | Windows            | Linux / macOS¹     | macOS                    |
+| Platform     | Windows            | Linux / Universal¹ | macOS                    |
 | ------------ | ------------------ | ------------------ | ------------------------ |
 | Supported    | :white_check_mark: | :white_check_mark: | :hourglass_flowing_sand: |
 | Dependencies | None / WebView2    | Qt, QtWebEngine    | None / Cocoa, WebKit     |
 
 !!!info
-¹ The current linux build of saucer _should_ work on macOS too.  
+¹ The current linux build of saucer uses Qt and no platform specific code, so it _should_ work on every operating system that Qt supports.  
 However this has not yet been tested.
 !!!
 
