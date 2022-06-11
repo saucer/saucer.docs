@@ -45,7 +45,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE saucer)
 ```
 ==- main.cpp
 ```cpp
-#include <smartview.hpp>
+#include <saucer/smartview.hpp>
 
 int main()
 {
