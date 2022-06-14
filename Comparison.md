@@ -6,8 +6,8 @@ order: 0
 
 # Comparison
 
-=== saucer-project/saucer
-[!button icon="mark-github" text="Visit on GitHub" size="xs" variant="info" target="blank"](https://github.com/saucer-project/saucer)
+=== saucer/saucer
+[!button icon="mark-github" text="Visit on GitHub" size="xs" variant="info" target="blank"](https://github.com/saucer/saucer)
 #### Backends
 [!badge variant="success" icon="https://www.vectorlogo.zone/logos/microsoft/microsoft-icon.svg" text="WebView2 (Chromium)"] <br>
 [!badge variant="secondary" icon="https://www.vectorlogo.zone/logos/linux/linux-icon.svg" text="Qt (Chromium)"] <br>

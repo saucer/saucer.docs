@@ -38,7 +38,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17 CXX_EXTENSIONS 
 
 include(FetchContent)
 
-FetchContent_Declare(saucer GIT_REPOSITORY "https://github.com/saucer-project/saucer")
+FetchContent_Declare(saucer GIT_REPOSITORY "https://github.com/saucer/saucer")
 FetchContent_MakeAvailable(saucer)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE saucer)
