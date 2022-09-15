@@ -33,7 +33,7 @@ target_link_libraries(<target> saucer)
 ```
 |||
 
-Then create templated class that inherits from `saucer::module`.
+Continue by creating a templated class that inherits from `saucer::module`.
 
 ||| Example
 ```cpp
@@ -67,14 +67,16 @@ template <saucer::backend_type Backend> class my_awesome_module : public saucer:
 ```
 |||
 
-Then you can simply add your plugin to the smartview:
+FInally, you can simply add your plugin to the smartview:
 
 +++ Normal Smartview
 ```cpp
 auto smartview = saucer::modularized_smartview<my_awesome_module>();
+smartview.my_awesome_feature();
 ```
 +++ Simple Smartview
 ```cpp
 auto smartview = saucer::modularized_simple_smartview<saucer::serializers::json, my_awesome_module>();
+smartview.my_awesome_feature();
 ```
 +++
