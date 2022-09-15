@@ -11,7 +11,7 @@ Currently _Saucer_ ships with no in-house modules, however, [a  multitude of mod
 
 Modules are a more powerful version of [Plugins](Plugins.md).  
 
-They can access the underlying _SmartView_ as well platform specific internals of the _Window_ and _WebView_.
+They can access the underlying _SmartView_ as well as platform specific internals of the _Window_ and _WebView_.
 
 ### Creating a Module
 
