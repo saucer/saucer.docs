@@ -11,7 +11,7 @@ order: 0
 #### Backends
 [!badge variant="success" icon="https://www.vectorlogo.zone/logos/microsoft/microsoft-icon.svg" text="WebView2 (Chromium)"] <br>
 [!badge variant="secondary" icon="https://www.vectorlogo.zone/logos/linux/linux-icon.svg" text="Qt (Chromium)"] <br>
-[!badge variant="light" icon="https://www.vectorlogo.zone/logos/apple/apple-icon.svg" text="WebKit _(⌛ Soon)_"] <br>
+[!badge variant="light" icon="https://www.vectorlogo.zone/logos/apple/apple-icon.svg" text="Qt (Chromium) or WebKit _(⌛ Soon)_"] <br>
 
 #### Interoperability
 [!badge variant="success" icon="verified" text="Full"]
