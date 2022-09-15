@@ -1,6 +1,6 @@
 ---
 icon: plug
-order: 2
+order: 4
 ---
 
 # Events
@@ -62,7 +62,7 @@ Callback-Type: `void(std::size_t, std::size_t)`
 
 Callback-Type: `bool()`  
 !!!
-If you return `true` from within your callback the close event will be canceled and the window will stay open.  
+If you return `true` from within your callback the close event will be cancelled and the window will stay open.  
 !!!
 +++
 

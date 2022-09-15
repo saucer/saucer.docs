@@ -1,11 +1,11 @@
 ---
 icon: link
-order: 1
+order: 3
 ---
 
 # Interoperability
 
-_Saucer_ allows you to easily expose C++ **functions and variables** to JavaScript.  
+_Saucer_ allows you to easily expose C++ **functions** to JavaScript.  
 You can also evaluate JavaScript-Code and capture its result.
 
 Interoperability requires the use of the <kbd>smartview</kbd> in combination with a <kbd>serializer</kbd>.  
@@ -49,7 +49,7 @@ console.log(await window.saucer.call("test_function", ["Test", 10])); // -> Will
 
 !!!danger Note
 All parameters of the function and the return type *must* be serializable by <kbd>nlohmann::json</kbd> <sub><sup>(If you're using the default <kbd>serializer</kbd>)</sub></sup>.  
-In case one of your types is not supported by default you can [allow it to be serialized](https://github.com/nlohmann/json#how-do-i-convert-third-party-types).
+In case one of your types is not supported by default you can [create a specialization for the serializer](https://github.com/nlohmann/json#how-do-i-convert-third-party-types).
 !!!
 !!!warning Note
 Function overloading is not allowed for exposed functions, meaning there can only be one function with the same name.

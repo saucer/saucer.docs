@@ -1,6 +1,6 @@
 ---
 icon: package
-order: 0
+order: 2
 ---
 
 # Embedding
@@ -17,12 +17,7 @@ saucer embed [output <directory>] <File/Folder>
 ||| Examples
 ```bash
 saucer embed "react_dist_folder"
-```
-```bash
-saucer embed "myjsfile.js" "myhtmlfile.html" 
-```
-```bash
-saucer embed output "custom_embedded_folder" "all_my_files"
+saucer embed "react_dist_folder" output "output_folder"
 ```
 |||
 
