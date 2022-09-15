@@ -11,7 +11,7 @@ To embed your files it is advised to use the saucer command line utility.
 
 First you need to generate the embed headers, this can be done by calling
 ```bash
-saucer embed [output <directory>] <File/Folder>
+saucer embed [output <directory>] <Folder>
 ```
 
 ||| Examples
