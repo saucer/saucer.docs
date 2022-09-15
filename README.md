@@ -36,28 +36,29 @@ We provide easy methods to interact with <img src="https://cdn.worldvectorlogo.c
 
 ### `v1.3`
 - [ ] Clipboard Module
-- [x] Transparent Window
 - [ ] Offscreen Rendering
 - [ ] Input Module _(Keyboard / Mouse)_
 - [ ] Desktop Notifications Module
 
 ### `v1.2` [!badge text="SOON" variant="info"]
-- [ ] Tray Module
-- [ ] Drag & Drop Event
+- [ ] Tray Plugin
+- [ ] Drag & Drop
 - [ ] macOS Cocoa / WebKit support
 
 ### `v1.1` [!badge text="NEXT" variant="info"]
-- [ ] Http Module
-- [ ] Window Module
-  - [ ] `DragMove` / Custom Title-bars
-- [ ] File-System Module
+- [ ] HTTP Plugin
+- [ ] Window Plugin
+  - [ ] Custom Title-Bars
+- [ ] File-System Plugin
+- [ ] Blur & Transparency Module _(Partially done)_
 
 ### `v1.0` [!badge text="BETA" variant="secondary"] [!badge text="CURRENT" variant="info"] 
 - [x] CLI
 - [x] Easy bundling
+- [x] Plugin support
 - [x] Module support
 - [x] Multiple Windows
-- [x] Bindings for other languages (<img src="https://www.vectorlogo.zone/logos/nodejs/nodejs-icon.svg" width=20 /> <kbd>Node.js</kbd>, <img src="https://www.vectorlogo.zone/logos/kotlinlang/kotlinlang-icon.svg" width=20 /> <kbd>Kotlin</kbd>, ...) **_[🕜 Delayed]_**
+- [x] C-Bindings (In-house bindings for <img src="https://www.vectorlogo.zone/logos/nodejs/nodejs-icon.svg" width=20 /> <kbd>Node.js</kbd>, <img src="https://www.vectorlogo.zone/logos/kotlinlang/kotlinlang-icon.svg" width=20 /> <kbd>Kotlin</kbd> and <img src="https://cdn.worldvectorlogo.com/logos/c--4.svg" width=20 /> <kbd>C#</kbd> are currently being worked on)
 
 ---
 
