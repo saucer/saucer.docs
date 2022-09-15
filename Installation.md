@@ -14,11 +14,17 @@ You can also use other Build Systems but it is recommended to use CMake for the 
 saucer init <name>
 ```
 +++ CPM
+!!!
+You may want to replace `#master` with `#dev` if you want to use the latest features.
+!!!
 ```cmake # CMakeLists.txt
 CPMAddPackage("gh:saucer/saucer#master")
 target_link_libraries(<target> saucer)
 ```
 +++ Fetch Content
+!!!
+You may want to add `GIT_TAG dev` to `FetchContent_Declare` if you want to use the latest features.
+!!!
 ```cmake # CMakeLists.txt
 include(FetchContent)
 
@@ -35,6 +41,19 @@ git clone https://github.com/saucer/saucer
 add_subdirectory(saucer)
 target_link_libraries(<target> saucer)
 ```
++++ VCPKG
+=== Windows
+```bash
+vcpkg install saucer
+```
+=== Linux
+!!!warning
+You currently need to use the custom triplet `x64-linux-dynamic` when installing saucer on linux.
+!!!
+```bash
+vcpkg install saucer:x64-linux-dynamic
+```
+===
 +++
 
 # Saucer-CLI
