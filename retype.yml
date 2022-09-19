@@ -1,5 +1,6 @@
 input: .
 output: .retype
+favicon: assets/favicon.ico
 url: saucer.github.io
 branding:
   logo: assets/logo_no_text.png
