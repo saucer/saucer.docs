@@ -1,7 +1,7 @@
 ---
 label: Installation
 icon: download
-order: 4
+order: 100
 ---
 
 # Installation
@@ -146,7 +146,7 @@ yay -S saucer-cli-git
 ```
 +++
 
-## Setup Saucer-Project
+### Setup Saucer-Project
 
 The CLI can be used to setup a basic CMake Project that includes _Saucer_:  
 

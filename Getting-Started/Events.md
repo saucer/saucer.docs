@@ -1,75 +1,109 @@
 ---
 icon: plug
-order: 4
+order: 97
 ---
 
 # Events
 
-After creating your first WebView you may be interested in registering events!  
+_Saucer_ implements an easy to use <kbd>Event-System</kbd> 🎁.  
 
-### Registering Events
+---
 
-Event-Callbacks can be registered by calling the `on` method.
+## Register Event Callbacks
 
-The `on` method should be called like so:
+To register an event-callback, simply call the `.on` method of your `webview` / `smartview`.  
 
-```cpp
-window.on<event_type>(callback);
-``` 
+The `on()` method takes the <kbd>Event-Type</kbd> as a template parameter and the callback to register as it's single argument - it returns an <kbd>Event-ID</kbd>, which can later be used to unregister the callback.
 
-||| Example
-```cpp
-window.on<saucer::window_event::close>([]() -> bool {
-    // Prevent close
-    return true;
+
+```cpp Example
+smartview.on<saucer::window_event::resize>([](std::size_t width, std::size_t height)
+{
+   // ... 
 });
 ```
-|||
 
-### Removing Events
+## Unregister Event Callbacks
 
-The `on` method returns an <kbd>id</kbd>.  
-This <kbd>id</kbd> can be used to unregister an event by calling the `unregister` method.
+To remove a registered callback, simply use the <kbd>Event-ID</kbd> returned by the `on()` method and pass it to `remove()`.
 
-||| Example
-```cpp
-auto close_id = window.on<saucer::window_event::close>([]() -> bool {
-    // Prevent close
-    return true;
+```cpp Example
+auto id = smartview.on<saucer::window_event::resize>([](std::size_t width, std::size_t height)
+{
+   // ...
 });
-window.unregister(saucer::window_event::close, close_id);
-```
-|||
 
-You can also remove all events of a specific type at once
-
-||| Example
-```cpp
-window.clear(saucer::window_event::close);
+smartview.remove(saucer::window_event::resize, id);
 ```
-|||
+
+Alternatively you can also clear all callbacks registered to a specific <kbd>Event-Type</kbd> by using the `clear()` method.
+
+```cpp Example
+smartview.on<saucer::window_event::resize>([](std::size_t width, std::size_t height)
+{
+   // ...
+});
+
+smartview.clear(saucer::window_event::resize);
+```
 
 ## Window Events
 
-+++ Resize
-> The resize event is fired when the window is resized.  
+### Resize
 
-Callback-Type: `void(std::size_t, std::size_t)`
+The <kbd>Resize</kbd> event is fired when the user resizes the window.
 
-+++ Close
+```cpp Callback Signature
+std::function<void(std::size_t width, std::size_t height)>
+```
 
-> The close event is fired when the window is about to close.  
+==- Example Usage
+```cpp
+smartview.on<saucer::window_event::resize>([](std::size_t width, std::size_t height)
+{
+   std::cout << "Width: " << width << " - Height: " << height << std::endl;  
+});
+```
+===
 
-Callback-Type: `bool()`  
+### Close
+
+The <kbd>Close</kbd> event is fired when the user tries to close the window.  
+
+```cpp Callback Signature
+std::function<bool()>
+```
+
 !!!
-If you return `true` from within your callback the close event will be cancelled and the window will stay open.  
+The callback can prevent the window from being closed by returning `true`.
 !!!
-+++
+
+
+==- Example Usage
+```cpp
+smartview.on<saucer::window_event::close>([]()
+{
+    // Always prevent the window from closing.
+    return true;
+});
+```
+===
 
 ## WebView Events
 
-+++ Url-Changed
-> The url-changed event is fired when the webview navigates to a new page.
+### URL-Changed
 
-Callback-Type: `void(const std::string &)`
-+++
+The <kbd>URL-Changed</kbd> event is fired when the webview navigates.
+
+```cpp Callback Signature
+std::function<void(const std::string& url)>
+```
+
+==- Example Usage
+```cpp
+smartview.on<saucer::web_event::url_changed>([](const std::string& url)
+{
+    std::cout << "WebView navigated: " << url << std::endl;
+});
+```
+===

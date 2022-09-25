@@ -6,7 +6,7 @@ order: 0
 
 # Comparison
 
-=== saucer/saucer
+||| saucer/saucer
 [!button icon="mark-github" text="Visit on GitHub" size="xs" variant="info" target="blank"](https://github.com/saucer/saucer)
 #### Backends
 [!badge variant="success" icon="https://www.vectorlogo.zone/logos/microsoft/microsoft-icon.svg" text="WebView2 (Chromium)"] <br>
@@ -21,9 +21,11 @@ order: 0
 
 #### Languages
 <img src="https://cdn.worldvectorlogo.com/logos/c.svg" width=20 />
-===
+|||
 
-The following libraries are alternatives to _Saucer_:
+---
+
+## Alternatives
 
 !!!warning
 Limited interoperability means that it is possible to communicate with C++ from JS and vice versa but **only through strings**.  

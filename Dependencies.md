@@ -1,13 +1,14 @@
 ---
 label: Dependencies
 icon: package-dependents
-order: 3
+order: 99
 ---
 
 # Dependencies
 
 Saucer relies on fairly common dependencies found on most systems 🦥.
 
+---
 
 ## Windows
 

@@ -1,7 +1,7 @@
 ---
 label: Features
 icon: log
-order: 5
+order: 100
 ---
 
 # Why use Saucer?
@@ -26,20 +26,20 @@ Just use the [saucer-cli](Installation.md#saucer-cli) to embed all of your files
 ## Plugins
 Often in need to extend the functionality exposed to JavaScript? No problem.    
 Just create a plugin 🤖 and re-use it where needed ♻!
-[!ref](Getting-Started/Plugins.md)
+[!ref](Advanced/Plugins.md)
 
 ## Modules
 Are you a tinkerer 🔧? That's great!  
 Easily access the underlying platform specific webview and extend the smartview's functionality 🧠  
-[!ref](Getting-Started/Modules.md)
+[!ref](Advanced/Modules.md)
 
 ## Serializers
 Do you want to swap out the data-interchange format 📧? Alright 😉!  
 Learn how to write your own serializer 📬!  
-[!ref](TODO)   
+[!ref](Advanced/Serializers.md)   
 
 ## C (& Swig) Bindings
 Do you want to use the library from another language 🗣️? You're lucky ☘️!  
 We're currently working on <img src="https://www.vectorlogo.zone/logos/nodejs/nodejs-icon.svg" width=20 /> <kbd>NodeJS</kbd>, <img src="https://cdn.worldvectorlogo.com/logos/c--4.svg" width=20 /> <kbd>C#</kbd> and <img src="https://www.vectorlogo.zone/logos/kotlinlang/kotlinlang-icon.svg" width=20 /> <kbd>Kotlin</kbd> Bindings!  
 In case you need support for another language, why not try to build an FFI-Wrapper for our C-Bindings 👷?  
-[!ref](TODO)
+[!ref](Advanced/Bindings.md)
