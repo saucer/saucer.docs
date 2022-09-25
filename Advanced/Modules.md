@@ -5,7 +5,7 @@ order: 99
 
 # Modules
 
-Modules can be used to extend the functionality of <kbd>SmartView</kbd>.  
+Modules can be used to extend the functionality of the <kbd>SmartView</kbd>.  
 Unlike [Plugins](Plugins.md), they have access to the platform-dependent implementation details of _Saucer_ - Which means they can fully tinker with the underlying <kbd>WebView</kbd> / <kbd>Window</kbd>.
 
 Another difference to plugins is that <kbd>Module</kbd>s can not be loaded dynamically.

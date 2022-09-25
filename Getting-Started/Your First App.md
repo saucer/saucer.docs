@@ -11,7 +11,7 @@ Ready to start your journey 🗺️?
 
 ## Setup Project
 
-First we'll setup a simple CMake project, once that's done you can continue to the exiting parts like [Interoperability](Interoperability.md) and [Embedding](Embedding.md) 😉!
+First we'll setup a simple CMake project, once that's done you can continue to the exciting parts like [Interoperability](Interoperability.md) and [Embedding](Embedding.md) 😉!
 
 ### Dependencies
 First make sure you have all the required dependencies installed.
