@@ -29,7 +29,7 @@ If you've made sure that all pre-requisites are full-filled you can go ahead and
 
 ### Include the required headers
 
-We'll start of by including the required headers:
+We'll start off by including the required headers:
 
 ```cpp
 #include <saucer/module/module.hpp>
