@@ -1,8 +1,8 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
+const darkCodeTheme = require('prism-react-renderer/themes/palenight');
 const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -84,6 +84,23 @@ const config = {
         darkTheme: darkCodeTheme,
       },
     }),
+  plugins: [
+    () => ({
+      name: 'custom-webpack-plugin',
+      configureWebpack() {
+        return {
+          module: {
+            rules: [
+              {
+                test: /.*cpp$/,
+                use: 'raw-loader',
+              }
+            ],
+          },
+        };
+      },
+    }),
+  ]
 };
 
 module.exports = config;
