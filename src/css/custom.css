@@ -1,19 +1,17 @@
 :root {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: rgb(33, 175, 144);
-  --ifm-color-primary-darker: rgb(31, 165, 136);
-  --ifm-color-primary-darkest: rgb(26, 136, 112);
-  --ifm-color-primary-light: rgb(70, 203, 174);
-  --ifm-color-primary-lighter: rgb(102, 212, 189);
-  --ifm-color-primary-lightest: rgb(146, 224, 208);
+  --ifm-color-primary: #8d3de0;
+  --ifm-color-primary-dark: #8438ea;
+  --ifm-color-primary-darker: #7634e1;
+  --ifm-color-primary-darkest: #6620d9;
+  --ifm-color-primary-light: #ee59f5;
+  --ifm-color-primary-lighter: #e457e6;
+  --ifm-color-primary-lightest: #dd8fdf;
+
+  --ifm-navbar-shadow: 0;
+  --feature-box: #353133;
+  --hero-banner-ternary: #f1f2f6;
 }
 
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: rgb(33, 175, 144);
-  --ifm-color-primary-darker: rgb(31, 165, 136);
-  --ifm-color-primary-darkest: rgb(26, 136, 112);
-  --ifm-color-primary-light: rgb(70, 203, 174);
-  --ifm-color-primary-lighter: rgb(102, 212, 189);
-  --ifm-color-primary-lightest: rgb(146, 224, 208);
+  --hero-banner-ternary: #2a2a2a;
 }
