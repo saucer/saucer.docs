@@ -20,8 +20,7 @@
   </div>
 */
 
-import React from 'react';
-import { ComponentProps } from 'react';
+import React, { ComponentProps } from 'react';
 
 export namespace Cards {
   export function Card({ children, ...props }: ComponentProps<'div'>) {

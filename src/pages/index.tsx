@@ -1,5 +1,5 @@
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import { IconAdjustments, IconChartArrowsVertical, IconPackage, IconStar, IconWeight } from '@tabler/icons';
+import { IconAdjustments, IconChartArrowsVertical, IconPackage, IconWeight } from '@tabler/icons';
 import Layout from '@theme/Layout';
 import React from 'react';
 import { Container } from '../components/Container';

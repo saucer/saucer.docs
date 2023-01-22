@@ -1,5 +1,3 @@
-import { Icon24Hours, IconCpu } from '@tabler/icons';
-import clsx from 'clsx';
 import React from 'react';
 import { Cards } from './Card';
 import { Col } from './Col';
