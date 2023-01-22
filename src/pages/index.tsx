@@ -37,8 +37,6 @@ const features: Feature.Feature[] = [
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
 
-  // TODO: Fix layout
-
   return (
     <Layout title={siteConfig.title}>
       <Hero.Header banner>
