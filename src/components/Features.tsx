@@ -15,7 +15,13 @@ export namespace Feature {
     );
   }
 
-  export function Item({ title, icon, description }: { title: string; icon: JSX.Element; description: JSX.Element }) {
+  export interface Feature {
+    title: string;
+    icon: JSX.Element;
+    description: JSX.Element;
+  }
+
+  export function Item({ feature: { icon, title, description } }: { feature: Feature }) {
     return (
       <Col col={6}>
         <center>
