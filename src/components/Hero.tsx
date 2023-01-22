@@ -4,6 +4,7 @@ import React, { ComponentProps } from 'react';
 interface HeaderProps extends ComponentProps<'header'> {
   color?: 'primary' | 'dark';
   banner?: boolean;
+  degree?: number;
 }
 
 interface SubtitleProps extends ComponentProps<'p'> {
@@ -11,24 +12,26 @@ interface SubtitleProps extends ComponentProps<'p'> {
 }
 
 namespace Hero {
-  export function Header({ ...props }: HeaderProps) {
+  export function Header({ degree, children, color, banner, ...props }: HeaderProps) {
     return (
       <header
         {...props}
-        className={clsx('hero', `hero--${props.color || 'primary'}`)}
+        className={clsx('hero', { [`hero--${color}`]: color })}
         style={{
-          ...(props.banner ? { padding: '4rem 0', textAlign: 'center', position: 'relative', overflow: 'hidden' } : {}),
+          ...(banner ? { padding: '4rem 0', textAlign: 'center', position: 'relative', overflow: 'hidden' } : {}),
+          ...(degree ? { transform: `skewY(${degree}deg)` } : {}),
+          ...props.style,
         }}
       >
-        {props.children}
+        {children}
       </header>
     );
   }
 
-  export function Subtitle({ ...props }: SubtitleProps) {
+  export function Subtitle({ children, color, ...props }: SubtitleProps) {
     return (
-      <p {...props} style={{ ...(props.color ? { color: props.color } : {}) }} className="hero__subtitle">
-        {props.children}
+      <p {...props} style={{ ...(color ? { color } : {}) }} className="hero__subtitle">
+        {children}
       </p>
     );
   }

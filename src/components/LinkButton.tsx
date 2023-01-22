@@ -11,22 +11,31 @@ interface LinkButtonsProps extends Props {
   white?: boolean;
 }
 
-export function LinkButton({ ...props }: LinkButtonsProps) {
+export function LinkButton({
+  color,
+  background,
+  size,
+  disabled,
+  outline,
+  white,
+  children,
+  ...props
+}: LinkButtonsProps) {
   return (
     <Link
       {...props}
-      className={clsx('button', `button--${props.color || 'primary'}`, {
-        [`button--${props.size}`]: props.size,
-        ['button--outline']: props.outline,
-        disabled: props.disabled,
+      className={clsx('button', `button--${color || 'primary'}`, {
+        ['disabled']: disabled,
+        [`button--${size}`]: size,
+        ['button--outline']: outline,
       })}
       style={{
         border: 'none',
-        ...(props.white ? { color: 'white' } : {}),
-        ...(props.background ? { background: props.background } : {}),
+        ...(white ? { color: 'white' } : {}),
+        ...(background ? { background: background } : {}),
       }}
     >
-      {props.children}
+      {children}
     </Link>
   );
 }

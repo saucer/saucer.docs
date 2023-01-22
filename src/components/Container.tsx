@@ -1,9 +1,13 @@
 import React, { ComponentProps } from 'react';
 
-export function Container({ ...props }: ComponentProps<'div'>) {
+interface ContainerProps extends ComponentProps<'div'> {
+  degree?: number;
+}
+
+export function Container({ children, degree, ...props }: ContainerProps) {
   return (
-    <div className="container" {...props}>
-      {props.children}
+    <div className="container" style={{ ...(degree ? { transform: `skewY(${degree}deg)` } : {}) }} {...props}>
+      {children}
     </div>
   );
 }
