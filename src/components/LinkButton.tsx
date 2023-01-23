@@ -19,6 +19,7 @@ export function LinkButton({
   outline,
   white,
   children,
+  style,
   ...props
 }: LinkButtonsProps) {
   return (
@@ -30,7 +31,6 @@ export function LinkButton({
         ['button--outline']: outline,
       })}
       style={{
-        border: 'none',
         ...(white ? { color: 'white' } : {}),
         ...(background ? { background: background } : {}),
       }}
