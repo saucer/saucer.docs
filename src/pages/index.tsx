@@ -52,7 +52,7 @@ export default function Home(): JSX.Element {
         <Container>
           <img src="/img/logo.gif" height={350} />
           <Hero.Subtitle>{siteConfig.tagline}</Hero.Subtitle>
-          <LinkButton color="primary" size="lg" white>
+          <LinkButton color="primary" size="lg" white to="/docs/getting-started">
             Get Started
           </LinkButton>
         </Container>
