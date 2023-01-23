@@ -1,55 +1,61 @@
 import React from 'react';
 import { Cards } from './Card';
 import { Container } from './Container';
+import { LinkButton } from './LinkButton';
 
 export namespace Feature {
   export function Grid({ children }: { children: JSX.Element[] }) {
     return (
-      <section style={{ display: 'flex', alignItems: 'center', padding: '2rem 0', width: '100%' }}>
-        <Container>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '25px', placeItems: 'center' }}>
-            {children}
-          </div>
-        </Container>
-      </section>
+      <Container style={{ display: 'flex', flexFlow: 'row wrap', justifyContent: 'center' }}>{children}</Container>
     );
   }
 
   export interface Feature {
     title: string;
+    button: string;
     icon: JSX.Element;
     description: JSX.Element;
   }
 
-  export function Item({ feature: { icon, title, description } }: { feature: Feature }) {
+  export function Item({ feature: { icon, button, title, description } }: { feature: Feature }) {
     return (
-      <Cards.Card
+      <div
         style={{
-          width: '400px',
-          height: '100%',
-          alignItems: 'center',
-          justifyContent: 'center'
+          margin: 30,
+          flexBasis: 'calc(50% - 60px)',
         }}
       >
-        <Cards.Image>
-          <div
-            style={{
-              background: 'var(--ifm-color-primary-dark)',
-              borderRadius: '10px',
-              width: 'fit-content',
-              display: 'flex',
-              padding: '5px',
-              margin: '20px'
-            }}
-          >
-            {icon}
-          </div>
-        </Cards.Image>
-        <Cards.Header style={{ padding: '0' }}>
-          <h3>{title}</h3>
-        </Cards.Header>
-        <Cards.Body>{description}</Cards.Body>
-      </Cards.Card>
+        <Cards.Card
+          style={{
+            width: '20rem',
+            height: '100%',
+            margin: 'auto',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Cards.Image>
+            <div
+              style={{
+                background: 'var(--ifm-color-primary-dark)',
+                borderRadius: 10,
+                display: 'flex',
+                padding: 5,
+                margin: 20,
+              }}
+            >
+              {icon}
+            </div>
+          </Cards.Image>
+          <Cards.Header style={{ padding: 0 }}>
+            <h3>{title}</h3>
+          </Cards.Header>
+          <Cards.Body>{description}</Cards.Body>
+          <Cards.Footer>
+            <LinkButton outline>{button}</LinkButton>
+          </Cards.Footer>
+        </Cards.Card>
+      </div>
     );
   }
 }
