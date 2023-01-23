@@ -1,0 +1,67 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Installation
+
+On this page we'll explain how to install saucer through any of the officially supported ways.  
+To get started choose your desired installation method below.
+
+:::info
+If you just want to setup a basic saucer project and get to hacking right away, you may want to try out the [saucer-cli](.)
+:::
+
+:::caution
+Saucer requires a pretty recent compiler!  
+In case you encounter any errors while building please make sure to update your compiler.
+:::
+
+<Tabs>
+  <TabItem value="cmake" label="CMake" default>
+Usage with FetchContent is fairly simple.
+
+To get started you'll simply need to include FetchContent and add the library as a depenedency.
+
+```cmake
+include(FetchContent)
+
+FetchContent_Declare(saucer GIT_REPOSITORY "https://github.com/saucer/saucer")
+FetchContent_MakeAvailable(saucer)
+```
+
+As soon as saucer is available you can simply link it to your project.
+
+```cmake
+target_link_libraries(${PROJECT_NAME} saucer)
+```
+
+  </TabItem>
+  <TabItem value="vcpkg" label="VCPKG">
+
+:::note
+Linux users are currently required to explicitly specify the `x64-linux-dynamic` triplet when installing the port due to some restrictions.
+:::
+
+We also have an official [vcpkg](https://github.com/microsoft/vcpkg) port.  
+To consume saucer simply run the following command.
+
+```bash title="Normal Installation"
+$ vcpkg install saucer
+```
+
+```bash title="Installation with custom triplet (Linux only)"
+$ vcpkg install saucer:x64-linux-dynamic
+```
+
+  </TabItem>
+  <TabItem value="manual" label="Other / Manual">
+
+In case the previous installation methods are out of question, you can also consume saucer as a pre-built library.  
+The binaries can be obtained from our [GitHub actions build](https://github.com/saucer/saucer/actions/workflows/build.yml), simply click on the latest build and download the artifact applicable for you.  
+The artifcats contain a full build of all non system dependencies as well as the required headers.
+
+After unpacking the artifact you can simply consume it's "include" directory through your favorite build system, same goes for the library files which can be found inside of the "lib" directory.
+
+All of the pre-built binaries have our custom asserts as well as module support enabled.
+
+  </TabItem>
+</Tabs>
