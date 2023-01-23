@@ -1,6 +1,13 @@
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconAdjustments, IconBarbell, IconChartArrowsVertical, IconPackage } from '@tabler/icons';
+import {
+  IconAdjustments,
+  IconBarbell,
+  IconChartArrowsVertical,
+  IconHandLittleFinger,
+  IconPackage,
+  IconScale,
+} from '@tabler/icons';
 import CodeBlock from '@theme/CodeBlock';
 import Layout from '@theme/Layout';
 import React from 'react';
@@ -14,10 +21,10 @@ import exampleCode from './example.cpp';
 const features: Feature.Feature[] = [
   {
     title: 'Easy to Use',
-    button: 'How to setup',
+    button: 'Getting Started',
     icon: <IconChartArrowsVertical color="white" size={45} />,
     description: (
-      <>Don't bother with platform specific code anymore! Just build it once with your favorite web framework</>
+      <>Don't bother with platform specific code anymore! Just build your frontend once and use it in saucer</>
     ),
   },
   {
@@ -38,6 +45,34 @@ const features: Feature.Feature[] = [
     icon: <IconAdjustments color="white" size={45} />,
     description: (
       <>Plugins and Modules allow extensive customization and access to underlying platform specific implementations</>
+    ),
+  },
+  {
+    title: 'Small',
+    button: 'Learn more',
+    icon: <IconHandLittleFinger color="white" size={45} />,
+    description: (
+      <>
+        By using the OS' native web renderer* it's possible to produce binaries that are just ~700KB
+        <br />
+        <sup>
+          <sub>
+            <i>* or a commonly used one</i>
+          </sub>
+        </sup>{' '}
+      </>
+    ),
+  },
+  {
+    title: 'FOSS',
+    button: 'See License',
+    icon: <IconScale color="white" size={45} />,
+    description: (
+      <>
+        Saucer is, and will always be, Free and Open Source <br />
+        <br />
+        <i>Licensed under MIT where applicable</i>
+      </>
     ),
   },
 ];
