@@ -22,6 +22,7 @@ const features: Feature.Feature[] = [
   {
     title: 'Easy to Use',
     button: 'Getting Started',
+    link: '/docs/getting-started',
     icon: <IconChartArrowsVertical color="white" size={45} />,
     description: (
       <>Don't bother with platform specific code anymore! Just build your frontend once and use it in saucer</>
@@ -31,6 +32,7 @@ const features: Feature.Feature[] = [
     title: 'Interoperability',
     button: 'Exposing Functions',
     icon: <IconBarbell color="white" size={45} />,
+    link: '/docs/getting-started/interoperability',
     description: <>Easily expose your native functionality to JavaScript and vice versa</>,
   },
   {
@@ -50,6 +52,7 @@ const features: Feature.Feature[] = [
   {
     title: 'Small',
     button: 'Learn more',
+    link: '/docs/getting-started/dependencies',
     icon: <IconHandLittleFinger color="white" size={45} />,
     description: (
       <>

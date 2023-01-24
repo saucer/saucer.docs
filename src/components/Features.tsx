@@ -11,13 +11,14 @@ export namespace Feature {
   }
 
   export interface Feature {
+    link: string;
     title: string;
     button: string;
     icon: JSX.Element;
     description: JSX.Element;
   }
 
-  export function Item({ feature: { icon, button, title, description } }: { feature: Feature }) {
+  export function Item({ feature: { link, icon, button, title, description } }: { feature: Feature }) {
     return (
       <div
         style={{
@@ -52,7 +53,9 @@ export namespace Feature {
           </Cards.Header>
           <Cards.Body>{description}</Cards.Body>
           <Cards.Footer>
-            <LinkButton outline>{button}</LinkButton>
+            <LinkButton to={link} outline>
+              {button}
+            </LinkButton>
           </Cards.Footer>
         </Cards.Card>
       </div>
