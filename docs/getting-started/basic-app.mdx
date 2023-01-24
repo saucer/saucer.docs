@@ -1,0 +1,64 @@
+# Your First Application
+
+In this chapter we'll explain how to setup a very basic saucer application.  
+Make sure you've read the previous pages and have the system dependencies installed.
+
+## CMake Setup
+
+In this example we'll use CMake as our build system and make saucer available through [FetchContent](installation).
+
+```cmake title="CMakeLists.txt"
+cmake_minimum_required(VERSION 3.1)
+project(your_awesome_app LANGUAGES CXX VERSION 1.0)
+
+# --------------------------------------------------------------------------------------------------------
+# Create executable
+# --------------------------------------------------------------------------------------------------------
+
+add_executable(${PROJECT_NAME} "main.cpp")
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17 CXX_EXTENSIONS OFF CXX_STANDARD_REQUIRED ON)
+
+# --------------------------------------------------------------------------------------------------------
+# Link libraries
+# --------------------------------------------------------------------------------------------------------
+
+include(FetchContent)
+
+FetchContent_Declare(saucer GIT_REPOSITORY "https://github.com/saucer/saucer")
+FetchContent_MakeAvailable(saucer)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE saucer)
+```
+
+## The Program
+
+Now that we've setup our CMakeLists we can go ahead and create our first basic saucer window!
+
+```cpp title="main.cpp"
+int main()
+{
+// highlight-start
+    saucer::smartview smartview;         // We instantiate our smartview
+    smartview.set_title("Hello World!"); // We set the window title to "Hello World!"
+// highlight-end
+
+// highlight-start
+    // We expose a synchronous native function "add_ten" using the json-serializer
+    smartview.expose<saucer::serializers::json>("add_ten", [](int i)
+                                                {
+                                                    return i + 10;
+                                                });
+// highlight-end
+
+// highlight-start
+    smartview.set_url("https://google.com"); // We navigate to google.com
+    smartview.show();                        // We show the smartview
+    smartview.run();                         // And finally we enter the run-loop.
+// highlight-end
+
+    return 0;
+}
+```
+
+That's it, we've now created a really basic saucer application.
