@@ -1,0 +1,176 @@
+import code from './custom-types.cpp';
+import CodeBlock from '@theme/CodeBlock';
+
+# Interoperability
+
+In the previous chapter, we've created our first saucer application.  
+Without explaining what exaclty is being done, we've used a smartview in conjunction with the `JSON-Serializer` to expose a native function.
+
+We'll now go into more detail on how exactly Interoperability works and will briefly talk about what a Serializer is.
+
+## What is a Serializer
+
+In short, a serializer is something to help us transform our native types into something that both JavaScript and C++ understand.  
+Saucer ships the `JSON-Serializer` by default, however you can also write your own Serializer in case you need something more specific.
+
+To include the `JSON-Serializer` simply include `<saucer/serializers/json.hpp>`.
+
+```cpp title="Example Include"
+#include <saucer/serializers/json.hpp>
+```
+
+## What is a SmartView
+
+A SmartView is a type of WebView that is able to use a Serializer to exchange data between C++ and JavaScript.
+
+For more information see:
+
+- [Exposing Functions](#exposing-functions)
+- [Calling JavaScript](#calling-javascript)
+
+## Exposing Functions
+
+You can expose a native function to the JavaScript world by calling `expose` on your SmartView.
+
+```cpp title="Exposing a function"
+smartview.expose<saucer::serializers::json>("add_ten", [](int i)
+                                                       {
+                                                           return i + 10;
+                                                       });
+
+```
+
+:::tip
+Instead of always specifying `saucer::serializers::json` on each SmartView call you can also replace it with a `saucer::simple_smartview`.
+
+```cpp
+// red
+saucer::smartview smartview;
+// red
+smartview.expose<saucer::serializers::json>(...);
+
+// green
+saucer::simple_smartview<saucer::serializers::json> smartview;
+// green
+smartview.expose(...);
+```
+
+:::
+
+By default all exposed functions will be called synchronously, which just means that the WebView will hang during the execution of your function, which is usually
+not a problem unless your function performs some heavy operations.
+You can change this behavior by passing `true` as the last parameter to the `expose` call.
+
+```cpp title="Exposing a function asynchronously"
+smartview.expose("add_ten", [](int i)
+                            {
+                                std::this_thread::sleep_for(std::chrono::seconds(10));
+                                return i + 10;
+                            // green
+                            }, true);
+
+```
+
+Once you've exposed your function from the C++ side, you can easily call it from JavaScript.
+
+```js title="Calling our exposed function from the JavaScript World"
+const ten_added = await window.saucer.call('add_ten', [10]);
+// > ten_added == 20
+```
+
+## Calling JavaScript
+
+Using the SmartView you'll also be able to evaluate JavaScript code and capture it's result.
+
+```cpp
+auto random = smartview.eval<float, saucer::serializers::json>("Math.random()").get();
+```
+
+:::tip
+The aforementioned tip of using a `saucer::simple_smartview` also applies here.
+
+```cpp title="'eval()' with simple_smartview"
+//red
+auto random = smartview.eval<float, saucer::serializers::json>("Math.random()").get();
+//green
+auto random = smartview.eval<float>("Math.random()").get();
+```
+
+:::
+
+:::caution
+`eval()` returns a `std::future`, which means that using it outside of an asynchronously context will cause your WebView to lock up!  
+To circumvent this take a look at the [Future Utilities](#future-utilities)
+:::
+
+## Future Utilities
+
+Due to the aforementioned problems with using `eval` outside of asynchronous contexts, we've made some utility functions to make your life easier.
+
+Start of by including the utility header:\*
+
+```cpp
+#include <saucer/utils/future.hpp>
+```
+
+### Then
+
+Because there is no `std::future::then` yet we've implemented a small alternative.
+
+```cpp
+saucer::then(smartview.eval<float>("Math.random()"), [](float result)
+{
+    std::cout << "The random number was " << result << std::endl;
+});
+
+// ...or
+
+smartview.eval<float>("Math.random()") | saucer::then([](float result)
+{
+    std::cout << "Result: " << result << std::endl;
+});
+```
+
+### Forget
+
+This can be used to simply fire-and-forget `eval`.
+
+```cpp
+saucer::forget(smartview.eval<float>("Math.random()"));
+
+// ...or
+
+smartview.eval<float>("Math.random()") | saucer::forget();
+```
+
+:::note
+A `std::future` will also block on destruction if:
+
+> (2) the shared state is not yet ready[¹](https://en.cppreference.com/w/cpp/thread/future/%7Efuture)
+
+So make sure you call `saucer::forget` on the future if you don't care about it's return value!
+
+:::
+
+### All
+
+If you have multiple `std::future`s and want to wait until all of them are ready you can use `saucer::all`.
+
+```cpp
+auto a = smartview.eval<float>("Math.random()");
+auto b = smartview.eval<float>("Math.random()");
+auto c = smartview.eval<float>("Math.random()");
+
+auto [random, random2, random3] = saucer::all(a, b, c);
+```
+
+## User Defined Types
+
+The `JSON-Serializer`, which saucer ships by default, supports the serialization of primitive as well as some STL types.  
+To make it possible to exchange custom types you'll need to supply your own specialization for the custom types.
+
+As the `JSON-Serializer` depends on [nlohmann-json](https://github.com/nlohmann/json) you can look up their documentation on how to [convert third party types](https://github.com/nlohmann/json#how-do-i-convert-third-party-types) or take a look at the example below.
+
+<CodeBlock language="cpp" title="Exposing Custom-Types">
+  {code}
+</CodeBlock>
