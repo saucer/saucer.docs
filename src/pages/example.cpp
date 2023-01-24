@@ -10,7 +10,7 @@ int main() {
 
   webview.expose(
       "add_random",
-      [](float number) {
+      [&](float number) {
         auto random = webview.eval<float>("Math.random()").get();
         return number + random;
       },
