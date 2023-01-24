@@ -90,6 +90,13 @@ Using the SmartView you'll also be able to evaluate JavaScript code and capture 
 auto random = smartview.eval<float, saucer::serializers::json>("Math.random()").get();
 ```
 
+You can also pass C++ Objects as parameters when calling `eval`.
+
+```cpp
+auto random = smartview.eval<float, saucer::serializers::json>("Math.pow({}, {})", 2, 5).get();
+smartview.eval<void, saucer::serializers::json>("console.log({})", std::vector<int>{10}).get();
+```
+
 :::tip
 The aforementioned tip of using a `saucer::simple_smartview` also applies here.
 
