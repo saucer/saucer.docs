@@ -92,6 +92,14 @@ const config = {
             line: 'highlight-next-line',
             block: { start: 'highlight-start', end: 'highlight-end' },
           },
+          {
+            className: 'code-block-red',
+            line: 'red',
+          },
+          {
+            className: 'code-block-green',
+            line: 'green',
+          },
         ],
       },
     }),
