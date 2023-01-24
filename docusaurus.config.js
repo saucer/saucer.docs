@@ -33,8 +33,8 @@ const config = {
           customCss: require.resolve('./src/css/custom.css'),
         },
         blog: {
-          routeBasePath: '/news'
-        }
+          routeBasePath: '/news',
+        },
       }),
     ],
   ],
@@ -85,7 +85,14 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
-        additionalLanguages: ['cmake']
+        additionalLanguages: ['cmake'],
+        magicComments: [
+          {
+            className: 'theme-code-block-highlighted-line',
+            line: 'highlight-next-line',
+            block: { start: 'highlight-start', end: 'highlight-end' },
+          },
+        ],
       },
     }),
   plugins: [
@@ -98,13 +105,13 @@ const config = {
               {
                 test: /.*cpp$/,
                 use: 'raw-loader',
-              }
+              },
             ],
           },
         };
       },
     }),
-  ]
+  ],
 };
 
 module.exports = config;
