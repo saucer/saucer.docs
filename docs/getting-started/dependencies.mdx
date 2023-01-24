@@ -1,0 +1,56 @@
+---
+sidebar_position: 1
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Dependencies
+
+Saucer expects some dependencies to be installed on your system.
+We depend on fairly common packages to make sure that the installation will be as smooth as possible.
+
+<Tabs>
+  <TabItem value="windows" label="Windows" default>
+
+On Windows the WebView2 Runtime is required, which is usually already installed on the system and comes
+pre-installed on Windows 11.  
+In case you don't have it installed already you can download it from Microsoft's official website [here](https://developer.microsoft.com/microsoft-edge/webview2/#download-section).
+
+  </TabItem>
+  <TabItem value="linux" label="Linux" default>
+
+On Linux we depend on Qt as it is well established in the Linux world and most systems have it installed already.  
+In case you don't have it on your system already, you may use the following installation command applicable for your system.
+
+<Tabs block>
+  <TabItem value="ubuntu" label="Ubuntu" default>
+
+:::caution Old Packages
+Distributions like Ubuntu may have fairly old packages and will thus only provide relatively old Chromium versions.
+You can mitigate this by using a PPA.
+:::
+
+```bash
+sudo apt install libqt5webengine5 libqt5webenginecore5 libqt5webenginewidgets5
+```
+
+  </TabItem>
+  <TabItem value="arch" label="Arch Linux" default>
+
+```bash
+sudo pacman -S qt5-base qt5-webchannel qt5-webengine
+```
+
+  </TabItem>
+  <TabItem value="fedora" label="Fedora" default>
+
+```bash
+sudo dnf install qt5-qtwebengine qt5-qtwebchannel qt5-qtbase-gui qt5-qtbase
+```
+
+  </TabItem>
+</Tabs>
+
+  </TabItem>
+</Tabs>
