@@ -1,0 +1,118 @@
+---
+sidebar_position: 4
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import Admonition from '@theme/Admonition';
+
+import close from './events/close.cpp';
+import closed from './events/closed.cpp';
+import resize from './events/resize.cpp';
+import urlChanged from './events/url-changed.cpp';
+
+# Events
+
+In this chapter, we'll describe the available events and how to use them.
+
+## Basics
+
+Events are simply callbacks which are invoked for specific actions and can, in certain circumstances, even alter the behavior of the application.
+
+### Register Event Callback
+
+To register an event callback simply call the `on` method of your webview.  
+You'll need to pass the event-type as the first template parameter and the callback as the function argument.
+
+Every call to `on` will return an `event-id` which can later be used to `unregister` the same callback.
+
+```cpp title="Example Callback (Resize Window)"
+smartview.on<saucer::window_event::resize>([](int width, int height)
+{
+   // ...
+});
+```
+
+### Unregister Event Callback
+
+As previously mentioned you can unregister an event callback by saving it's `event-id`.  
+To unregister, simply call `remove`, with the event-type as the first and the `event-id` as the second argument.
+
+```cpp title="Example Callback Removal"
+auto id = smartview.on<saucer::window_event::resize>([](int width, int height)
+{
+   // ...
+});
+
+smartview.remove(saucer::window_event::resize, id);
+```
+
+:::tip
+If you simply want to remove all event callbacks belonging to a specific event-type you can use the `clear` method.
+
+```cpp title="Clearing all Resize Callbacks"
+smartview.clear(saucer::window_event::resize);
+```
+
+:::
+
+## Available Events
+
+<Tabs block>
+  <TabItem value="window" label="Window">
+    <Tabs>
+      <TabItem value="resize" label="Resize">
+        Called when the Window is resized.
+        <br />
+        <br />
+        <CodeBlock language="cpp" title="Signature">
+          {resize.split('\n')[0]}
+        </CodeBlock>
+        <CodeBlock language="cpp" title="Example">
+          {resize.split('\n').slice(2).join('\n')}
+        </CodeBlock>
+      </TabItem>
+      <TabItem value="closed" label="Closed">
+        Called when the Window is closed.
+        <br />
+        <br />
+        <CodeBlock language="cpp" title="Signature">
+          {closed.split('\n')[0]}
+        </CodeBlock>
+        <CodeBlock language="cpp" title="Example">
+          {closed.split('\n').slice(2).join('\n')}
+        </CodeBlock>
+      </TabItem>
+      <TabItem value="close" label="Close">
+        Called when the Window is about to be closed.
+        <br />
+        <br />
+        <Admonition type="info">
+          Returning <code>true</code> from within the callback prevents the close.
+        </Admonition>
+        <CodeBlock language="cpp" title="Signature">
+          {close.split('\n')[0]}
+        </CodeBlock>
+        <CodeBlock language="cpp" title="Example">
+          {close.split('\n').slice(2).join('\n')}
+        </CodeBlock>
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem value="webview" label="WebView">
+    <Tabs>
+      <TabItem value="url-changed" label="URL Changed">
+        Called when a new URL is loaded.
+        <br />
+        <br />
+        <CodeBlock language="cpp" title="Signature">
+          {urlChanged.split('\n')[0]}
+        </CodeBlock>
+        <CodeBlock language="cpp" title="Example">
+          {urlChanged.split('\n').slice(2).join('\n')}
+        </CodeBlock>
+      </TabItem>
+    </Tabs>
+  </TabItem>
+</Tabs>
