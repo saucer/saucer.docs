@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+---
+
 import code from './custom-types.cpp';
 import CodeBlock from '@theme/CodeBlock';
 
@@ -99,15 +103,15 @@ auto random = smartview.eval<float>("Math.random()").get();
 :::
 
 :::caution
-`eval()` returns a `std::future`, which means that using it outside of an asynchronously context will cause your WebView to lock up!  
-To circumvent this take a look at the [Future Utilities](#future-utilities)
+`eval()` returns a `std::future`, which means that using it outside of an asynchronous context will cause your WebView to lock up!  
+To circumvent this take a look at the [Future Utilities](#future-utilities).
 :::
 
 ## Future Utilities
 
-Due to the aforementioned problems with using `eval` outside of asynchronous contexts, we've made some utility functions to make your life easier.
+Due to the aforementioned problems with using `eval` outside of asynchronous contexts, we've created some utility functions to make your life easier.
 
-Start of by including the utility header:\*
+Start off by including the utility header:
 
 ```cpp
 #include <saucer/utils/future.hpp>
@@ -133,7 +137,7 @@ smartview.eval<float>("Math.random()") | saucer::then([](float result)
 
 ### Forget
 
-This can be used to simply fire-and-forget `eval`.
+This can be used to perform a simple fire-and-forget operation.
 
 ```cpp
 saucer::forget(smartview.eval<float>("Math.random()"));
