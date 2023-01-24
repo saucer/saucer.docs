@@ -1,3 +1,7 @@
+---
+sidebar_position: 0
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -28,18 +32,14 @@ FetchContent_Declare(saucer GIT_REPOSITORY "https://github.com/saucer/saucer")
 FetchContent_MakeAvailable(saucer)
 ```
 
-As soon as saucer is available you can simply link it to your project.
+Now you can simply link your project against saucer.
 
 ```cmake
-target_link_libraries(${PROJECT_NAME} saucer)
+target_link_libraries(${PROJECT_NAME} saucer::saucer)
 ```
 
   </TabItem>
   <TabItem value="vcpkg" label="VCPKG">
-
-:::note
-Linux users are currently required to explicitly specify the `x64-linux-dynamic` triplet when installing the port due to some restrictions.
-:::
 
 We also have an official [vcpkg](https://github.com/microsoft/vcpkg) port.  
 To consume saucer simply run the following command.
@@ -47,6 +47,10 @@ To consume saucer simply run the following command.
 ```bash title="Normal Installation"
 $ vcpkg install saucer
 ```
+
+:::note
+Linux users are currently required to explicitly specify the `x64-linux-dynamic` triplet when installing the port due to some restrictions.
+:::
 
 ```bash title="Installation with custom triplet (Linux only)"
 $ vcpkg install saucer:x64-linux-dynamic
@@ -59,9 +63,16 @@ In case the previous installation methods are out of question, you can also cons
 The binaries can be obtained from our [GitHub actions build](https://github.com/saucer/saucer/actions/workflows/build.yml), simply click on the latest build and download the artifact applicable for you.  
 The artifcats contain a full build of all non system dependencies as well as the required headers.
 
-After unpacking the artifact you can simply consume it's "include" directory through your favorite build system, same goes for the library files which can be found inside of the "lib" directory.
+After unpacking the artifact you can simply consume its "include" directory through your favorite build system, same goes for the library files which can be found inside of the "lib" directory.
 
 All of the pre-built binaries have our custom asserts as well as module support enabled.
+
+The system dependencies need to be linked additionally as well.
+
+| Platform | System Dependencies                               |
+| -------- | ------------------------------------------------- |
+| Windows  | Shlwapi                                           |
+| Linux    | Qt::Widgets, Qt::WebChannel, Qt::WebEngineWidgets |
 
   </TabItem>
 </Tabs>
