@@ -62,7 +62,7 @@ Now simply consume this folder as a include directory.
 target_include_directories(${PROJECT_NAME} PRIVATE "path/to/generated/folder")
 ```
 
-Now it's only a matter of including the header in your code and calling `embed_files` on the webview.  
+Now it's only a matter of including the header in your code and calling `embed` on the webview.  
 To serve the files simply call `serve` and specify the file name.
 
 ```cpp title="Example"
@@ -82,7 +82,7 @@ int main()
     // red
     smartview.set_url("https://google.com");
     // green
-    smartview.embed_files(std::move(embedded::get_all_files()));
+    smartview.embed(std::move(embedded::get_all_files()));
     // green
     smartview.serve("index.html");
 
