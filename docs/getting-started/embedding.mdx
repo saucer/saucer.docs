@@ -1,0 +1,94 @@
+# Embedding
+
+Instead of always shipping the frontend files alongside your binary it is also possible to embed all the web-content into your saucer application.
+The easiest way to accomplish this is to use the [saucer-cli](.).
+
+## Pre-Requisites
+
+- Generate a static version of your website
+- In case you use a Router make sure it's supported, see [Common Pitfalls](../common-pitfalls)
+
+## Generate Embedding Files
+
+Now that you've made sure all pre-requisites are fullfilled, we can get to embedding!
+
+First off, place all your web content into a single folder.
+
+```text title="Example Folder Structure"
+out
+├── 404.html
+├── icon.webp
+├── index.html
+├── logos
+└── _next
+    ├── data
+    │   └── I0JjY_SsFNIFkY51LHHZ8
+    │       └── index.json
+    ├── I0JjY_SsFNIFkY51LHHZ8
+    └── static
+        ├── chunks
+        │   ├── 617-62e76ca49feff4cf.js
+        │   ├── ef6529d7-eceeabab9e91fbfa.js
+        │   ├── framework-4556c45dd113b893.js
+        │   ├── main-8622cd0e77d03013.js
+        │   ├── pages
+        │   │   ├── _app-21ef9ef16725f9ba.js
+        │   │   ├── _error-a4ba2246ff8fb532.js
+        │   │   └── index-5206a6595f9ffd08.js
+        │   ├── polyfills-0d1b80a048d4787e.js
+        │   └── webpack-c491b2a411a4f8fa.js
+        └── I0JjY_SsFNIFkY51LHHZ8
+            ├── _buildManifest.js
+            └── _ssgManifest.js
+```
+
+Now we can use the [saucer-cli](.) to generate the required embedding files.
+
+```bash title="Command Syntax"
+saucer embed [output <directory>] <folder>
+```
+
+```bash title="Example Command"
+saucer embed "out"
+```
+
+## Using the Embedding Files
+
+After running the embed command through the cli, a folder named `"embedding"` _- unless otherwise specified -_ will be generated.
+
+Now simply consume this folder as a include directory.
+
+```cmake title="Consuming Embedding folder through CMake"
+target_include_directories(${PROJECT_NAME} PRIVATE "path/to/generated/folder")
+```
+
+Now it's only a matter of including the header in your code and calling `embed_files` on the webview.  
+To serve the files simply call `serve` and specify the file name.
+
+```cpp title="Example"
+// green
+#include <output_folder/all.hpp>
+
+int main()
+{
+    saucer::smartview smartview;
+    smartview.set_title("Hello World!");
+
+    smartview.expose<saucer::serializers::json>("add_ten", [](int i)
+                                                {
+                                                    return i + 10;
+                                                });
+
+    // red
+    smartview.set_url("https://google.com");
+    // green
+    smartview.embed_files(std::move(embedded::get_all_files()));
+    // green
+    smartview.serve("index.html");
+
+    smartview.show();
+    smartview.run();
+
+    return 0;
+}
+```
