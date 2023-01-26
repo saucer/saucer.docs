@@ -38,6 +38,7 @@ const features: Feature.Feature[] = [
   {
     title: 'Simple Deployment',
     button: 'Embedding',
+    link: '/docs/getting-started/embedding',
     icon: <IconPackage color="white" size={45} />,
     description: <>Embed all your frontend code into saucer with ease and ship a contained binary</>,
   },
