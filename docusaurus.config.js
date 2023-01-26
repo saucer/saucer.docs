@@ -24,6 +24,12 @@ const config = {
     locales: ['en'],
   },
 
+  markdown: {
+    mermaid: true,
+  },
+
+  themes: ['@docusaurus/theme-mermaid'],
+
   presets: [
     [
       'classic',
@@ -61,6 +67,11 @@ const config = {
             label: 'GitHub',
             position: 'right',
           },
+          {
+            href: 'https://discord.gg/ndhmQE4225',
+            label: 'Discord',
+            position: 'right',
+          },
         ],
       },
       footer: {
@@ -94,10 +105,20 @@ const config = {
           },
           {
             className: 'code-block-red',
+            block:
+            {
+              start: 'red-start',
+              end: 'red-end',
+            },
             line: 'red',
           },
           {
             className: 'code-block-green',
+            block:
+            {
+              start: 'green-start',
+              end: 'green-end',
+            },
             line: 'green',
           },
         ],
