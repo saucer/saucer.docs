@@ -9,15 +9,16 @@ const config = {
   title: 'Saucer',
   tagline: 'Next-Gen desktop apps with web-frontend in C++',
 
-  baseUrl: '/',
   favicon: 'img/favicon.ico',
   url: 'https://saucer.github.io',
+  baseUrl: `/${this.projectName}/`,
+
+  projectName: 'saucer-docs',
+  organizationName: 'saucer',
+  trailingSlash: false,
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-
-  projectName: 'saucer', // Usually your repo name.
-  organizationName: 'saucer', // Usually your GitHub org/user name.
 
   i18n: {
     defaultLocale: 'en',
