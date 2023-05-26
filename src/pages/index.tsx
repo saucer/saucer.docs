@@ -45,6 +45,7 @@ const features: Feature.Feature[] = [
   {
     title: 'Customizability',
     button: 'Modules & Plugins',
+    link: '/docs/advanced/modules',
     icon: <IconAdjustments color="white" size={45} />,
     description: (
       <>Plugins and Modules allow extensive customization and access to underlying platform specific implementations</>
@@ -70,6 +71,7 @@ const features: Feature.Feature[] = [
   {
     title: 'FOSS',
     button: 'See License',
+    link: 'https://github.com/saucer/saucer/blob/dev/LICENSE',
     icon: <IconScale color="white" size={45} />,
     description: (
       <>
