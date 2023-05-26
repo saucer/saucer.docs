@@ -61,7 +61,7 @@ const config = {
             position: 'left',
             docId: 'getting-started/readme',
           },
-          { to: '/news', label: 'News', position: 'left' },
+          // { to: '/news', label: 'News', position: 'left' },
           {
             href: 'https://github.com/saucer/saucer',
             label: 'GitHub',
