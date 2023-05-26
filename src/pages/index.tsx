@@ -1,13 +1,6 @@
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { useMediaQuery } from '@mantine/hooks';
-import {
-  IconAdjustments,
-  IconBarbell,
-  IconChartArrowsVertical,
-  IconHandLittleFinger,
-  IconPackage,
-  IconScale,
-} from '@tabler/icons';
+import { IconAdjustments, IconLink, IconPackage, IconScale, IconTimeline, IconWeight } from '@tabler/icons';
 import CodeBlock from '@theme/CodeBlock';
 import Layout from '@theme/Layout';
 import React from 'react';
@@ -23,15 +16,15 @@ const features: Feature.Feature[] = [
     title: 'Easy to Use',
     button: 'Getting Started',
     link: '/docs/getting-started',
-    icon: <IconChartArrowsVertical color="white" size={45} />,
+    icon: <IconTimeline color="white" size={45} />,
     description: (
       <>Don't bother with platform specific code anymore! Just build your frontend once and use it in saucer</>
     ),
   },
   {
     title: 'Interoperability',
-    button: 'Exposing Functions',
-    icon: <IconBarbell color="white" size={45} />,
+    button: 'Learn more',
+    icon: <IconLink color="white" size={45} />,
     link: '/docs/getting-started/interoperability',
     description: <>Easily expose your native functionality to JavaScript and vice versa</>,
   },
@@ -55,7 +48,7 @@ const features: Feature.Feature[] = [
     title: 'Small',
     button: 'Learn more',
     link: '/docs/getting-started/dependencies',
-    icon: <IconHandLittleFinger color="white" size={45} />,
+    icon: <IconWeight color="white" size={45} />,
     description: (
       <>
         By using the OS' native web renderer* it's possible to produce binaries that are just ~700KB
