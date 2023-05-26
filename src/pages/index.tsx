@@ -1,6 +1,6 @@
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconAdjustments, IconLink, IconPackage, IconScale, IconTimeline, IconWeight } from '@tabler/icons-react';
+import { IconAdjustments, IconFeather, IconLink, IconPackage, IconScale, IconTimeline } from '@tabler/icons-react';
 import CodeBlock from '@theme/CodeBlock';
 import Layout from '@theme/Layout';
 import React from 'react';
@@ -48,7 +48,7 @@ const features: Feature.Feature[] = [
     title: 'Small',
     button: 'Learn more',
     link: '/docs/getting-started/dependencies',
-    icon: <IconWeight color="white" size={45} />,
+    icon: <IconFeather color="white" size={45} />,
     description: (
       <>
         By using the OS' native web renderer* it's possible to produce binaries that are just ~700KB
