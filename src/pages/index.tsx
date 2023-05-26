@@ -1,6 +1,6 @@
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconAdjustments, IconLink, IconPackage, IconScale, IconTimeline, IconWeight } from '@tabler/icons';
+import { IconAdjustments, IconLink, IconPackage, IconScale, IconTimeline, IconWeight } from '@tabler/icons-react';
 import CodeBlock from '@theme/CodeBlock';
 import Layout from '@theme/Layout';
 import React from 'react';
