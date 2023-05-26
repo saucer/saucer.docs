@@ -1,0 +1,194 @@
+import {
+  IconBrandWindows,
+  IconBrandApple,
+  IconBrandEdge,
+  IconBrandChrome,
+  IconBrandSafari,
+  IconCheck,
+  IconX,
+} from '@tabler/icons';
+
+export const Center = ({ children }) => {
+  return (
+    <div style={{ whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
+      {children}
+    </div>
+  );
+};
+
+<table>
+  <colgroup span="3"></colgroup>
+  <tr>
+    <th rowspan="2">Name</th>
+    <th rowspan="2">Language</th>
+    <th rowspan="2">Embedding</th>
+    <th rowspan="2">Two-Way Interop</th>
+    <th colspan="3">Backend</th>
+  </tr>
+  <tr>
+    <th>
+      <IconBrandWindows />
+    </th>
+    <th>
+      <img src="/icons/tux.svg" width="25" />
+    </th>
+    <th>
+      <IconBrandApple />
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://github.com/saucer/saucer" target="_blank">
+        saucer/saucer
+      </a>
+    </td>
+    <td>C++</td>
+    <td>
+      <IconCheck color="green" />
+    </td>
+    <td>
+      <IconCheck color="green" />
+    </td>
+    <td>
+      <Center>
+        <IconBrandEdge /> WebView2
+      </Center>
+    </td>
+    <td>
+      <Center>
+        <IconBrandChrome />
+        Qt5 / Qt6
+      </Center>
+    </td>
+    <td>
+      <Center>
+        <IconBrandChrome />
+        Qt5 / Qt6 (WebKit planned)
+      </Center>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://github.com/MichaelKim/webview" target="_blank">
+        MichaelKim/webview
+      </a>
+    </td>
+    <td>C++</td>
+    <td>
+      <IconX color="red" />
+    </td>
+    <td>
+      <IconX color="red" />
+    </td>
+    <td>
+      <Center>
+        <IconBrandEdge /> EdgeHTML or WebView2
+      </Center>
+    </td>
+    <td>
+      <Center>
+        <IconBrandSafari />
+        WebKit2Gtk
+      </Center>
+    </td>
+    <td>
+      <Center>
+        <IconBrandSafari />
+        WebKit
+      </Center>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://github.com/webview/webview" target="_blank">
+        webview/webview
+      </a>
+    </td>
+    <td>C++, Go</td>
+    <td>
+      <IconX color="red" />
+    </td>
+    <td>
+      <IconX color="red" />
+    </td>
+    <td>
+      <Center>
+        <IconBrandEdge /> EdgeHTML or WebView2
+      </Center>
+    </td>
+    <td>
+      <Center>
+        <IconBrandSafari />
+        WebKit2Gtk
+      </Center>
+    </td>
+    <td>
+      <Center>
+        <IconBrandSafari />
+        WebKit
+      </Center>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://github.com/tauri-apps/wry" target="_blank">
+        tauri-apps/wry
+      </a>
+    </td>
+    <td>Rust</td>
+    <td>
+      <IconCheck color="green" />
+    </td>
+    <td>
+      <IconCheck color="green" />
+    </td>
+    <td>
+      <Center>
+        <IconBrandEdge /> WebView2
+      </Center>
+    </td>
+    <td>
+      <Center>
+        <IconBrandSafari />
+        WebKit2Gtk
+      </Center>
+    </td>
+    <td>
+      <Center>
+        <IconBrandSafari />
+        WebKit
+      </Center>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://github.com/wailsapp/wails" target="_blank">
+        wailsapp/wails
+      </a>
+    </td>
+    <td>Go</td>
+    <td>
+      <IconCheck color="green" />
+    </td>
+    <td>
+      <IconCheck color="green" />
+    </td>
+    <td>
+      <Center>
+        <IconBrandEdge /> WebView2
+      </Center>
+    </td>
+    <td>
+      <Center>
+        <IconBrandSafari />
+        WebKit2Gtk
+      </Center>
+    </td>
+    <td>
+      <Center>
+        <IconBrandSafari />
+        WebKit
+      </Center>
+    </td>
+  </tr>
+</table>
