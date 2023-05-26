@@ -97,8 +97,8 @@ project(saucer_guide LANGUAGES CXX VERSION 1.0)
 # --------------------------------------------------------------------------------------------------------
 
 add_executable(${PROJECT_NAME} "src/main.cpp")
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
-set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17 CXX_EXTENSIONS OFF CXX_STANDARD_REQUIRED ON)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 20 CXX_EXTENSIONS OFF CXX_STANDARD_REQUIRED ON)
 
 // green-start
 # --------------------------------------------------------------------------------------------------------
@@ -127,7 +127,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE saucer::saucer yaml-cpp::yaml-cpp 
 
 ## Implementing the Serializer
 
-First off, we'll create our serializer class in a header (`yaml.hpp`) and define the two most basic methods, `init_script` and `js_serializer`.
+First off, we'll create our serializer class in a header (`yaml.hpp`) and define the two most basic methods, `script` and `js_serializer`.
 
 ```cpp title="yaml.hpp"
 #pragma once
@@ -143,7 +143,7 @@ namespace saucer
             ~yaml() override = default;
 
           public:
-            [[nodiscard]] std::string init_script() const override;
+            [[nodiscard]] std::string script() const override;
             [[nodiscard]] std::string js_serializer() const override;
         };
     }
@@ -153,7 +153,7 @@ namespace saucer
 And we'll implement these two methods in a source file (`yaml.cpp`).  
 A short description of what these two function do:
 
-- `init_script`
+- `script`
   - Returns a `std::string`, which is injected into every web-page, you can use this to load javascript libraries required by your serializer.
 - `js_serializer`
   - Returns a `std::string` which represents the function that the JavaScript code will use to serialize objects (i.e. `JSON.stringify`).
@@ -164,7 +164,7 @@ A short description of what these two function do:
 
 namespace saucer::serializers
 {
-    std::string yaml::init_script() const
+    std::string yaml::script() const
     {
         // highlight-start
         // Please don't do this in production! We're just doing this for illustration purposes.
@@ -337,7 +337,7 @@ Now our `parse` method is able to properly parse function invocation requests.
 Let's take a look at what happens when we call `eval()`.  
 If you glance at the [illustration](#illustration), you'll see that `smartview::eval(...)` will eventually send some Code to JavaScript.
 
-This code in questions roughly equals the following:
+The code in questions roughly equals the following:
 
 ```ts title="Possible Implementation"
 // highlight-start
@@ -377,7 +377,7 @@ namespace saucer
                 {
                     auto rtn = std::make_unique<yaml_result_data>();
 
-                    rtn->data = yaml["result"]; // We copy the result node, as we'll need it later to resolve the `std::future`
+                    rtn->data = yaml["result"]; // We copy the result node, as we'll need it later to resolve the `std::promise`
                     rtn->id = yaml["id"].as<std::size_t>();
 
                     return rtn;
@@ -432,6 +432,483 @@ namespace saucer
           public:
             template <typename Function> static auto serialize(const Function &func);
           // green-end
+        };
+    }
+}
+```
+
+Alright, now it's going to get a little bit complicated.
+
+The `serialize()` method takes a `Function`, to which we'll need to construct a `std::function` which takes a `YAML::Node` and then correctly parses said node into function arguments that we'll use to invoke the function we received in `serialize()`.
+
+So the first thing we'll need is the types of the `Function`s arguments, to get those we'll use `boost::callable_traits`, which saucer already publicly links agsint, which means - as long as you consume saucer through CMake - you wont need to care about that dependency yourself.
+
+```cpp title="yaml.inl"
+#pragma once
+#include "yaml.hpp"
+#include <boost/callable_traits.hpp>
+
+namespace saucer::serializers
+{
+  // green-start
+  template <typename Function> auto yaml::serialize(const Function &func)
+  {
+      using raw_args_t = boost::callable_traits::args_t<Function>;
+  }
+  // green-end
+}
+```
+
+There's still something we haven't thought about, namely: The Arguments the function takes may be (const) references.  
+What `callable_args_t` gives us is a tuple consisting of the functions arguments, and we want to parse values from the `YAML::Node` into said tuple.
+
+However if one of the functions arguments is a said (const) reference as mentioned earlier, this is obviously not going to work properly.
+So we'll need to remove all (const) references from each tuple item.
+
+```cpp title="yaml.inl"
+#pragma once
+#include "yaml.hpp"
+#include <boost/callable_traits.hpp>
+
+namespace saucer::serializers
+{
+  // green-start
+  template <typename T> struct decay_tuple
+  {
+  };
+
+  template <typename... T> struct decay_tuple<std::tuple<T...>>
+  {
+      using type = std::tuple<std::decay_t<T>...>;
+  };
+
+  template <typename T> using decay_tuple_t = typename decay_tuple<T>::type;
+  // green-end
+
+  template <typename Function> auto yaml::serialize(const Function &func)
+  {
+      using raw_args_t = boost::callable_traits::args_t<Function>;
+  // green-start
+      using args_t = decay_tuple_t<raw_args_t>;
+  // green-end
+  }
+}
+```
+
+Now, we'll start implementing the `std::function` which actually invokes the function we got in the `serialize` call.
+
+```cpp title="yaml.cpp"
+#pragma once
+#include "yaml.hpp"
+#include <boost/callable_traits.hpp>
+
+namespace saucer::serializers
+{
+  // ...
+  template <typename Function> auto yaml::serialize(const Function &func)
+  {
+      using raw_args_t = boost::callable_traits::args_t<Function>;
+      using args_t = decay_tuple_t<raw_args_t>;
+
+  // green-start
+     return [func](function_data &data) -> function_serializer::result_type {
+        auto &message = dynamic_cast<yaml_function_data &>(data);
+        const auto &params = message.data; // This is the YAML-Node we saved in the function data earlier!
+     };
+  // green-end
+  }
+}
+```
+
+We'll now do some sanity checks.
+
+```cpp title="yaml.cpp"
+#pragma once
+#include "yaml.hpp"
+#include <boost/callable_traits.hpp>
+
+namespace saucer::serializers
+{
+  // ...
+  template <typename Function> auto yaml::serialize(const Function &func)
+  {
+      using raw_args_t = boost::callable_traits::args_t<Function>;
+      using args_t = decay_tuple_t<raw_args_t>;
+
+     return [func](function_data &data) -> function_serializer::result_type {
+        auto &message = dynamic_cast<yaml_function_data &>(data);
+        const auto &params = message.data;
+
+  // green-start
+        if (params.size() != std::tuple_size_v<args_t>)
+        {
+            return tl::make_unexpected(serializer_error::argument_count_mismatch);
+        }
+  // green-end
+     };
+  }
+}
+```
+
+And now we'll deserialize the function arguments (the second parameter to `saucer.call`).  
+The YAML-Node we saved earlier is just an array, that we need to deserialize into a tuple which we can later use with `std::apply` to call our native function.
+
+```cpp title="yaml.cpp"
+#pragma once
+#include "yaml.hpp"
+#include <boost/callable_traits.hpp>
+
+namespace saucer::serializers
+{
+  // ...
+  template <typename Function> auto yaml::serialize(const Function &func)
+  {
+      using raw_args_t = boost::callable_traits::args_t<Function>;
+      using args_t = decay_tuple_t<raw_args_t>;
+
+     return [func](function_data &data) -> function_serializer::result_type {
+        auto &message = dynamic_cast<yaml_function_data &>(data);
+        const auto &params = message.data;
+
+        if (params.size() != std::tuple_size_v<args_t>)
+        {
+            return tl::make_unexpected(serializer_error::argument_count_mismatch);
+        }
+
+  // green-start
+        args_t args;
+
+        try
+        {
+            std::size_t current_arg{0};
+
+            auto serialize_item = [&]<typename T>(T &arg) {
+                auto current = params[current_arg++].as<std::decay_t<arg_t>>();
+                arg = static_cast<std::decay_t<arg_t>>(current);
+            };
+
+            std::apply([&](auto &...args) { (serialize_item(args), ...); }, args);
+        }
+        catch (...)
+        {
+            // In case static_cast<arg_t> fails for some argument we throw a type mismatch
+            return tl::make_unexpected(error::type_mismatch);
+        }
+  // green-end
+     };
+  }
+}
+```
+
+Now that we have all our arguments parsed, we're ready to call the actual native function _(i.e. the function we got passed in the `serialize` / `expose` call)_.
+
+```cpp title="yaml.cpp"
+#pragma once
+#include "yaml.hpp"
+#include <boost/callable_traits.hpp>
+
+namespace saucer::serializers
+{
+    // ...
+    template <typename Function> auto yaml::serialize(const Function &func)
+    {
+        using raw_args_t = boost::callable_traits::args_t<Function>;
+
+        using rtn_t = boost::callable_traits::return_type_t<Function>;
+        using args_t = detail::yaml::decay_tuple_t<raw_args_t>;
+
+        return [func](function_data &data) -> function_serializer::result_type {
+            auto &message = dynamic_cast<yaml_function_data &>(data);
+            const auto &params = message.data;
+
+            if (params.size() != std::tuple_size_v<args_t>)
+            {
+                return tl::make_unexpected(serializer_error::argument_count_mismatch);
+            }
+
+            args_t args;
+
+            try
+            {
+                std::size_t current_arg{0};
+
+                auto serialize_item = [&]<typename T>(T &arg) {
+                    auto current = params[current_arg++].as<std::decay_t<T>>();
+                    arg = static_cast<std::decay_t<T>>(current);
+                };
+
+                std::apply([&](auto &...args) { (serialize_item(args), ...); }, args);
+            }
+            catch (...)
+            {
+                return tl::make_unexpected(serializer_error::type_mismatch);
+            }
+
+// green-start
+            YAML::Node rtn;
+
+            // We call the native function with the arguments we parsed earlier using `std::apply`
+            if constexpr (std::is_void_v<rtn_t>)
+            {
+                // In case the return type is void, we don't actually need to serialize anything.
+                std::apply(func, args);
+            }
+            else
+            {
+                rtn = std::apply(func, args);
+            }
+
+            // We serialize the return value to yaml
+            auto dump = YAML::Dump(rtn);
+            dump = std::regex_replace(dump, std::regex("`"), "\\u0060");
+
+            // We return javascript code that de-serializes our result
+            return fmt::format("jsyaml.load(`{}`)", dump);
+// green-end
+        };
+    }
+}
+```
+
+Now that's the most complicated part done!
+
+---
+
+Since the implementation of `serialize_args` will be roughly the same I won't go in too much detail here, however I'll just give you a quick overview of what the function does and leave some comments in the code.
+
+:::info
+The function `serialize_args` is used when you call `eval` with additional arguments, for example the following snippet:
+
+```cpp
+webview.eval<double>("Math.pow({}, {})", 10, 20) | saucer::then([](double result) {
+  // Do something with result
+});
+```
+
+Will call `serialize_args` with `10, 20` as parameters.
+:::
+
+The task of `serialize_args` is to simply convert the parameters passed to it into a `fmt::dynamic_format_arg_store` of expressions that evaluate to the same object in JavasSript.
+
+There is however one special case that needs to be handeled here: `saucer::arguments` (see [`saucer::make_args`](../getting-started/interoperability#calling-javascript)).
+Under the hood `saucer::arguments` are just a plain old `std::tuple`, however we don't want to serialize them as a tuple but as function arguments instead.
+
+To quickly illustrate what is meant by "function arguments":
+
+import CodeBlock from '@theme/CodeBlock';
+
+<table>
+  <tr>
+    <th>Input</th>
+    <th>Output (Result of serialize_args)</th>
+  </tr>
+  <tr>
+    <td>
+      <CodeBlock language="cpp">{'std::tuple{10, 20}'}</CodeBlock>
+    </td>
+    <td>
+      <CodeBlock language="js">JSON.parse("[10, 20]")</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <CodeBlock language="cpp">{'saucer::arguments{10, 20}'}</CodeBlock>
+    </td>
+    <td>
+      <CodeBlock language="js">JSON.parse("10"), JSON.parse("20")</CodeBlock>
+    </td>
+  </tr>
+</table>
+
+> The example shown above uses JSON instead of YAML to simplify the illustration
+
+```cpp title="yaml.hpp"
+#pragma once
+#include <saucer/serializers/serializer.hpp>
+
+namespace saucer
+{
+    namespace serializers
+    {
+        struct yaml_function_data : public function_data
+        {
+            YAML::Node data;
+            ~yaml_function_data() override = default;
+        };
+
+        struct yaml_result_data : public result_data
+        {
+            YAML::Node data;
+            ~yaml_result_data() override = default;
+        };
+
+        struct yaml : public serializer
+        {
+          public:
+            ~yaml() override = default;
+
+          public:
+            [[nodiscard]] std::string init_script() const override;
+            [[nodiscard]] std::string js_serializer() const override;
+
+          public:
+            [[nodiscard]] std::unique_ptr<message_data> parse(const std::string &data) const override;
+
+          public:
+            template <typename Function> static auto serialize(const Function &func);
+          // green-start
+            template <typename... Params> static auto serialize_args(const Params &...params);
+          // green-end
+        };
+    }
+}
+```
+
+```cpp title="yaml.cpp"
+#pragma once
+#include "yaml.hpp"
+#include <boost/callable_traits.hpp>
+
+namespace saucer::serializers
+{
+    // ...
+    template <typename... Params> auto yaml::serialize_args(const Params &...params)
+    {
+        fmt::dynamic_format_arg_store<fmt::format_context> rtn;
+
+        auto unpack = [&](const auto &arg) {
+            using arg_t = std::decay_t<decltype(arg)>;
+
+            if constexpr (is_arguments<arg_t>)
+            {
+                // Special case for `saucer::arguments`
+
+                std::string rtn;
+                auto tuple = static_cast<typename arg_t::tuple_t>(arg);
+
+                auto serialize_item = [&](const auto &item) {
+                    YAML::Node node;
+                    node["result"] = item;
+
+                    std::stringstream yaml;
+                    yaml << node;
+
+                    rtn += fmt::format("jsyaml.load(`{}`).result,", yaml.str());
+                };
+
+                std::apply([&](const auto &...arg) { (serialize_item(arg), ...); }, tuple);
+
+                if (!rtn.empty())
+                {
+                    // Remove trailing comma
+                    rtn.pop_back();
+                }
+
+                return rtn;
+            }
+            else
+            {
+                // Simply serialize the input
+
+                YAML::Node node;
+                node["result"] = arg;
+
+                std::stringstream yaml;
+                yaml << node;
+
+                auto res = fmt::format("jsyaml.load(`{}`).result", yaml.str());
+                return res;
+            }
+        };
+
+        // Serialize each variadic parameter and add them to the dynamic_format_arg_store
+        (rtn.push_back(unpack(params)), ...);
+
+        return rtn;
+    }
+}
+```
+
+---
+
+The last method we need to implement is `resolve`.
+
+This function takes a pointer to a `std::promise` and returns a function which takes `result_data` and then simply resolves the promise with the de-serialized data.  
+The code for this is also pretty self-explainatory, so I'll just go ahead and show what it looks like.
+
+```cpp title="yaml.hpp"
+#pragma once
+#include <saucer/serializers/serializer.hpp>
+
+namespace saucer
+{
+    namespace serializers
+    {
+        struct yaml_function_data : public function_data
+        {
+            YAML::Node data;
+            ~yaml_function_data() override = default;
+        };
+
+        struct yaml_result_data : public result_data
+        {
+            YAML::Node data;
+            ~yaml_result_data() override = default;
+        };
+
+        struct yaml : public serializer
+        {
+          public:
+            ~yaml() override = default;
+
+          public:
+            [[nodiscard]] std::string init_script() const override;
+            [[nodiscard]] std::string js_serializer() const override;
+
+          public:
+            [[nodiscard]] std::unique_ptr<message_data> parse(const std::string &data) const override;
+
+          public:
+            template <typename Function> static auto serialize(const Function &func);
+            template <typename... Params> static auto serialize_args(const Params &...params);
+
+          // green-start
+          public:
+            template <typename T> static auto resolve(std::shared_ptr<std::promise<T>> promise);
+          // green-end
+        };
+    }
+}
+```
+
+```cpp title="yaml.cpp"
+#pragma once
+#include "yaml.hpp"
+#include <boost/callable_traits.hpp>
+
+namespace saucer::serializers
+{
+    // ...
+    template <typename T> auto yaml::resolve(std::shared_ptr<std::promise<T>> promise)
+    {
+        return [promise = std::move(promise)](result_data &data) mutable {
+            auto &yaml_data = dynamic_cast<yaml_result_data &>(data);
+
+            if constexpr (std::is_same_v<T, void>)
+            {
+                promise->set_value();
+            }
+            else
+            {
+                try
+                {
+                    promise->set_value(yaml_data.data.as<T>());
+                }
+                catch (...)
+                {
+                    promise->set_exception(std::current_exception());
+                }
+            }
         };
     }
 }
