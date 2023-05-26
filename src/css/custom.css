@@ -12,13 +12,19 @@
   --hero-banner-ternary: #f1f2f6;
 }
 
-.footer--dark
-{
-  --ifm-footer-background-color: #292A26;
+.footer--dark {
+  --ifm-footer-background-color: #292a26;
 }
 
 [data-theme='dark'] {
   --hero-banner-ternary: #2a2a2a;
+}
+
+.code-block-gray {
+  background-color: #6a6a6a20;
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
 }
 
 .code-block-red {

@@ -1,8 +1,8 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const darkCodeTheme = require('prism-react-renderer/themes/oceanicNext');
-const lightCodeTheme = require('prism-react-renderer/themes/github');
+// @ts-ignore
+const { themes } = require('prism-react-renderer');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -95,12 +95,12 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} Saucer`,
       },
       prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
+        theme: themes.github,
+        darkTheme: themes.oceanicNext,
         additionalLanguages: ['cmake'],
         magicComments: [
           {
-            className: 'theme-code-block-highlighted-line',
+            className: 'code-block-gray',
             line: 'highlight-next-line',
             block: { start: 'highlight-start', end: 'highlight-end' },
           },
