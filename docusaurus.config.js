@@ -9,9 +9,9 @@ const config = {
   title: 'Saucer',
   tagline: 'Next-Gen desktop apps with web-frontend in C++',
 
+  baseUrl: `/`,
   favicon: 'img/favicon.ico',
   url: 'https://saucer.github.io',
-  baseUrl: `/${this.projectName}/`,
 
   projectName: 'saucer-docs',
   organizationName: 'saucer',
