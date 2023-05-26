@@ -15,23 +15,26 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@docusaurus/core": "2.2.0",
-    "@docusaurus/preset-classic": "2.2.0",
-    "@docusaurus/theme-mermaid": "^2.2.0",
-    "@mantine/hooks": "^5.10.1",
+    "@docusaurus/core": "2.4.1",
+    "@docusaurus/preset-classic": "2.4.1",
+    "@docusaurus/theme-mermaid": "^2.4.1",
+    "@mantine/hooks": "^6.0.11",
     "@mdx-js/react": "^1.6.22",
-    "@tabler/icons": "^1.119.0",
+    "@tabler/icons": "^2.20.0",
+    "@tabler/icons-react": "^2.20.0",
     "clsx": "^1.2.1",
-    "prism-react-renderer": "^1.3.5",
+    "prism-react-renderer": "^2.0.4",
+    "prop-types": "^15.5.4",
     "raw-loader": "^4.0.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-type-animation": "^2.1.2"
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "react-type-animation": "^3.0.1",
+    "webpack": "^5.0.0"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "2.2.0",
-    "@tsconfig/docusaurus": "^1.0.5",
-    "typescript": "^4.7.4"
+    "@docusaurus/module-type-aliases": "2.4.1",
+    "@tsconfig/docusaurus": "^1.0.7",
+    "typescript": "^5.0.4"
   },
   "browserslist": {
     "production": [
