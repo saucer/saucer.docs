@@ -109,6 +109,15 @@ auto random = smartview.eval<float>("Math.random()").get();
 
 :::
 
+:::tip
+Instead of manually typing out the parameters you can also make use of `saucer::make_args`.
+
+```cpp
+auto random = smartview.eval<float>("Math.pow({})", saucer::make_args(2, 5)).get();
+```
+
+:::
+
 :::caution
 `eval()` returns a `std::future`, which means that using it outside of an asynchronous context will cause your WebView to lock up!  
 To circumvent this take a look at the [Future Utilities](#future-utilities).
