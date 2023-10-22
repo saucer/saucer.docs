@@ -1,55 +1,34 @@
-#include <saucer/serializers/json.hpp>
 #include <saucer/smartview.hpp>
-#include <string>
 
-using smartview = saucer::simple_smartview<saucer::serializers::json>;
-
-struct custom_type
+// green-start
+struct custom_data 
 {
-    float some_float;
-    std::string some_string;
+  int field;
 };
 
-namespace nlohmann
+template <> 
+struct glz::meta<custom_data> 
 {
-    template <> struct adl_serializer<custom_type>
-    {
-        static void to_json(json &j, const custom_type &c)
-        {
-            j["some_float"] = c.some_float;
-            j["some_string"] = c.some_string;
-        }
+  using T = custom_data;
+  static constexpr auto value = object( //
+      "field", &T::field                //
+  );
+};
+// green-end
 
-        static void from_json(const json &j, custom_type &c)
-        {
-            c = {j["some_float"], j["some_string"]};
-        }
-    };
-} // namespace nlohmann
-
-int main()
+int main() 
 {
-    smartview webview;
-    webview.set_size(500, 600);
-    webview.set_title("Hello World!");
+  saucer::smartview smartview;
+  smartview.set_title("Hello World!");
 
-    webview.expose(
-        "add_random",
-        // highlight-start
-        [&](custom_type c) {
-        // highlight-end
-            auto random = webview.eval<float>("Math.random()").get();
-            // highlight-start
-            webview.eval<void>("console.log({})", c).get(); // We can now also pass the custom_type to eval!
-            // highlight-end
-            c.some_float += random;
-            return c;
-        },
-        true);
+  // highlight-next-line
+  smartview.expose("add_ten", [](const custom_data &data) { 
+    return data.field + 10; 
+  });
 
-    webview.serve("index.html");
-    webview.show();
-    webview.run();
+  smartview.set_url("https://google.com");
+  smartview.show();
+  smartview.run();
 
-    return 0;
+  return 0;
 }

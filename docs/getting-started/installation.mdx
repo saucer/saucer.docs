@@ -7,12 +7,8 @@ import TabItem from '@theme/TabItem';
 
 # Installation
 
-On this page we'll explain how to install saucer through any of the officially supported ways.  
+On this page I'll explain how to install saucer through any of the officially supported ways.  
 To get started choose your desired installation method below.
-
-:::info
-If you just want to setup a basic saucer project and get to hacking right away, you may want to try out the [saucer-cli](.)
-:::
 
 :::caution
 Saucer requires a fairly recent compiler!  
@@ -21,21 +17,21 @@ In case you encounter any errors while building please make sure to update your 
 
 <Tabs>
   <TabItem value="cmake" label="CMake" default>
-Usage with FetchContent is fairly simple.
 
-To get started you'll simply need to include FetchContent and add the library as a depenedency.
+We recommend [CPM](https://github.com/cpm-cmake/CPM.cmake) for managing dependencies with CMake.
 
 ```cmake
-include(FetchContent)
-
-FetchContent_Declare(saucer GIT_REPOSITORY "https://github.com/saucer/saucer")
-FetchContent_MakeAvailable(saucer)
+CPMFindPackage(
+  NAME           saucer
+  VERSION        2.0.0
+  GIT_REPOSITORY "https://github.com/saucer/saucer"
+)
 ```
 
 Now you can simply link your project against saucer.
 
 ```cmake
-target_link_libraries(${PROJECT_NAME} saucer::saucer)
+target_link_libraries(${PROJECT_NAME} [PRIVATE|PUBLIC] saucer::saucer)
 ```
 
   </TabItem>
@@ -49,30 +45,12 @@ $ vcpkg install saucer
 ```
 
 :::note
-Linux users are currently required to explicitly specify the `x64-linux-dynamic` triplet when installing the port due to some restrictions.
+Linux users are currently required to explicitly specify the `x64-linux-dynamic` triplet when installing the port due to some vcpkg restrictions.
 :::
 
 ```bash title="Installation with custom triplet (Linux only)"
 $ vcpkg install saucer:x64-linux-dynamic
 ```
-
-  </TabItem>
-  <TabItem value="manual" label="Other / Manual">
-
-In case the previous installation methods are out of question, you can also consume saucer as a pre-built library.  
-The binaries can be obtained from our [GitHub actions build](https://github.com/saucer/saucer/actions/workflows/build.yml), simply click on the latest build and download the artifact applicable for you.  
-The artifcats contain a full build of all non system dependencies as well as the required headers.
-
-After unpacking the artifact you can simply consume its "include" directory through your favorite build system, same goes for the library files which can be found inside of the "lib" directory.
-
-All of the pre-built binaries have our custom asserts as well as module support enabled.
-
-The system dependencies need to be linked additionally as well.
-
-| Platform | System Dependencies                               |
-| -------- | ------------------------------------------------- |
-| Windows  | Shlwapi                                           |
-| Linux    | Qt::Widgets, Qt::WebChannel, Qt::WebEngineWidgets |
 
   </TabItem>
 </Tabs>

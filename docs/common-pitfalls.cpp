@@ -1,11 +1,10 @@
 // begin: execution-order-ill-formed
-#include <saucer/serializers/json.hpp>
 #include <saucer/smartview.hpp>
 
-using smartview = saucer::simple_smartview<saucer::serializers::json>;
-
-int main() {
-  smartview webview;
+int main() 
+{
+  saucer::smartview webview;
+  
   webview.set_size(500, 600);
   webview.set_title("Hello World!");
 
@@ -26,8 +25,9 @@ int main() {
 }
 // end: execution-order-ill-formed
 // begin: execution-order-fixed
-int main() {
-  smartview webview;
+int main() 
+{
+  saucer::smartview webview;
   webview.set_size(500, 600);
   webview.set_title("Hello World!");
 

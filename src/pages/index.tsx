@@ -7,7 +7,7 @@ import {
   IconHandLittleFinger,
   IconPackage,
   IconScale,
-} from '@tabler/icons';
+} from '@tabler/icons-react';
 import CodeBlock from '@theme/CodeBlock';
 import Layout from '@theme/Layout';
 import React from 'react';
@@ -25,7 +25,7 @@ const features: Feature.Feature[] = [
     link: '/docs/getting-started',
     icon: <IconChartArrowsVertical color="white" size={45} />,
     description: (
-      <>Don't bother with platform specific code anymore! Just build your frontend once and use it in saucer</>
+      <>Don't bother with platform specific code anymore! Focus on building the frontend and leave the rest to saucer</>
     ),
   },
   {
@@ -48,7 +48,7 @@ const features: Feature.Feature[] = [
     link: '/docs/advanced/modules',
     icon: <IconAdjustments color="white" size={45} />,
     description: (
-      <>Plugins and Modules allow extensive customization and access to underlying platform specific implementations</>
+      <>Modules allow extensive customization and access to underlying platform specific implementations</>
     ),
   },
   {
@@ -64,7 +64,7 @@ const features: Feature.Feature[] = [
           <sub>
             <i>* or a commonly used one</i>
           </sub>
-        </sup>{' '}
+        </sup>
       </>
     ),
   },
@@ -91,7 +91,7 @@ export default function Home(): JSX.Element {
     <Layout title={siteConfig.title}>
       <Hero.Header banner>
         <Container>
-          <img src="/img/logo.gif" height={350} />
+          <img src="img/logo.gif" height={350} />
           <Hero.Subtitle>{siteConfig.tagline}</Hero.Subtitle>
           <LinkButton color="primary" size="lg" white to="/docs/getting-started">
             Get Started

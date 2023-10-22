@@ -21,37 +21,9 @@ In case you don't have it installed already you can download it from Microsoft's
   </TabItem>
   <TabItem value="linux" label="Linux" default>
 
-On Linux we depend on Qt as it is well established in the Linux world and most systems have it installed already.  
-In case you don't have it on your system already, you may any of the following installation commands applicable for your system.
+On Linux saucer depends on Qt (Qt5 and Qt6 are supported) as it is well established in the Linux world and most systems have it installed already.  
 
-<Tabs block>
-  <TabItem value="ubuntu" label="Ubuntu" default>
-
-:::caution Old Packages
-Distributions like Ubuntu may have fairly old packages and will thus only provide relatively old Chromium versions.
-You can mitigate this by using a PPA.
-:::
-
-```bash
-sudo apt install libqt5webengine5 libqt5webenginecore5 libqt5webenginewidgets5
-```
-
-  </TabItem>
-  <TabItem value="arch" label="Arch Linux" default>
-
-```bash
-sudo pacman -S qt5-base qt5-webchannel qt5-webengine
-```
-
-  </TabItem>
-  <TabItem value="fedora" label="Fedora" default>
-
-```bash
-sudo dnf install qt5-qtwebengine qt5-qtwebchannel qt5-qtbase-gui qt5-qtbase
-```
-
-  </TabItem>
-</Tabs>
+In case you dont have Qt installed on your system already, you may refer to your distrubtion on how to install the following packages: `qt5-qtwebengine qt5-qtwebchannel qt5-qtbase-gui qt5-qtbase` _(Names may differ depending on the distro used)_.
 
   </TabItem>
 </Tabs>
