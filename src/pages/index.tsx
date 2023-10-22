@@ -2,11 +2,11 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { useMediaQuery } from '@mantine/hooks';
 import {
   IconAdjustments,
-  IconBarbell,
-  IconChartArrowsVertical,
   IconFeather,
+  IconLink,
   IconPackage,
   IconScale,
+  IconTimeline
 } from '@tabler/icons-react';
 import CodeBlock from '@theme/CodeBlock';
 import Layout from '@theme/Layout';
@@ -44,7 +44,7 @@ const features: Feature.Feature[] = [
   },
   {
     title: 'Customizability',
-    button: 'Modules & Plugins',
+    button: 'Modules',
     link: '/docs/advanced/modules',
     icon: <IconAdjustments color="white" size={45} />,
     description: (
