@@ -1,16 +1,34 @@
 # Embedding
 
 Instead of always shipping the frontend files alongside your binary it is also possible to embed all the web-content into your saucer application.
-The easiest way to accomplish this is to use the [saucer-cli](.).
+The easiest way to accomplish this is to use the [saucer-cli](https://github.com/saucer/saucer-cli).
 
 ## Pre-Requisites
 
 - Generate a static version of your website
 - In case you use a Router make sure it's supported, see [Common Pitfalls](../common-pitfalls)
 
-## Generate Embedding Files
+## Recommended Usage
 
-Now that you've made sure all pre-requisites are fullfilled, we can get to embedding!
+We recommend that you use `saucer-cli` within the build script of your frontends `package.json`.
+
+Simply add `saucer-cli` as a dependency, i.e. `pnpm install saucer-cli`, and then modify your `package.json`:
+
+```json
+{
+  // ...
+  "scripts": {
+    "build": "<deploy normally> && saucer embed dist"
+  }
+}
+```
+
+### Manually Embedding Files
+
+:::caution
+I do not recommend manually embedding the frontend files.  
+Refer to [the recommended usage](#recommended-usage).
+:::
 
 First off, place all your web content into a single folder.
 
@@ -42,10 +60,10 @@ out
             └── _ssgManifest.js
 ```
 
-Now we can use the [saucer-cli](.) to generate the required embedding files.
+Now you can use the `saucer-cli` to generate the required embedding files.
 
 ```bash title="Command Syntax"
-saucer embed [output <directory>] <folder>
+saucer embed <source> [<destination>]
 ```
 
 ```bash title="Example Command"
@@ -54,7 +72,7 @@ saucer embed "out"
 
 ## Using the Embedding Files
 
-After running the embed command through the cli, a folder named `"embedding"` _- unless otherwise specified -_ will be generated.
+After running the embed command through the cli, a folder named `"embedded"` _- unless otherwise specified -_ will be generated.
 
 Now simply consume this folder as a include directory.
 
@@ -74,15 +92,15 @@ int main()
     saucer::smartview smartview;
     smartview.set_title("Hello World!");
 
-    smartview.expose<saucer::serializers::json>("add_ten", [](int i)
-                                                {
-                                                    return i + 10;
-                                                });
+    smartview.expose("add_ten", [](int i)
+                                {
+                                    return i + 10;
+                                });
 
     // red
     smartview.set_url("https://google.com");
     // green
-    smartview.embed(std::move(embedded::get_all_files()));
+    smartview.embed(saucer::embedded::all());
     // green
     smartview.serve("index.html");
 

@@ -1,7 +1,6 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-// @ts-ignore
 const { themes } = require('prism-react-renderer');
 
 /** @type {import('@docusaurus/types').Config} */
@@ -9,13 +8,13 @@ const config = {
   title: 'Saucer',
   tagline: 'Next-Gen desktop apps with web-frontend in C++',
 
-  baseUrl: `/`,
-  favicon: 'img/favicon.ico',
-  url: 'https://saucer.github.io',
-
   projectName: 'saucer-docs',
   organizationName: 'saucer',
   trailingSlash: false,
+
+  baseUrl: `/`,
+  favicon: 'img/favicon.ico',
+  url: 'https://saucer.github.io',
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -96,7 +95,7 @@ const config = {
       },
       prism: {
         theme: themes.github,
-        darkTheme: themes.oceanicNext,
+        darkTheme: themes.oneDark,
         additionalLanguages: ['cmake'],
         magicComments: [
           {
