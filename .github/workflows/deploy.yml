@@ -1,13 +1,8 @@
-name: Deploy
-
 on:
   push:
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+name: 🏗️ Deploy
 
 jobs:
   deploy:
@@ -17,29 +12,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: 📥 Checkout
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: 🍃 Install Node
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
-          cache: yarn
+          node-version: 16
+          registry-url: "https://registry.npmjs.org"
 
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile --non-interactive
+      - name: 🍃 Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
 
-      - name: Build
-        run: yarn build
+      - name: 🔨 Build
+        run: |
+          pnpm install
+          pnpm run build
 
-      - name: Upload artifact
+      - name: 🚀 Upload Artifact
         uses: actions/upload-pages-artifact@v1
         with:
           path: build
 
-      - name: Setup Pages
+      - name: 📃 Setup Pages
         uses: actions/configure-pages@v3
 
-      - name: Deploy to GitHub Pages
+      - name: 📦 Deploy
         id: deployment
         uses: actions/deploy-pages@v2
