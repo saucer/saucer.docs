@@ -1,24 +1,53 @@
 :root {
   --ifm-color-primary: #8d3de0;
-  --ifm-color-primary-dark: #8438ea;
-  --ifm-color-primary-darker: #7634e1;
-  --ifm-color-primary-darkest: #6620d9;
-  --ifm-color-primary-light: #ee59f5;
-  --ifm-color-primary-lighter: #e457e6;
-  --ifm-color-primary-lightest: #dd8fdf;
-
-  --ifm-navbar-shadow: 0;
-  --feature-box: #353133;
-  --hero-banner-ternary: #f1f2f6;
+  --ifm-color-primary-dark: #8559FF;
+  --ifm-color-primary-darker: #9d7cd8;
 }
 
-.footer--dark {
-  --ifm-footer-background-color: #292a26;
+.hero .theme-code-block {
+  --ifm-global-shadow-lw: var(--ifm-global-shadow-tl);
 }
+
+.card {
+  --ifm-global-shadow-lw: 0 1px 16px 0 rgba(0, 0, 0, 0.05);
+}
+
+/*
+ * Light Theme
+ */
+
+[data-theme='light'] {
+  --ifm-background-color: #FDF0ED !important;
+  --ifm-hero-background-color: #FCE9E4;
+  --ifm-card-background-color: #F9CEC34D;
+  --ifm-navbar-background-color: var(--ifm-background-color);
+}
+
+[data-theme='light'] footer {
+  --ifm-color-secondary: #06060C;
+  --ifm-footer-title-color: #06060CB3;
+  --ifm-footer-background-color: #FBDED7;
+}
+
+/*
+ * Dark Theme
+ */
 
 [data-theme='dark'] {
-  --hero-banner-ternary: #2a2a2a;
+  --ifm-background-color: #31364e !important;
+  --ifm-card-background-color: #373d58;
+  --ifm-hero-background-color: #3a415e;
+  --ifm-font-color-base-inverse: #c0caf5;
+  --ifm-navbar-background-color: var(--ifm-background-color);
 }
+
+[data-theme='dark'] footer {
+  --ifm-footer-background-color: #24283b;
+}
+
+/* 
+ * Code Blocks
+ */
 
 .code-block-gray {
   background-color: #6a6a6a20;

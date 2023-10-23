@@ -7,23 +7,31 @@ import TabItem from '@theme/TabItem';
 
 # Dependencies
 
-Saucer expects some dependencies to be installed on your system.
-We depend on fairly common packages to make sure that the installation will be as smooth as possible.
+Saucer relies on certain system-level dependencies that you are expected to have installed.  
+These dependencies are fairly common though, so chances are you won't have to additionally instally anything.
 
 <Tabs>
   <TabItem value="windows" label="Windows" default>
 
-On Windows the WebView2 Runtime is required, which is usually already installed on the system and comes
-pre-installed on Windows 11.
-
-In case you don't have it installed already you can download it from Microsoft's official website [here](https://developer.microsoft.com/microsoft-edge/webview2/#download-section).
+On Windows the [WebView2 Runtime](https://developer.microsoft.com/microsoft-edge/webview2/#download-section) is required, which is usually already installed on the system and comes <u>pre-installed since Windows 11</u>.
 
   </TabItem>
   <TabItem value="linux" label="Linux" default>
 
-On Linux saucer depends on Qt (Qt5 and Qt6 are supported) as it is well established in the Linux world and most systems have it installed already.  
+On Linux saucer depends on Qt5 or Qt6 as it is well established in the Linux world and most systems have it installed already.  
 
-In case you dont have Qt installed on your system already, you may refer to your distrubtion on how to install the following packages: `qt5-qtwebengine qt5-qtwebchannel qt5-qtbase-gui qt5-qtbase` _(Names may differ depending on the distro used)_.
+In case you dont have Qt installed on your system already, you may refer to your distribution on how to install the following packages: 
+
+:::caution
+Package names may differ on your distribution!
+:::
+
+<ul>
+<li>qt5-qtwebengine</li>
+<li>qt5-qtwebchannel</li>
+<li>qt5-qtbase-gui</li>
+<li>qt5-qtbase</li>
+</ul>
 
   </TabItem>
 </Tabs>

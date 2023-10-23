@@ -71,7 +71,7 @@ const features: Feature.Feature[] = [
   {
     title: 'FOSS',
     button: 'See License',
-    link: 'https://github.com/saucer/saucer/blob/dev/LICENSE',
+    link: 'https://github.com/saucer/saucer/blob/master/LICENSE',
     icon: <IconScale color="white" size={45} />,
     description: (
       <>
@@ -98,7 +98,7 @@ export default function Home(): JSX.Element {
           </LinkButton>
         </Container>
       </Hero.Header>
-      <Hero.Header banner style={{ backgroundColor: 'var(--hero-banner-ternary)' }}>
+      <Hero.Header banner style={{ backgroundColor: 'var( --ifm-background-color)' }}>
         <Feature.Grid>
           {features.map(feature => (
             <Feature.Item key={feature.title} feature={feature} />

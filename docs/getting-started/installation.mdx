@@ -7,18 +7,21 @@ import TabItem from '@theme/TabItem';
 
 # Installation
 
-On this page I'll explain how to install saucer through any of the officially supported ways.  
-To get started choose your desired installation method below.
+> On this page you'll learn how to install saucer through any of the officially supported ways.  
 
 :::caution
 Saucer requires a fairly recent compiler!  
 In case you encounter any errors while building please make sure to update your compiler.
 :::
 
+To get started choose your desired installation method below.
+
+
 <Tabs>
   <TabItem value="cmake" label="CMake" default>
 
-I recommend [CPM](https://github.com/cpm-cmake/CPM.cmake) for managing dependencies with CMake.
+I recommend [CPM](https://github.com/cpm-cmake/CPM.cmake) for managing dependencies with CMake.  
+Please refer to their [docs](https://github.com/cpm-cmake/CPM.cmake#adding-cpm) on how to install it.
 
 ```cmake
 CPMFindPackage(
@@ -37,7 +40,11 @@ target_link_libraries(${PROJECT_NAME} [PRIVATE|PUBLIC] saucer::saucer)
   </TabItem>
   <TabItem value="vcpkg" label="VCPKG">
 
-We also have an official [vcpkg](https://github.com/microsoft/vcpkg) port.  
+:::info
+Eventhough an offical vcpkg port exists, I would still recommend using CMake.
+:::
+
+Saucer also has an official [vcpkg](https://github.com/microsoft/vcpkg) port.  
 To consume saucer simply run the following command.
 
 ```bash title="Normal Installation"

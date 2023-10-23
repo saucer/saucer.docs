@@ -5,34 +5,39 @@ The easiest way to accomplish this is to use the [saucer-cli](https://github.com
 
 ## Pre-Requisites
 
-- Generate a static version of your website
-- In case you use a Router make sure it's supported, see [Common Pitfalls](../common-pitfalls)
+- A built version of your website _(that should consist of `.html`, `.js`, ... files)_
 
-## Recommended Usage
+## Usage
 
-We recommend that you use `saucer-cli` within the build script of your frontends `package.json`.
+### Recommended Usage
 
-Simply add `saucer-cli` as a dependency, i.e. `pnpm install saucer-cli`, and then modify your `package.json`:
+We recommend to use `saucer-cli` within your `package.json` build script.
+
+Simply add `saucer-cli` as a dependency _(i.e. `pnpm install saucer-cli`)_ and then conduct the following changes:
 
 ```json
 {
   // ...
   "scripts": {
-    "build": "<deploy normally> && saucer embed dist"
+    "build": "<deploy normally> && saucer embed <output-folder>"
   }
+  // ...
 }
 ```
 
 ### Manually Embedding Files
 
 :::caution
-I do not recommend manually embedding the frontend files.  
-Refer to [the recommended usage](#recommended-usage).
+Manually embedding is discouraged.  
+Please prefer the method mentioned above!
 :::
 
-First off, place all your web content into a single folder.
+First off, make sure you have the `saucer-cli` installed globally.  
+This can be achieved by installing it as a global npm package: `npm i -g saucer-app`.
 
-```text title="Example Folder Structure"
+Now place all your web content into a single folder.
+
+```text title="Example: Folder Structure"
 out
 ├── 404.html
 ├── icon.webp
@@ -60,7 +65,7 @@ out
             └── _ssgManifest.js
 ```
 
-Now you can use the `saucer-cli` to generate the required embedding files.
+Use the `saucer-cli` to generate the required embedding files.
 
 ```bash title="Command Syntax"
 saucer embed <source> [<destination>]
@@ -76,14 +81,14 @@ After running the embed command through the cli, a folder named `"embedded"` _- 
 
 Now simply consume this folder as a include directory.
 
-```cmake title="Consuming Embedding folder through CMake"
+```cmake title="Example: Consuming Embedded Folder"
 target_include_directories(${PROJECT_NAME} PRIVATE "path/to/generated/folder")
 ```
 
 Now it's only a matter of including the header in your code and calling `embed` on the webview.  
 To serve the files simply call `serve` and specify the file name.
 
-```cpp title="Example"
+```cpp title="Example: Using Embedded Files"
 // green
 #include <output_folder/all.hpp>
 

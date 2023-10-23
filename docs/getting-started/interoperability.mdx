@@ -8,18 +8,20 @@ import CodeBlock from '@theme/CodeBlock';
 # Interoperability
 
 In the previous chapter, you've created your first saucer application.  
-Without explaining what exactly is being done, I've used a smartview in conjunction with the `Glaze-Serializer` to expose a native function.
 
-I'll now go into more detail on how exactly Interoperability works and will briefly talk about what a Serializer is.
+Without diving into the library headers, you've probably not noticed, that `saucer::smartview` has a defaulted template parameter `Serializer`.  
+
+I'll now go into more detail on how exactly Interoperability works and will briefly talk about what a serializer is.
 
 ## What is a Serializer
 
-In short, a serializer is something to help us transform our native types into something that both JavaScript and C++ understand.  
-Saucer ships the `Glaze-Serializer` by default, however you can also write your own Serializer in case you need something more specific.
+In short, a serializer is something that transforms native types into something that both JavaScript and C++ understand.  
+
+Saucer currently ships a default serializer that is based on [glaze](https://github.com/stephenberry/glaze), however you're free to implement your own if desired (see [Custom Serializers](../advanced/Custom%20Serializers)).
 
 ## What is a `smartview`
 
-A `smartview` is a type of `webview` that is able to use a serializer to exchange data between C++ and JavaScript.
+A `smartview` is a type of `webview` that makes use of a serializer to exchange data between C++ and JavaScript.
 
 For more information see:
 
@@ -30,7 +32,7 @@ For more information see:
 
 You can expose a native function to the JavaScript world by calling `expose` on your `smartview`.
 
-```cpp title="Exposing a function"
+```cpp title="Example: Exposing a function"
 smartview.expose("add_ten", [](int i)
                             {
                                 return i + 10;
@@ -38,11 +40,10 @@ smartview.expose("add_ten", [](int i)
 
 ```
 
-By default all exposed functions will be called synchronously, which just means that the `webview` will block until your function is finished, which is usually
-not a problem unless your function performs some heavy operations.
-You can change this behavior by passing `true` as the last parameter to the `expose` call.
+All exposed functions are called synchronously by default.  
+To make the call to your function asynchronous, simply pass `true` as the last parameter.
 
-```cpp title="Exposing a function asynchronously"
+```cpp title="Example: Exposing a function asynchronously"
 smartview.expose("add_ten", [](int i)
                             {
                                 std::this_thread::sleep_for(std::chrono::seconds(10));
@@ -52,22 +53,22 @@ smartview.expose("add_ten", [](int i)
 
 ```
 
-Once you've exposed your function from the C++ side, you can easily call it from JavaScript.
+Once you've exposed your function from the C++ side, you can call it from JavaScript.
 
-```js title="Calling your exposed function from the JavaScript World"
+```js title="Example: Calling your exposed function from the JavaScript World"
 const ten_added = await window.saucer.call('add_ten', [10]);
 // > ten_added == 20
 ```
 
 ## Calling JavaScript
 
-Using the `smartview` you'll also be able to evaluate JavaScript code and capture it's result.
+You can also execute JavaScript code and capture it's result using the `evaluate` method.
 
 ```cpp
 auto random = smartview.evaluate<float>("Math.random()").get();
 ```
 
-You can also pass C++ Objects as parameters when calling `eval`.
+You can also pass C++ objects as parameters when calling `evaluate`.
 
 ```cpp
 auto random = smartview.evaluate<float>("Math.pow({}, {})", 2, 5).get();
@@ -75,7 +76,7 @@ smartview.evaluate<void>("console.log({})", std::vector<int>{10}).get();
 ```
 
 :::tip
-Instead of manually typing out the parameters you can also make use of `saucer::make_args`.
+Instead of manually typing out the parameters you can also utilize `saucer::make_args`.
 
 ```cpp
 auto random = smartview.evaluate<float>("Math.pow({})", saucer::make_args(2, 5)).get();
@@ -84,7 +85,7 @@ auto random = smartview.evaluate<float>("Math.pow({})", saucer::make_args(2, 5))
 :::
 
 :::caution
-`evaluate()` returns a `std::future`, which means that using it outside of an asynchronous context will cause your `webview` to lock up!  
+`evaluate` returns `std::future`, which means that calling it outside of an asynchronous context will cause a deadlock!  
 To circumvent this take a look at the [Future Utilities](#future-utilities).
 :::
 
@@ -100,15 +101,13 @@ Start off by including the utility header:
 
 ### Then
 
-Because there is no `std::future::then` yet I've implemented a small alternative.
+`saucer::then` is a basic implementation for `std::future::then` _(Which does not currently exist in the standard)_
 
-```cpp
+```cpp title="Example Usage"
 saucer::then(smartview.evaluate<float>("Math.random()"), [](float result)
 {
     std::cout << "The random number was " << result << std::endl;
 });
-
-// ...or
 
 smartview.evaluate<float>("Math.random()") | saucer::then([](float result)
 {
@@ -118,30 +117,27 @@ smartview.evaluate<float>("Math.random()") | saucer::then([](float result)
 
 ### Forget
 
-This can be used to perform a simple fire-and-forget operation.
+Use `saucer::forget` in case you want to discard _(not use)_ the result of the evaluation.
 
-```cpp
+```cpp title="Example Usage"
 saucer::forget(smartview.evaluate<float>("Math.random()"));
-
-// ...or
 
 smartview.evaluate<float>("Math.random()") | saucer::forget();
 ```
 
-:::note
+:::warning
 A `std::future` will also block on destruction if:
 
 > (2) the shared state is not yet ready[¹](https://en.cppreference.com/w/cpp/thread/future/%7Efuture)
 
-So make sure you call `saucer::forget` on the future if you don't care about it's return value!
-
+As a result, any calls to `smartview.evaluate<void>(...)` should be forwarded to `saucer::forget`
 :::
 
 ### All
 
-If you have multiple `std::future`s and want to wait until all of them are ready you can use `saucer::all`.
+In case you have multiple `std::future`_s_ and want to wait until all of them are ready you can use `saucer::all`.
 
-```cpp
+```cpp title="Example Usage"
 auto a = smartview.evaluate<float>("Math.random()");
 auto b = smartview.evaluate<float>("Math.random()");
 auto c = smartview.evaluate<float>("Math.random()");
@@ -151,9 +147,9 @@ auto [random, random2, random3] = saucer::all(a, b, c);
 
 ## User Defined Types
 
-The `Glaze-Serializer`, which saucer ships by default, supports the serialization of primitives as well as some STL-types by default.  
+[glaze](https://github.com/stephenberry/glaze) supports the serialization of primitives as well as many STL types by default.  
 Please refer to their [documentation](https://github.com/stephenberry/glaze#example) on how to add support for third-party types.
 
-<CodeBlock language="cpp" title="Exposing Custom-Types">
+<CodeBlock language="cpp" title="Example: Exposing Custom-Types">
   {code}
 </CodeBlock>

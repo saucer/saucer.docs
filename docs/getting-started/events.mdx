@@ -17,18 +17,18 @@ import domReady from './events/dom-ready.cpp';
 
 # Events
 
-In this chapter, I'll describe the available events and how to use them.
+> On this page you'll learn about the available events and how to use them.
 
 ## Basics
 
 Events are simply callbacks which are invoked for specific actions and can, in certain circumstances, even alter the behavior of the application.
 
-### Register Event Callback
+### Register Callback
 
 To register an event callback simply call the `on` method of your webview.  
 You'll need to pass the event-type as the template parameter and the callback as the function argument.
 
-Every call to `on` will return an `event-id` which can later be used to `remove` the same callback.
+Every call to `on()` will return an id which can later be used to remove the same callback.
 
 ```cpp title="Example Callback (Resize Window)"
 smartview.on<saucer::window_event::resize>([](int width, int height)
@@ -37,12 +37,12 @@ smartview.on<saucer::window_event::resize>([](int width, int height)
 });
 ```
 
-### Unregister Event Callback
+### Remove Callback
 
-As previously mentioned you can unregister an event callback by saving it's `event-id`.  
-To unregister, simply call `remove`, with the event-type as the first and the `event-id` as the second argument.
+As previously mentioned you can unregister callbacks by saving their id.  
+To remove a callback, simply call `remove` with the event-type as the first and the id as the second argument.
 
-```cpp title="Example Callback Removal"
+```cpp title="Example: Callback Removal"
 auto id = smartview.on<saucer::window_event::resize>([](int width, int height)
 {
    // ...
@@ -52,9 +52,9 @@ smartview.remove(saucer::window_event::resize, id);
 ```
 
 :::tip
-If you simply want to remove all event callbacks belonging to a specific event-type you can use the `clear` method.
+In case you simply want to remove all event callbacks of a specific event-type you can use the `clear` method.
 
-```cpp title="Clearing all Resize Callbacks"
+```cpp title="Example: Clearing all Resize Callbacks"
 smartview.clear(saucer::window_event::resize);
 ```
 
