@@ -38,28 +38,6 @@ target_link_libraries(${PROJECT_NAME} [PRIVATE|PUBLIC] saucer::saucer)
 ```
 
   </TabItem>
-  <TabItem value="vcpkg" label="VCPKG">
-
-:::info
-Eventhough an offical vcpkg port exists, I would still recommend using CMake.
-:::
-
-Saucer also has an official [vcpkg](https://github.com/microsoft/vcpkg) port.  
-To consume saucer simply run the following command.
-
-```bash title="Normal Installation"
-$ vcpkg install saucer
-```
-
-:::note
-Linux users are currently required to explicitly specify the `x64-linux-dynamic` triplet when installing the port due to some vcpkg restrictions.
-:::
-
-```bash title="Installation with custom triplet (Linux only)"
-$ vcpkg install saucer:x64-linux-dynamic
-```
-
-  </TabItem>
   <TabItem value="prebuilt" label="Pre-Built">
 
 :::warning
@@ -67,7 +45,7 @@ This method is strongly discouraged, please consider using CMake instead!
 :::
 
 The [GitHub workflows](https://github.com/saucer/saucer/actions/workflows/build.yml) automatically produce a pre-built artifact for Windows.  
-In case you need a more recent build than available in vcpkg and use Visual Studio without CMake you may consider using this.
+In case you are using Visual Studio without CMake you may consider using this.
 
 Please note however, that this method is <u>**not** officially supported</u> so please **do not ask for support** on this matter.
 
