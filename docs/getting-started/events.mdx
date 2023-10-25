@@ -10,6 +10,10 @@ import Admonition from '@theme/Admonition';
 import close from './events/close.cpp';
 import closed from './events/closed.cpp';
 import resize from './events/resize.cpp';
+import maximize from './events/maximize.cpp';
+import minimize from './events/minimize.cpp';
+import focus from './events/focus.cpp';
+
 import urlChanged from './events/url-changed.cpp';
 import loadFinished from './events/load-finished.cpp';
 import loadStarted from './events/load-started.cpp';
@@ -36,6 +40,18 @@ smartview.on<saucer::window_event::resize>([](int width, int height)
    // ...
 });
 ```
+
+:::tip
+If you only need an event to be called once, you can also use the `once` method.  
+
+```cpp title="Example Once Callback (Resize Window)"
+smartview.once<saucer::window_event::resize>([](int width, int height)
+{
+   // Fired once, then automatically removed.
+});
+```
+
+:::
 
 ### Remove Callback
 
@@ -99,6 +115,39 @@ smartview.clear(saucer::window_event::resize);
         </CodeBlock>
         <CodeBlock language="cpp" title="Example">
           {close.split('\n').slice(2).join('\n')}
+        </CodeBlock>
+      </TabItem>
+      <TabItem value="maximize" label="Maximize">
+        Called when the Window is maximized or restored after being maximized.
+        <br />
+        <br />
+        <CodeBlock language="cpp" title="Signature">
+          {maximize.split('\n')[0]}
+        </CodeBlock>
+        <CodeBlock language="cpp" title="Example">
+          {maximize.split('\n').slice(2).join('\n')}
+        </CodeBlock>
+      </TabItem>
+      <TabItem value="minimize" label="Minimize">
+        Called when the Window is minimized or restored after being minimized.
+        <br />
+        <br />
+        <CodeBlock language="cpp" title="Signature">
+          {minimize.split('\n')[0]}
+        </CodeBlock>
+        <CodeBlock language="cpp" title="Example">
+          {minimize.split('\n').slice(2).join('\n')}
+        </CodeBlock>
+      </TabItem>
+      <TabItem value="focus" label="Focus">
+        Called when the Window gains or loses focus.
+        <br />
+        <br />
+        <CodeBlock language="cpp" title="Signature">
+          {focus.split('\n')[0]}
+        </CodeBlock>
+        <CodeBlock language="cpp" title="Example">
+          {focus.split('\n').slice(2).join('\n')}
         </CodeBlock>
       </TabItem>
     </Tabs>
