@@ -4,6 +4,7 @@ sidebar_position: 0
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import { VersionedCode } from '../../src/components/CodeBlock';
 
 # Installation
 
@@ -23,13 +24,14 @@ To get started choose your desired installation method below.
 I recommend [CPM](https://github.com/cpm-cmake/CPM.cmake) for managing dependencies with CMake.  
 Please refer to their [docs](https://github.com/cpm-cmake/CPM.cmake#adding-cpm) on how to install it.
 
-```cmake
-CPMFindPackage(
+
+<VersionedCode language="cmake">
+  {`CPMFindPackage(
   NAME           saucer
-  VERSION        2.0.0
+  VERSION        $VERSION$
   GIT_REPOSITORY "https://github.com/saucer/saucer"
-)
-```
+)`}
+</VersionedCode>
 
 Now you can simply link your project against saucer.
 
