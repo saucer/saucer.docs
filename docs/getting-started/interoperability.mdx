@@ -130,7 +130,7 @@ A `std::future` will also block on destruction if:
 
 > (2) the shared state is not yet ready[¹](https://en.cppreference.com/w/cpp/thread/future/%7Efuture)
 
-As a result, any calls to `smartview.evaluate<void>(...)` should be forwarded to `saucer::forget`
+As a result, most calls to `smartview.evaluate<void>(...)` should probably be forwarded to `saucer::forget`
 :::
 
 ### All
