@@ -1,0 +1,56 @@
+---
+sidebar_position: 2
+---
+
+import { VersionedCode } from '../../src/components/CodeBlock';
+import baseCmake from './basic-app.cmake';
+
+# Your First Application
+
+> On this page you'll learn how to setup your very first saucer project.
+
+:::caution
+Make sure you've read the previous pages and have the system dependencies installed!
+:::
+
+## CMake Setup
+
+In this example I'll use CMake as my build system of choice and make saucer available through [FetchContent](installation).
+
+<VersionedCode title="CMakeLists.txt" language="cmake">
+    {baseCmake}
+</VersionedCode>
+
+## The Program
+
+Now that you've setup your CMakeLists you can go ahead and create your first basic saucer window!
+
+```cpp title="main.cpp"
+#include <saucer/smartview.hpp>
+
+int main()
+{
+// highlight-start
+    saucer::smartview smartview;         // Instantiate smartview
+    smartview.set_title("Hello World!"); // Set the window title to "Hello World!"
+// highlight-end
+
+// highlight-start
+    // Expose a synchronous native function "add_ten" using the default serializer
+    smartview.expose("add_ten", [](int i)
+                                {
+                                    return i + 10;
+                                });
+// highlight-end
+
+// highlight-start
+    smartview.set_url("https://google.com"); // Navigate to google.com
+    smartview.show();                        // Show the smartview
+    smartview.run();                         // And finally enter the run-loop.
+// highlight-end
+
+    return 0;
+}
+```
+
+That's it, you've now created a really basic saucer application.

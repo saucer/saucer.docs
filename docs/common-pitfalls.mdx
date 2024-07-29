@@ -1,0 +1,58 @@
+---
+title: Common Pitfalls
+---
+
+import code from './common-pitfalls.cpp';
+import CodeBlock from '@theme/CodeBlock';
+
+export const getCode = name => {
+  const startComment = `// begin: ${name}`;
+  const endComment = `// end: ${name}`;
+  const start = code.search(startComment);
+  const end = code.search(endComment);
+  return code.substring(start + startComment.length + 1, end);
+};
+
+The API aims to be easy to use and hard to misuse, however there are still some pitfalls saucer can't detect.  
+This page tries to document the most common mistakes and how to avoid them.
+
+## Execution Order Matters
+
+The order in which you call some methods matters!  
+Common mistakes that fall under this category are those, in which you call `set_url` _(or `serve`)_ before `expose`.
+ 
+<CodeBlock language="cpp" title="Example: Ill formed program">
+  {getCode('execution-order-ill-formed')}
+</CodeBlock>
+
+In this case, it is not guaranteed that the function `add_random` is available to the web-page immediately.  
+To fix this issue simply re-order the code.
+
+<CodeBlock language="cpp" title="Example: Well formed program">
+  {getCode('execution-order-fixed')}
+</CodeBlock>
+
+## Run is blocking
+
+A call to `run()` is blocking. 
+All code that comes after it will only be executed once the last window is closed.
+
+:::tip
+Check the attributes of the public interface.  
+They may contain useful information, like in this case, that run is potentially blocking:
+
+```cpp
+template <bool Blocking = true>
+[[sc::may_block]] static void run();
+```
+:::
+
+<CodeBlock language="cpp" title="Example: Ill formed program">
+  {getCode('run-blocking')}
+</CodeBlock>
+
+The fix for this should be obvious:
+
+<CodeBlock language="cpp" title="Example: Well formed program">
+  {getCode('run-blocking-fixed')}
+</CodeBlock>

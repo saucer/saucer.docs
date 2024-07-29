@@ -1,0 +1,108 @@
+---
+sidebar_position: 4
+---
+
+# Frameless Windows
+
+> On this page you'll learn how to create frameless windows with custom decorations.
+
+## Basics
+
+A "frameless" windows is a window which hides the default window buttons & handle assigned to it by the operating system.
+
+<table>
+<tr>
+<th>Default</th>
+<th>Frameless</th>
+</tr>
+<tr>
+<td>
+<img src="/assets/with-frame.png" />
+</td>
+<td>
+<img src="/assets/frameless.png" />
+</td>
+</tr>
+</table>
+
+You can use the `set_decorations` method to remove the windows frame.
+
+
+```cpp title="Example: Removing Window Frame"
+#include <saucer/smartview.hpp>
+
+int main()
+{
+    saucer::smartview smartview;
+    smartview.set_title("Hello World!");
+
+// green-start
+    smartview.set_decorations(false);
+// green-end
+
+    smartview.expose("add_ten", [](int i)
+                                {
+                                    return i + 10;
+                                });
+
+    smartview.set_url("https://google.com");
+    smartview.show(); 
+    smartview.run();
+
+    return 0;
+}
+```
+
+## Move & Resize
+
+A frameless window can not be resized or moved by default.  
+Saucer exposes two methods `start_drag` and `start_resize` which allow you to easily reimplement moving & resizing.
+
+In the following example I'll demonstrate how to use the aforementioned methods to make a custom tilebar.
+
+```html title="Sketch: Custom Titlebar"
+<div id="my_awesome_titlebar">
+  <!-- ... -->
+</div>
+
+<script>
+  document.getElementById("my_awesome_titlebar").addEventListener("mousedown", () => saucer.start_drag());
+</script>
+```
+
+Now let's also add a resize handle in the bottom right corner.
+
+```html title="Sketch: Custom Resize Handle"
+<div id="my_awesome_titlebar">
+  <!-- ... -->
+</div>
+
+// green-start
+<div id="my_awesome_resize_handle">
+  <!-- ... -->
+</div>
+// green-end
+
+<script>
+  document.getElementById("my_awesome_titlebar").addEventListener("mousedown", () => saucer.start_drag());
+  // green-start
+  document.getElementById("my_awesome_resize_handle").addEventListener("mousedown", () => {
+    saucer.start_resize(saucer.window_edge.bottom | saucer.window_edge.right);
+  });
+  // green-end
+</script>
+```
+
+As you can see the `start_resize` method takes a parameter `edge`, which is to be specified by the user.  
+The follwing window edges are defined and should be used as [bitwise flags](https://developer.mozilla.org/en-US/docs/Glossary/Bitwise_flags):
+
+```js
+window_edge:
+{
+  top,
+  bottom,
+  left,
+  right,
+}
+```
+

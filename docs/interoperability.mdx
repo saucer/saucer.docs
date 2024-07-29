@@ -1,0 +1,201 @@
+---
+sidebar_position: 1
+---
+
+import code from './custom-types.cpp';
+import CodeBlock from '@theme/CodeBlock';
+
+# Interoperability
+
+In the previous chapter, you've created your first saucer application.  
+
+Without diving into the library headers, you've probably not noticed, that `saucer::smartview` has a defaulted template parameter `Serializer`.  
+
+I'll now go into more detail on how exactly Interoperability works and will briefly talk about what a serializer is.
+
+## What is a Serializer
+
+In short, a serializer is something that transforms native types into something that both JavaScript and C++ understand.  
+
+Saucer currently ships a default serializer that is based on [glaze](https://github.com/stephenberry/glaze), however you're free to implement your own if desired (see [Custom Serializers](./advanced/Custom%20Serializers)).
+
+## What is a `smartview`
+
+A `smartview` is a type of `webview` that makes use of a serializer to exchange data between C++ and JavaScript.
+
+For more information see:
+
+- [Exposing Functions](#exposing-functions)
+- [Calling JavaScript](#calling-javascript)
+
+## Exposing Functions
+
+You can expose a native function to the JavaScript world by calling `expose` on your `smartview`.
+
+```cpp title="Example: Exposing a function"
+smartview.expose("add_ten", [](int i)
+                            {
+                                return i + 10;
+                            });
+
+```
+
+All exposed functions are called synchronously by default.  
+To make the call to your function asynchronous, simply pass a launch policy as the last parameter.
+
+```cpp title="Example: Exposing a function asynchronously"
+smartview.expose("add_ten", [](int i)
+                            {
+                                std::this_thread::sleep_for(std::chrono::seconds(10));
+                                return i + 10;
+                            // green
+                            }, saucer::launch::async);
+```
+
+:::note
+All async methods are executed by saucers internal thread-pool.  
+By default the thread-pool size is determined by a call to `std::thread::hardware_concurrency()`.
+
+You can specify the amount of threads used in the `saucer::options` taken by the webview constructor.
+
+```cpp title="Example: Custom Thread Count"
+saucer::smartview{{.threads = 1}};
+```
+:::
+
+### Executors
+
+All calls to the exposed functions are resolved by a promise.  
+If you wish to manually reject or resolve these, you can take a `saucer::executor` as the last argument of your callback.
+
+```cpp title="Example: Exposing a function asynchronously"
+// green
+smartview.expose("add_ten", [](int i, const saucer::executor<int>& exec)
+                            {
+                                // green
+                                const auto& [resolve, reject] = exec;
+
+                                if (i < 0)
+                                {
+                                    // green
+                                    return reject("Value should be >=0");
+                                }
+
+                                std::this_thread::sleep_for(std::chrono::seconds(10));
+                                // green
+                                resolve(i + 10);
+                            }, saucer::launch::async);
+```
+
+### Invoke from JavaScript
+
+Once you've exposed your function from the C++ side, you can call it from JavaScript.
+
+```js title="Example: Calling your exposed function from the JavaScript World"
+const result = await window.saucer.call('add_ten', [10]);
+// > result == 20
+```
+
+:::tip
+Since version `3.0.0` saucer also supports the following syntax to call exposed functions:
+
+```js title="Example: Calling your exposed function from the JavaScript World (New)"
+const result = await window.saucer.exposed.add_ten(10);
+// > result == 20
+```
+:::
+
+## Calling JavaScript
+
+You can also execute JavaScript code and capture it's result using the `evaluate` method.
+
+```cpp
+auto random = smartview.evaluate<float>("Math.random()").get();
+```
+
+You can also pass C++ objects as parameters when calling `evaluate`.
+
+```cpp
+auto random = smartview.evaluate<float>("Math.pow({}, {})", 2, 5).get();
+smartview.evaluate<void>("console.log({})", std::vector<int>{10}).get();
+```
+
+:::tip
+Instead of manually typing out the parameters you can also utilize `saucer::make_args`.
+
+```cpp
+auto random = smartview.evaluate<float>("Math.pow({})", saucer::make_args(2, 5)).get();
+```
+
+:::
+
+:::caution
+`evaluate` returns a `std::future`, which means that calling it outside of an asynchronous context will cause a deadlock!  
+To circumvent this take a look at the [Future Utilities](#future-utilities).
+:::
+
+## Future Utilities
+
+Due to the aforementioned problems with using `evaluate` outside of asynchronous contexts, I've created some utility functions to make your life easier.
+
+:::danger
+All of the utilities provided here spawn a new thread and do not use any thread-pool.  
+If you want to use a thread pool you should roll your own.
+:::
+
+Start off by including the utility header:
+
+```cpp
+#include <saucer/utils/future.hpp>
+```
+
+### Then
+
+`saucer::then` is a basic implementation for `std::future::then` _(Which does not currently exist in the standard)_
+
+```cpp title="Example Usage"
+saucer::then(smartview.evaluate<float>("Math.random()"), [](float result)
+{
+    std::cout << "The random number was " << result << std::endl;
+});
+
+smartview.evaluate<float>("Math.random()") | saucer::then([](float result)
+{
+    std::cout << "Result: " << result << std::endl;
+});
+```
+
+### Forget
+
+Use `saucer::forget` in case you want to discard _(not use)_ the result of the evaluation.
+
+```cpp title="Example Usage"
+saucer::forget(smartview.evaluate<float>("Math.random()"));
+
+smartview.evaluate<float>("Math.random()") | saucer::forget();
+```
+
+:::warning
+A `std::future` will also block on destruction if:
+
+> (2) the shared state is not yet ready[¹](https://en.cppreference.com/w/cpp/thread/future/%7Efuture)
+
+As a result, most calls to `smartview.evaluate<void>(...)` should probably be forwarded to `saucer::forget` unless they originated from within an async context.
+:::
+
+### All
+
+In case you have multiple `std::future`_s_ and want to wait until all of them are ready you can use `saucer::all`.
+
+```cpp title="Example Usage"
+auto a = smartview.evaluate<float>("Math.random()");
+auto b = smartview.evaluate<float>("Math.random()");
+auto c = smartview.evaluate<float>("Math.random()");
+
+auto [random, random2, random3] = saucer::all(a, b, c);
+```
+
+## User Defined Types
+
+[glaze](https://github.com/stephenberry/glaze) supports the automatic serialization of aggregates, primitives as well as many STL types by default.  
+Please refer to their [documentation](https://github.com/stephenberry/glaze#example) on how to add support for third-party types.

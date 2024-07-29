@@ -1,0 +1,54 @@
+---
+sidebar_position: 0
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import { VersionedCode } from '../../src/components/CodeBlock';
+
+# Installation
+
+> On this page you'll learn how to install saucer through any of the officially supported ways.  
+
+:::caution
+Saucer requires a fairly recent compiler!  
+In case you encounter any errors while building please make sure to update your compiler.
+:::
+
+To get started choose your desired installation method below.
+
+
+<Tabs>
+  <TabItem value="cmake" label="CMake" default>
+
+I recommend [CPM](https://github.com/cpm-cmake/CPM.cmake) for managing dependencies with CMake.  
+Please refer to their [docs](https://github.com/cpm-cmake/CPM.cmake#adding-cpm) on how to install it.
+
+<VersionedCode language="cmake">
+  {`CPMFindPackage(
+  NAME           saucer
+  VERSION        $VERSION$
+  GIT_REPOSITORY "https://github.com/saucer/saucer"
+)`}
+</VersionedCode>
+
+Now you can simply link your project against saucer.
+
+```cmake
+target_link_libraries(${PROJECT_NAME} [PRIVATE|PUBLIC] saucer::saucer)
+```
+
+  </TabItem>
+  <TabItem value="prebuilt" label="Pre-Built">
+
+:::warning
+This method is strongly discouraged, please consider using CMake instead!
+:::
+
+The [GitHub workflows](https://github.com/saucer/saucer/actions/workflows/build.yml) automatically produce a pre-built artifact for Windows.  
+In case you are using Visual Studio without CMake you may consider using this.
+
+Please note however, that this method is <u>**not** officially supported</u> so please **do not ask for support** on this matter.
+
+  </TabItem>
+</Tabs>
