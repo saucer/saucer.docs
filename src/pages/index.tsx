@@ -1,26 +1,28 @@
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import { useMediaQuery } from "@mantine/hooks";
 import {
     IconAdjustments,
     IconArrowLeftRight,
-    IconArrowRight,
     IconBook,
-    IconClipboard,
     IconCpu2,
-    IconCrystalBall,
+    IconDeviceDesktopBolt,
     IconFeather,
     IconPackage,
     IconPlugConnected,
     IconScale,
     IconTimeline,
 } from "@tabler/icons-react";
+import CodeBlock from "@theme/CodeBlock";
 import Layout from "@theme/Layout";
+import { motion } from "framer-motion";
+import { TypeAnimation } from "react-type-animation";
 import { Feature } from "../components/Feature";
 import { Hero } from "../components/Hero";
 import { LinkButton } from "../components/LinkButton";
 import Logo from "../components/Logo";
-import { useEffect, useRef } from "react";
-import { motion, useScroll } from "framer-motion";
-import { useMediaQuery } from "@mantine/hooks";
+
+// @ts-ignore
+import exampleCode from "./example.cpp";
 
 const features: Feature.Feature[] = [
     {
@@ -30,10 +32,17 @@ const features: Feature.Feature[] = [
         icon: <IconTimeline color="white" size={45} />,
         description: (
             <>
-                Don't bother with platform specific code anymore! Focus on building the frontend and leave the rest to
-                saucer
+                Dead simple setup. Bring your favorite frontend framework and create beautiful desktop applications in
+                seconds
             </>
         ),
+    },
+    {
+        title: "Cross Platform",
+        button: "Learn more",
+        link: "/docs/getting-started/dependencies",
+        icon: <IconDeviceDesktopBolt color="white" size={45} />,
+        description: <>Deploy to Windows, MacOS and Linux - No code changes required. Saucer handles them all!</>,
     },
     {
         title: "Interoperability",
@@ -71,7 +80,7 @@ const features: Feature.Feature[] = [
         description: (
             <>
                 By using the the operating systems native web renderer<sup>*</sup>{" "}
-                it's possible to produce binaries that are just ~700KB
+                it's possible to produce binaries that are just ~250KB
                 <br />
 
                 <sup>
@@ -87,9 +96,18 @@ const features: Feature.Feature[] = [
     {
         title: "Bindings",
         button: "Community Bindings",
-        link: "/docs/getting-started/dependencies",
+        link: "https://github.com/saucer/bindings",
         icon: <IconPlugConnected color="white" size={45} />,
-        description: <>Eventhough saucer is primarily a C++ library, it is available in other languages too</>,
+        description: <>Even though saucer is primarily a C++ library, it is available in other languages too!</>,
+    },
+    {
+        title: "Thread Safe",
+        icon: <IconCpu2 color="white" size={45} />,
+        description: (
+            <>
+                All methods are fully thread-safe and annotated for your convenience. No special care required
+            </>
+        ),
     },
     {
         title: "FOSS",
@@ -105,24 +123,14 @@ const features: Feature.Feature[] = [
             </>
         ),
     },
-    {
-        title: "Modern",
-        icon: <IconCrystalBall color="white" size={45} />,
-        description: (
-            <>Saucer was built on C++20 and will adopt newer standards once they're ready for production usage</>
-        ),
-    },
-    {
-        title: "Thread Safe",
-        icon: <IconCpu2 color="white" size={45} />,
-        description: <>All methods are completely thread-safe and annotated accordingly</>,
-    },
 ];
 
 export default function Home(): JSX.Element
 {
     const { siteConfig } = useDocusaurusContext();
-    const largeDisplay = useMediaQuery("(min-width: 60rem)");
+
+    const largeDisplay = useMediaQuery("(min-width: 85rem)");
+    const mediumDisplay = useMediaQuery("(min-width: 50rem)");
 
     return (
         <Layout title={siteConfig.title}>
@@ -143,10 +151,11 @@ export default function Home(): JSX.Element
             >
                 <div
                     style={{
-                        display: "grid",
-                        gridTemplateColumns: (largeDisplay ? "1fr 1fr 1fr" : "1fr"),
                         rowGap: "5rem",
-                        columnGap: "10rem",
+                        columnGap: "5rem",
+                        flexWrap: "wrap",
+                        display: "flex",
+                        justifyContent: "center",
                     }}
                 >
                     {features.map(feature => (
@@ -162,6 +171,28 @@ export default function Home(): JSX.Element
                     ))}
                 </div>
             </main>
+            {largeDisplay
+                && (
+                    <Hero.Header banner>
+                        <div className="container">
+                            <TypeAnimation
+                                wrapper="h1"
+                                deletionSpeed={10}
+                                sequence={["Code Example", 5000, "Your first application", 2000, "Code Example"]}
+                            />
+                            <div
+                                style={{
+                                    margin: "auto",
+                                    marginTop: "3rem",
+                                    textAlign: "left",
+                                    width: "fit-content",
+                                }}
+                            >
+                                <CodeBlock language="cpp">{exampleCode}</CodeBlock>
+                            </div>
+                        </div>
+                    </Hero.Header>
+                )}
         </Layout>
     );
 }

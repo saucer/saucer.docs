@@ -22,8 +22,8 @@ export namespace Feature
                 style={{
                     width: "20rem",
                     height: "20rem",
-                    alignItems: "center",
                     display: "flex",
+                    alignItems: "center",
                 }}
             >
                 <Cards.Image>
