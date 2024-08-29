@@ -8,7 +8,7 @@ int main()
   webview.set_size(500, 600);
   webview.set_title("Hello World!");
 
-  webview.serve("index.html");
+  webview.set_url("https://github.com");
 
   webview.expose(
       "add_random",
@@ -32,7 +32,7 @@ int main()
   webview.set_title("Hello World!");
 
   // red
-  webview.serve("index.html");
+  webview.set_url("https://github.com");
 
   webview.expose(
       "add_random",
@@ -44,7 +44,7 @@ int main()
 
 
   // green
-  webview.serve("index.html");
+  webview.set_url("https://github.com");
   webview.show();
   webview.run();
 
@@ -61,7 +61,7 @@ int main()
   webview.show();
   webview.run();
 
-  webview.serve("index.html");
+  webview.set_url("https://github.com");
 
   return 0;
 }
@@ -74,14 +74,55 @@ int main()
   webview.set_title("Hello World!");
 
   // green
-  webview.serve("index.html");
+  webview.set_url("https://github.com");
 
   webview.show();
   webview.run();
 
   // red
-  webview.serve("index.html");
+  webview.set_url("https://github.com");
 
   return 0;
 }
 // end: run-blocking-fixed
+// begin: static-init
+saucer::smartview webview;
+
+int main() 
+{
+  webview.set_size(500, 600);
+  webview.set_title("Hello World!");
+
+  webview.set_url("https://github.com");
+
+  webview.show();
+  webview.run();
+
+  return 0;
+}
+// end: static-init
+// begin: static-init-fixed
+// red
+saucer::smartview webview;
+// green
+std::unique_ptr<saucer::smartview<>> webview;
+
+int main() 
+{
+  // green
+  webview = std::make_unique<saucer::smartview<>>();
+
+  webview->set_size(500, 600);
+  webview->set_title("Hello World!");
+
+  webview->set_url("https://github.com");
+
+  webview->show();
+  webview->run();
+
+  // green
+  webview.reset();
+
+  return 0;
+}
+// end: static-init-fixed

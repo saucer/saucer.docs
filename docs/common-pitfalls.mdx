@@ -56,3 +56,17 @@ The fix for this should be obvious:
 <CodeBlock language="cpp" title="Example: Well formed program">
   {getCode('run-blocking-fixed')}
 </CodeBlock>
+
+## Static Initialization
+
+Certain backends are not compatible with static initialization, thus you should make sure that all saucer instances live within the scope of `main`.
+
+<CodeBlock language="cpp" title="Example: Ill formed program">
+  {getCode('static-init')}
+</CodeBlock>
+
+In case you need a global instance consider using a smart-pointer instead:
+
+<CodeBlock language="cpp" title="Example: Well formed program">
+  {getCode('static-init-fixed')}
+</CodeBlock>

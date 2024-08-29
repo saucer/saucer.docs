@@ -56,45 +56,34 @@ int main()
 ## Move & Resize
 
 A frameless window can not be resized or moved by default.  
-Saucer exposes two methods `start_drag` and `start_resize` which allow you to easily reimplement moving & resizing.
+Saucer supports the HTML Attributes `data-webview-drag` and `data-webview-resize` which can be used to conveniently add support for custom drag areas or resize-handles.
 
 In the following example I'll demonstrate how to use the aforementioned methods to make a custom tilebar.
 
 ```html title="Sketch: Custom Titlebar"
-<div id="my_awesome_titlebar">
+<div id="my_awesome_titlebar" data-webview-drag>
   <!-- ... -->
 </div>
-
-<script>
-  document.getElementById("my_awesome_titlebar").addEventListener("mousedown", () => saucer.start_drag());
-</script>
 ```
 
 Now let's also add a resize handle in the bottom right corner.
 
 ```html title="Sketch: Custom Resize Handle"
-<div id="my_awesome_titlebar">
+<div id="my_awesome_titlebar" data-webview-drag>
   <!-- ... -->
 </div>
 
 // green-start
-<div id="my_awesome_resize_handle">
+<div id="my_awesome_resize_handle" data-webview-resize="br">
   <!-- ... -->
 </div>
 // green-end
-
-<script>
-  document.getElementById("my_awesome_titlebar").addEventListener("mousedown", () => saucer.start_drag());
-  // green-start
-  document.getElementById("my_awesome_resize_handle").addEventListener("mousedown", () => {
-    saucer.start_resize(saucer.window_edge.bottom | saucer.window_edge.right);
-  });
-  // green-end
-</script>
 ```
 
-As you can see the `start_resize` method takes a parameter `edge`, which is to be specified by the user.  
-The follwing window edges are defined and should be used as [bitwise flags](https://developer.mozilla.org/en-US/docs/Glossary/Bitwise_flags):
+As you can see `data-webview-resize` requires a value, in this case `br`.  
+The value should correspond to a window edge, here `br` is equal to _bottom-right_.
+
+The following edges are defined:
 
 ```js
 window_edge:
@@ -106,3 +95,4 @@ window_edge:
 }
 ```
 
+The `data-webview-resize` attirbute should use the short-form of the given edges, e.g. _top-left_ as `tl`.

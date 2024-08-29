@@ -13,11 +13,14 @@ import resize from './events/resize.cpp';
 import maximize from './events/maximize.cpp';
 import minimize from './events/minimize.cpp';
 import focus from './events/focus.cpp';
+import decorated from './events/decorated.cpp';
 
 import urlChanged from './events/url-changed.cpp';
 import loadFinished from './events/load-finished.cpp';
 import loadStarted from './events/load-started.cpp';
 import domReady from './events/dom-ready.cpp';
+import titleChanged from './events/title-changed.cpp';
+import iconChanged from './events/icon-changed.cpp';
 
 # Events
 
@@ -91,6 +94,7 @@ smartview.clear(saucer::window_event::resize);
           {resize.split('\n').slice(2).join('\n')}
         </CodeBlock>
       </TabItem>
+
       <TabItem value="closed" label="Closed">
         Called when the Window is closed.
         <br />
@@ -101,6 +105,7 @@ smartview.clear(saucer::window_event::resize);
           {closed.split('\n').slice(2).join('\n')}
         </CodeBlock>
       </TabItem>
+
       <TabItem value="close" label="Close">
         Called when the Window is about to be closed.
         <br />
@@ -114,6 +119,7 @@ smartview.clear(saucer::window_event::resize);
           {close.split('\n').slice(2).join('\n')}
         </CodeBlock>
       </TabItem>
+
       <TabItem value="maximize" label="Maximize">
         Called when the Window is maximized or restored after being maximized.
         <br />
@@ -124,6 +130,7 @@ smartview.clear(saucer::window_event::resize);
           {maximize.split('\n').slice(2).join('\n')}
         </CodeBlock>
       </TabItem>
+
       <TabItem value="minimize" label="Minimize">
         Called when the Window is minimized or restored after being minimized.
         <br />
@@ -134,6 +141,7 @@ smartview.clear(saucer::window_event::resize);
           {minimize.split('\n').slice(2).join('\n')}
         </CodeBlock>
       </TabItem>
+      
       <TabItem value="focus" label="Focus">
         Called when the Window gains or loses focus.
         <br />
@@ -142,6 +150,17 @@ smartview.clear(saucer::window_event::resize);
         </CodeBlock>
         <CodeBlock language="cpp" title="Example">
           {focus.split('\n').slice(2).join('\n')}
+        </CodeBlock>
+      </TabItem>
+
+      <TabItem value="decorated" label="Decorated">
+        Called when the Window decorations change.
+        <br />
+        <CodeBlock language="cpp" title="Signature">
+          {decorated.split('\n')[0]}
+        </CodeBlock>
+        <CodeBlock language="cpp" title="Example">
+          {decorated.split('\n').slice(2).join('\n')}
         </CodeBlock>
       </TabItem>
     </Tabs>
@@ -158,6 +177,7 @@ smartview.clear(saucer::window_event::resize);
           {urlChanged.split('\n').slice(2).join('\n')}
         </CodeBlock>
       </TabItem>
+
       <TabItem value="load-finished" label="Load Finished">
         Called when a webpage finished loading.
         <br />
@@ -168,6 +188,7 @@ smartview.clear(saucer::window_event::resize);
           {loadFinished.split('\n').slice(2).join('\n')}
         </CodeBlock>
       </TabItem>
+
       <TabItem value="load-started" label="Load Started">
         Called when a webpage starts loading.
         <br />
@@ -178,6 +199,7 @@ smartview.clear(saucer::window_event::resize);
           {loadStarted.split('\n').slice(2).join('\n')}
         </CodeBlock>
       </TabItem>
+
       <TabItem value="dom-ready" label="DOM Ready">
         Called when the DOM Content loaded.
         <br />
@@ -186,6 +208,28 @@ smartview.clear(saucer::window_event::resize);
         </CodeBlock>
         <CodeBlock language="cpp" title="Example">
           {domReady.split('\n').slice(2).join('\n')}
+        </CodeBlock>
+      </TabItem>
+
+      <TabItem value="title-changed" label="Title Changed">
+        Called when the document title changes.
+        <br />
+        <CodeBlock language="cpp" title="Signature">
+          {titleChanged.split('\n')[0]}
+        </CodeBlock>
+        <CodeBlock language="cpp" title="Example">
+          {titleChanged.split('\n').slice(2).join('\n')}
+        </CodeBlock>
+      </TabItem>
+
+      <TabItem value="icon-changed" label="Icon Changed">
+        Called when the favicon changes.
+        <br />
+        <CodeBlock language="cpp" title="Signature">
+          {iconChanged.split('\n')[0]}
+        </CodeBlock>
+        <CodeBlock language="cpp" title="Example">
+          {iconChanged.split('\n').slice(2).join('\n')}
         </CodeBlock>
       </TabItem>
     </Tabs>

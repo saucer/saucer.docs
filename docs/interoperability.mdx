@@ -56,7 +56,7 @@ smartview.expose("add_ten", [](int i)
 All async methods are executed by saucers internal thread-pool.  
 By default the thread-pool size is determined by a call to `std::thread::hardware_concurrency()`.
 
-You can specify the amount of threads used in the `saucer::options` taken by the webview constructor.
+You can specify the amount of threads used in the `saucer::options` taken by the smartview constructor.
 
 ```cpp title="Example: Custom Thread Count"
 saucer::smartview{{.threads = 1}};
@@ -92,7 +92,7 @@ smartview.expose("add_ten", [](int i, const saucer::executor<int>& exec)
 Once you've exposed your function from the C++ side, you can call it from JavaScript.
 
 ```js title="Example: Calling your exposed function from the JavaScript World"
-const result = await window.saucer.call('add_ten', [10]);
+const result = await saucer.call('add_ten', [10]);
 // > result == 20
 ```
 
@@ -100,7 +100,7 @@ const result = await window.saucer.call('add_ten', [10]);
 Since version `3.0.0` saucer also supports the following syntax to call exposed functions:
 
 ```js title="Example: Calling your exposed function from the JavaScript World (New)"
-const result = await window.saucer.exposed.add_ten(10);
+const result = await saucer.exposed.add_ten(10);
 // > result == 20
 ```
 :::
@@ -140,7 +140,7 @@ Due to the aforementioned problems with using `evaluate` outside of asynchronous
 
 :::danger
 All of the utilities provided here spawn a new thread and do not use any thread-pool.  
-If you want to use a thread pool you should roll your own.
+If you wish to use a thread pool you should roll your own.
 :::
 
 Start off by including the utility header:

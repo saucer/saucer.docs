@@ -1,0 +1,83 @@
+# Custom Schemes
+
+Saucer has support for adding user-defined custom schemes. This mechanism is used by [embedding](../embedding.mdx) under the hood.
+
+## Register Scheme
+
+To add a new custom scheme, you must register the scheme-name **before creating any saucer instances**.
+
+```cpp title="Example: Register Scheme"
+#include <saucer/smartview.hpp>
+
+int main()
+{
+    saucer::webview::register_scheme("demo");
+    saucer::smartview smartview;
+
+    // ...
+
+    smartview.show();
+    smartview.run();
+
+    return 0;
+}
+```
+
+## Handle Scheme
+
+After registering a scheme it can be handled per-instance. To do so, call `webview.handle_scheme("name", <callback>)`. 
+The callback will receive a `const saucer::request &` and should return either a `saucer::response` or an error.
+
+The given request data contains various information on the requested resource, such as the url, request method, body and headers.  
+
+```cpp title="Example: Handle Scheme"
+#include <print>
+#include <saucer/smartview.hpp>
+
+int main()
+{
+    saucer::webview::register_scheme("demo");
+    saucer::smartview smartview;
+
+    // green-start
+    smartview.handle_scheme("demo",
+                            [](const saucer::request &req) -> saucer::scheme_handler::result_type
+                            {
+                                std::println("Requested: \"{}\" ({})", req.url(), req.method());
+
+                                return saucer::response{
+                                    .data = saucer::make_stash("<html><body>Hello from scheme handler!</body></html>"),
+                                    .mime = "text/html",
+                                };
+                            });
+
+    smartview.set_url("demo://index.html");
+    // green-end
+
+    smartview.show();
+    smartview.run();
+
+    return 0;
+}
+```
+
+As you can see, the response consits of some `data` and the `mime`-type. Headers and the status-code can also be optionally specified.  
+
+## Stash
+
+You might've noticed that `saucer::make_stash` was used in the example above.  
+A stash is a storage type for raw-bytes that can be either owning or non-owning.
+
+```cpp title="Example: Owning Data"
+saucer::stash<>::from(/*data*/);
+```
+
+```cpp title="Example: Viewing Data"
+saucer::stash<>::view(/*data*/);
+```
+
+:::warning
+Be careful when using `stash<>::view`. The returned stash will only reference the given data - only use it when you know that the data will outlive the stash.
+:::
+
+It is also possible to create a `lazy` stash, which will compute the data on the first time it is requested and then re-use it later. For more information see [embedding](../embedding.mdx).

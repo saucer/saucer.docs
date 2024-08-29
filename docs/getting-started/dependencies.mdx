@@ -18,13 +18,25 @@ On Windows the [WebView2 Runtime](https://developer.microsoft.com/microsoft-edge
   </TabItem>
   <TabItem value="linux" label="Linux" default>
 
-On Linux saucer depends on Qt5 or Qt6 as it is well established in the Linux world and most systems have it installed already.  
+Saucer supports both WebKitGtk and Qt on Linux. The default backend is WebKitGtk, but it can be configured through the `saucer_backend` CMake variable.  
+Both Qt and WebKitGtk are well established in the Linux world and most systems have either of them installed already.
 
-In case you dont have Qt installed on your system, you may refer to your distribution on how to install the following packages: 
+In case you dont have either installed on your system, you may refer to your distribution on how to install the following packages: 
 
 :::caution
 Package names may differ on your distribution!
 :::
+
+<Tabs>
+  <TabItem value="webkit" label="WebKitGtk" default>
+
+<ul>
+<li>gtk4</li>
+<li>webkitgtk-6.0</li>
+</ul>
+
+  </TabItem>
+  <TabItem value="qt" label="Qt" default>
 
 <ul>
 <li>qt5-qtwebengine</li>
@@ -33,5 +45,13 @@ Package names may differ on your distribution!
 <li>qt5-qtbase</li>
 </ul>
 
+  </TabItem>
+</Tabs>
+
+  </TabItem>
+  <TabItem value="macos" label="MacOS" default>
+  
+Saucer uses Cocoa and WKWebView on MacOS, which are both part of the operating system.
+  
   </TabItem>
 </Tabs>

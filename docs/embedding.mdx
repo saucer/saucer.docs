@@ -11,7 +11,7 @@ The easiest way to accomplish this is to use the [saucer-cli](https://github.com
 
 - A built version of your website _(that should consist of `.html`, `.js`, ... files)_
 
-## Usage
+## Automated Embedding
 
 ### Recommended Usage
 
@@ -29,17 +29,14 @@ Simply add `saucer-app` as a dependency _(i.e. `pnpm install saucer-app`)_ and t
 }
 ```
 
-### Manually Embedding Files
+### CLI Usage
 
-:::caution
-Manually embedding is discouraged.  
-Please prefer the method mentioned above!
-:::
+As we've seen above, the CLI simply consumes a given folder and produces C++ headers which handle the embedding.  
 
-First off, make sure you have the `saucer-cli` installed globally.  
+You can also install the CLI globally.  
 This can be achieved by installing it as a global npm package: `npm i -g saucer-app`.
 
-Now place all your web content into a single folder.
+If you now want to embed some specific files simply place them into a single directory _("out" in the example below)_.
 
 ```text title="Example: Folder Structure"
 out
@@ -69,7 +66,7 @@ out
             └── _ssgManifest.js
 ```
 
-Use the `saucer-cli` to generate the required embedding files.
+And then use the `saucer-cli` to generate the required embedding files.
 
 ```bash title="Command Syntax"
 saucer embed <source> [<destination>]
@@ -93,6 +90,7 @@ Now it's only a matter of including the header in your code and calling `embed` 
 To serve the files simply call `serve` and specify the file name.
 
 ```cpp title="Example: Using Embedded Files"
+#include <saucer/smartview.hpp>
 // green
 #include <output_folder/all.hpp>
 
@@ -119,3 +117,44 @@ int main()
     return 0;
 }
 ```
+
+## Manual Embedding
+
+The CLI tool seen above will include all embedded files verbatim into your binary.  
+If you wish to have more control over how embedded files are loaded you can do so by manually creating the `saucer::embedded_file`s.
+
+The example below demonstrates how to embed a file that will load the given resource from a server lazily.
+
+```cpp title="Example: Lazy Embedding"
+#include <saucer/smartview.hpp>
+#include <cpr/cpr.h>
+
+int main()
+{
+    saucer::smartview smartview;
+
+    smartview.embed({{"index.html", saucer::embedded_file{
+                                      .content = saucer::stash<>::lazy(
+                                          []()
+                                          {
+                                              auto req = cpr::Get(cpr::Url{"..."});
+                                              return saucer::make_stash(req.text);
+                                          }),
+                                      .mime = "text/html",
+                                  }}});
+
+    smartview.serve("index.html");
+
+    smartview.show();
+    smartview.run();
+
+    return 0;
+}
+```
+
+Once the webview requests to load the `index.html` the given GET request will be started. 
+Subsequent requests to load the `index.html` will re-use the initial result. For more information on `saucer::stash` see [custom schemes](advanced/schemes.mdx).
+
+:::tip
+Calling `webview::embed` multiple times will merge the given files with the already embedded ones. Thus you can safely use the CLI-approach and lazy load only some files.
+:::

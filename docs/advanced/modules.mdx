@@ -6,6 +6,8 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Admonition from '@theme/Admonition';
 
+# Modules
+
 Modules are an extension to smartviews that can access the native window and webview data used by saucer.  
 Thus they're a really powerful tool that can be used to implement completely new features or to alter the current behavior of saucer.
 
@@ -24,6 +26,8 @@ First, grab the respective native header for your platform.
   <TabItem value="qt" label="Linux">
 
 ```cpp
+#include <saucer/modules/native/webkitgtk.hpp>
+// or
 #include <saucer/modules/native/qt.hpp>
 ```
 
@@ -35,38 +39,45 @@ First, grab the respective native header for your platform.
 ```
 
   </TabItem>
+  <TabItem value="macos" label="MacOS">
+
+```cpp
+#include <saucer/modules/native/webkit.hpp>
+```
+
+  </TabItem>
 </Tabs>
 
 ## Setup Module
 
-Now I'll setup a basic module by making a class that inherits from `saucer::module` and implement the basic constructor as well as the `init` method.
+Now I'll setup a basic module by making a class that fullfulls the `saucer::Module` concept.
 
 ```cpp title="Example: Basic Module"
-class awesome_module : public saucer::module
+class awesome_module
 {
-  private:
-    saucer::native::window *m_window;
-    saucer::native::webview *m_webview;
+    saucer::natives m_natives;
+    saucer::smartview_core *m_smartview;
 
   public:
-    awesome_module(saucer::smartview_core *smartview) : saucer::module(smartview) {}
-
-    void init(saucer::native::window *window, saucer::native::webview *webview) override
+    awesome_module(saucer::smartview_core *smartview, saucer::natives natives)
+        : m_natives(natives), m_smartview(smartview)
     {
-        m_window  = window;
-        m_webview = webview;
     }
 
     void my_awesome_feature()
     {
-        m_window->window->setWindowTitle("Hello from Module!");
-        m_webview->web_view->page()->setAudioMuted(true);
+        auto [window, webview] = m_natives;
+
+        window->window->setWindowTitle("Hello from Module!");
+        webview->web_view->page()->setAudioMuted(true);
     }
 };
+
+static_assert(saucer::Module<awesome_module>);
 ```
 
 :::tip
-You can use the compile time macros `SAUCER_QT5`, `SAUCER_QT6` and `SAUCER_WEBVIEW2` to find out which backend is currently used.  
+You can use the compile time macros `SAUCER_QT5`, `SAUCER_QT6`, `SAUCER_WEBKITGTK`, `SAUCER_WEBVIEW2` and `SAUCER_WEBKIT` to find out which backend is currently used.  
 :::
 
 ## Use Module
@@ -84,7 +95,7 @@ int main()
     webview.set_dev_tools(true);
 
     // green-start
-    webview.my_awesome_feature();
+    webview.module<awesome_module>().my_awesome_feature();
     // green-end
 
     webview.show();
@@ -94,7 +105,7 @@ int main()
 }
 ```
 
-## Using with Serializer
+## Use with Serializer
 
 You might've noticed that our module constructor receives a `smartview_core`.  
 
@@ -103,33 +114,34 @@ This is a stripped down version of the `smartview` you're used to and does not i
 However, we can modify our module code slightly to also use the fully featured `smartview`.
 
 ```cpp title="Example: Module with smartview"
-class awesome_module : public saucer::module
+class awesome_module
 {
-  private:
-    saucer::native::window *m_window;
-    saucer::native::webview *m_webview;
+    saucer::natives m_natives;
+    saucer::smartview_core *m_smartview;
 
   public:
-    awesome_module(saucer::smartview_core *smartview) : saucer::module(smartview) {}
+    awesome_module(saucer::smartview_core *smartview, saucer::natives natives)
+        : m_natives(natives), m_smartview(smartview)
+    {
+    }
 
     // green-start
     template <typename Serializer, typename... Modules>
-    awesome_module(saucer::smartview<Serializer, Modules...> *smartview) : saucer::module(smartview)
+    awesome_module(saucer::smartview<Serializer, Modules...> *smartview, saucer::natives natives)
+        : m_natives(natives), m_smartview(smartview)
     {
         smartview->expose("module_add", [](int a, int b) { return a + b; });
     }
     // green-end
 
-    void init(saucer::native::window *window, saucer::native::webview *webview) override
-    {
-        m_window  = window;
-        m_webview = webview;
-    }
-
     void my_awesome_feature()
     {
-        m_window->window->setWindowTitle("Hello from Module!");
-        m_webview->web_view->page()->setAudioMuted(true);
+        auto [window, webview] = m_natives;
+
+        window->window->setWindowTitle("Hello from Module!");
+        webview->web_view->page()->setAudioMuted(true);
     }
 };
+
+static_assert(saucer::Module<awesome_module>);
 ```
