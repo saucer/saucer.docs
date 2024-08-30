@@ -25,7 +25,7 @@ A "frameless" windows is a window which hides the default window buttons & handl
 </tr>
 </table>
 
-You can use the `set_decorations` method to remove the windows frame.
+You can use the `set_decorations` method to remove the window frame.
 
 
 ```cpp title="Example: Removing Window Frame"
@@ -55,8 +55,8 @@ int main()
 
 ## Move & Resize
 
-A frameless window can not be resized or moved by default.  
-Saucer supports the HTML Attributes `data-webview-drag` and `data-webview-resize` which can be used to conveniently add support for custom drag areas or resize-handles.
+A frameless window can not be resized or moved by default.
+However, saucer supports the HTML Attributes `data-webview-drag` and `data-webview-resize` which can be used to conveniently add support for custom drag areas or resize-handles.
 
 In the following example I'll demonstrate how to use the aforementioned methods to make a custom tilebar.
 
