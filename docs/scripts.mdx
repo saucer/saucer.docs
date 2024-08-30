@@ -1,0 +1,67 @@
+---
+sidebar_position: 2
+---
+
+# Script Injection
+
+Sometimes you might want to inject cutom scripts into all loaded web-pages.  
+This can be easily achieved through `webview::inject`.
+
+```cpp title="Example: Basic Script Injection"
+smartview.inject({
+    .code = "console.log('on creation')",
+    .time = saucer::load_time::ready,
+});
+```
+
+As seen in the example above, a `time` has to be specified. This can be one of:
+
+* `ready`  
+    The script will be loaded as soon as the DOM is ready
+
+* `creation`  
+    The script will be loaded as soon as the document is created
+
+It is also possible to specify the `frame` in which the script is loaded. By default all scripts will only be injected into the top-frame.
+
+```cpp title="Example: Script Injection with Frame"
+smartview.inject({
+    .code  = "console.log(self)",
+    .time  = saucer::load_time::creation,
+    .frame = saucer::web_frame::all, 
+});
+```
+
+You can choose from `web_frame::all` or `web_frame::top`.
+
+## Permanent Scripts
+
+:::note
+This functionality is mainly inteded for language-bindings, as they may want to expose additional data to the JavaScript world.
+:::
+
+By default, all injected scripts will not be permanent, i.e. can be removed by calling `webview::clear_scripts`.
+
+```cpp title="Example: Clearing Scripts"
+smartview.inject({
+    .code  = "alert(1)",
+    .time  = saucer::load_time::creation,
+});
+
+smartview.clear_scripts();
+smartview.set_url("https://github.com"); // Alert will not be shown.
+```
+
+By making a script permanent it will not be cleared after a call to `webview::clear_scripts`.
+
+```cpp title="Example: Permanent Script"
+smartview.inject({
+    .code      = "alert(1)",
+    .time      = saucer::load_time::creation,
+    // green
+    .permanent = true,
+});
+
+smartview.clear_scripts();
+smartview.set_url("https://github.com"); // Alert will be shown.
+```
