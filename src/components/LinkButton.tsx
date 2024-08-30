@@ -1,6 +1,5 @@
 import Link, { Props } from "@docusaurus/Link";
 import clsx from "clsx";
-import React, { ReactElement } from "react";
 
 interface LinkButtonsProps extends Props
 {

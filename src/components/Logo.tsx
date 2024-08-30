@@ -1,4 +1,4 @@
-import { animate, motion, useAnimate } from "framer-motion";
+import { motion, useAnimate } from "framer-motion";
 import { ComponentProps, useEffect } from "react";
 
 export default function Logo({ ...props }: ComponentProps<"svg">)

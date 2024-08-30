@@ -1,6 +1,7 @@
 import { IconArrowRight } from "@tabler/icons-react";
 import { Cards } from "./Card";
 import { LinkButton } from "./LinkButton";
+import Heading from "@theme/Heading";
 
 export namespace Feature
 {
@@ -41,7 +42,7 @@ export namespace Feature
                 </Cards.Image>
 
                 <Cards.Header style={{ padding: 0 }}>
-                    <h3>{title}</h3>
+                    <Heading as="h3">{title}</Heading>
                 </Cards.Header>
 
                 <Cards.Body style={{ textAlign: "center" }}>

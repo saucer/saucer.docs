@@ -21,7 +21,7 @@ import { Hero } from "../components/Hero";
 import { LinkButton } from "../components/LinkButton";
 import Logo from "../components/Logo";
 
-// @ts-ignore
+// @ts-expect-error(raw-loader)
 import exampleCode from "./example.cpp";
 
 const features: Feature.Feature[] = [
@@ -128,9 +128,7 @@ const features: Feature.Feature[] = [
 export default function Home(): JSX.Element
 {
     const { siteConfig } = useDocusaurusContext();
-
     const largeDisplay = useMediaQuery("(min-width: 85rem)");
-    const mediumDisplay = useMediaQuery("(min-width: 50rem)");
 
     return (
         <Layout title={siteConfig.title}>

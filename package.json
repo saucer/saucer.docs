@@ -27,14 +27,17 @@
     "react-type-animation": "^3.2.0"
   },
   "devDependencies": {
+    "@docusaurus/eslint-plugin": "^3.5.2",
     "@docusaurus/module-type-aliases": "^3.5.2",
     "@docusaurus/theme-classic": "^3.5.2",
     "@docusaurus/tsconfig": "^3.5.2",
     "@docusaurus/types": "^3.5.2",
+    "@eslint/compat": "^1.1.1",
     "@types/node": "^22.5.1",
     "@types/react": "^18.3.4",
     "dprint": "^0.47.2",
-    "typescript": "~5.2.2"
+    "typescript": "~5.2.2",
+    "typescript-eslint": "^8.3.0"
   },
   "browserslist": {
     "production": [
