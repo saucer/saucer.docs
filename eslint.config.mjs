@@ -24,6 +24,9 @@ export default [
     eslint.configs.recommended,
     ...tseslint.configs.recommended,
     {
+        ignores: ["babel.config.js"],
+    },
+    {
         rules: {
             "@typescript-eslint/no-namespace": 0,
         },
