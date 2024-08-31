@@ -9,7 +9,7 @@ This can be easily achieved through `webview::inject`.
 
 ```cpp title="Example: Basic Script Injection"
 smartview.inject({
-    .code = "console.log('on creation')",
+    .code = "console.log('on ready')",
     .time = saucer::load_time::ready,
 });
 ```
@@ -26,7 +26,7 @@ It is also possible to specify the `frame` in which the script is loaded. By def
 
 ```cpp title="Example: Script Injection with Frame"
 smartview.inject({
-    .code  = "console.log(self)",
+    .code  = "console.log('on creation')",
     .time  = saucer::load_time::creation,
     .frame = saucer::web_frame::all, 
 });
