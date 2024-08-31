@@ -1,0 +1,54 @@
+---
+sidebar_position: 2
+---
+
+# CMake Configuration
+
+There are several configurable CMake options. I'll quickly go over the most important here.  
+
+## Backend
+
+```cmake title="Example: Using Qt6 backend"
+set(saucer_backend "Qt6")
+```
+
+Define the backend to use. By default, the most appropiate for your platform will be used.
+
+## Modules
+
+```cmake
+option(saucer_modules           "Enable smartview modules"                          ON)
+```
+
+This option is used to enable module support for saucer. While all the headers required to use modules are always included, 
+this option is used to ensure proper library and header visibility so that you can use the underlying platform internals without issues.
+
+## Polyfills
+
+```cmake
+option(saucer_polyfill          "Enable polyfills. Mainly used for macOS"          OFF)
+```
+
+Use third-party polyfills in case your standard library is missing `std::move_only_function` and `std::jthread`.  
+This option is always used on MacOS as libc++ is lacking behind in terms of C++23 library features.
+
+## MSVC-Hack
+
+```cmake
+option(saucer_msvc_hack         "Fix mutex crashes on mismatching runtimes"        OFF)
+```
+
+:::note
+You may require this option when developing language bindings.
+:::
+
+Fixes crashes related to constexpr mutex constructor on Windows.  
+See the `VS 2022 17.10` entry in the [Microsoft/STL Changelog](https://github.com/microsoft/STL/wiki/Changelog#vs-2022-1710).
+
+## WebView2 Version
+
+```cmake title="Example: Custom WebView2 version"
+set(saucer_webview2_version "1.0.2783-prerelease")
+```
+
+Explicitly define the version of the WebView2 NuGet package to use.  
