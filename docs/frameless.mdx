@@ -96,3 +96,8 @@ window_edge:
 ```
 
 The `data-webview-resize` attirbute should use the short-form of the given edges, e.g. _top-left_ as `tl`.
+
+:::tip
+Should an element trigger a move / resize when it shouldn't _(this can happen if the given element is a child of a parent with special attributes)_, you can give it the `data-webview-ignore` attribute.  
+This will prevent clicks on this element from triggering any move or resize.
+:::
