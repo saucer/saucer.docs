@@ -80,7 +80,7 @@ saucer::stash<>::view(/*data*/);
 You can use `saucer::make_stash` to conditionally create a (non-)owning stash depending on the given data-type.
 :::
 
-:::warning
+:::caution
 Be careful when using `stash<>::view`. The returned stash will only reference the given data - only use it when you know that the data will outlive the stash.
 :::
 

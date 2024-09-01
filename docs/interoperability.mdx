@@ -142,7 +142,7 @@ To circumvent this take a look at the [Future Utilities](#future-utilities).
 
 Due to the aforementioned problems with using `evaluate` outside of asynchronous contexts, I've created some utility functions to make your life easier.
 
-:::danger
+:::caution
 All of the utilities provided here spawn a new thread and do not use any thread-pool.  
 If you wish to use a thread pool you should roll your own.
 :::
@@ -179,7 +179,7 @@ saucer::forget(smartview.evaluate<float>("Math.random()"));
 smartview.evaluate<float>("Math.random()") | saucer::forget();
 ```
 
-:::warning
+:::caution
 A `std::future` will also block on destruction if:
 
 > (2) the shared state is not yet ready[¹](https://en.cppreference.com/w/cpp/thread/future/%7Efuture)
