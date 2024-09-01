@@ -52,6 +52,10 @@ smartview.expose("add_ten", [](int i)
                             }, saucer::launch::async);
 ```
 
+:::danger
+There is no exception handling for exposed functions. You need to make sure to handle exceptions yourself otherwise **things will break**!
+:::
+
 :::note
 All async methods are executed by saucers internal thread-pool.  
 By default the thread-pool size is determined by a call to `std::thread::hardware_concurrency()`.
