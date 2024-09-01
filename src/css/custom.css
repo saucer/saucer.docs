@@ -12,10 +12,6 @@
   --ifm-global-shadow-lw: 0 1px 16px 0 rgba(0, 0, 0, 0.05);
 }
 
-.navbar {
-  backdrop-filter: blur(15px);
-}
-
 /*
  * Light Theme
  */
@@ -49,6 +45,22 @@
 
 [data-theme="dark"] footer {
   --ifm-footer-background-color: #24283b;
+}
+
+/*
+ * Fancy Navbar
+*/
+
+.navbar:not(.navbar-sidebar--show) {
+  backdrop-filter: blur(15px);
+}
+
+[data-theme="light"] .navbar-sidebar--show {
+  --ifm-navbar-background-color: #fdf0ed;
+}
+
+[data-theme="dark"] .navbar-sidebar--show {
+  --ifm-navbar-background-color: #31364e;
 }
 
 /* 
