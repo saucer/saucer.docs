@@ -172,7 +172,13 @@ export default function Home(): JSX.Element
             {largeDisplay
                 && (
                     <Hero.Header banner>
-                        <div className="container">
+                        <motion.div
+                            transition={{ duration: 0.5, delay: 0.15 }}
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true }}
+                            className="container"
+                        >
                             <TypeAnimation
                                 wrapper="h1"
                                 deletionSpeed={10}
@@ -188,7 +194,7 @@ export default function Home(): JSX.Element
                             >
                                 <CodeBlock language="cpp">{exampleCode}</CodeBlock>
                             </div>
-                        </div>
+                        </motion.div>
                     </Hero.Header>
                 )}
         </Layout>
