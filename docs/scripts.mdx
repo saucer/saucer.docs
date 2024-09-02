@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Script Injection
 
-Sometimes you might want to inject cutom scripts into all loaded web-pages.  
+Sometimes you might want to inject custom scripts into all loaded web-pages.  
 This can be easily achieved through `webview::inject`.
 
 ```cpp title="Example: Basic Script Injection"
@@ -37,7 +37,7 @@ You can choose from `web_frame::all` or `web_frame::top`.
 ## Permanent Scripts
 
 :::note
-This functionality is mainly inteded for language-bindings, as they may want to expose additional data to the JavaScript world.
+This functionality is mainly intended for language-bindings, as they may want to expose additional data to the JavaScript world.
 :::
 
 By default, all injected scripts will not be permanent, i.e. can be removed by calling `webview::clear_scripts`.

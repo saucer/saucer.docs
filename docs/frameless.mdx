@@ -58,7 +58,7 @@ int main()
 A frameless window can not be resized or moved by default.
 However, saucer supports the HTML Attributes `data-webview-drag` and `data-webview-resize` which can be used to conveniently add support for custom drag areas or resize-handles.
 
-In the following example I'll demonstrate how to use the aforementioned methods to make a custom tilebar.
+In the following example I'll demonstrate how to use the aforementioned methods to make a custom titlebar.
 
 ```html title="Sketch: Custom Titlebar"
 <div id="my_awesome_titlebar" data-webview-drag>
@@ -95,7 +95,7 @@ window_edge:
 }
 ```
 
-The `data-webview-resize` attirbute should use the short-form of the given edges, e.g. _top-left_ as `tl`.
+The `data-webview-resize` attribute should use the short-form of the given edges, e.g. _top-left_ as `tl`.
 
 :::tip
 Should an element trigger a move / resize when it shouldn't _(this can happen if the given element is a child of a parent with special attributes)_, you can give it the `data-webview-ignore` attribute.  
