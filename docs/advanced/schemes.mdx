@@ -51,7 +51,7 @@ int main()
                                 };
                             });
 
-    smartview.set_url("demo://index.html");
+    smartview.set_url("demo://data/index.html");
     // green-end
 
     smartview.show();
@@ -60,6 +60,20 @@ int main()
     return 0;
 }
 ```
+
+:::caution
+Due to upstream issues with the JS-Fetch API on WebView2, it is required to specify an authority for all scheme-urls.  
+If none is specified, the given file will be treated as the authority, which may lead to unexpected results.
+
+```cpp title="Example: Add Authority"
+// red
+smartview.set_url("demo://index.html");
+// green
+smartview.set_url("demo://root/index.html"); // "root" can be any text
+```
+
+It is recommended to always add an authority to your custom-scheme url due to this issue.  
+:::
 
 As you can see, the response consists of some `data` and the `mime`-type. Headers and the status-code can also be optionally specified.  
 
