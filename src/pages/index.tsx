@@ -181,6 +181,7 @@ export default function Home(): JSX.Element
                         >
                             <TypeAnimation
                                 wrapper="h1"
+                                repeat={Infinity}
                                 deletionSpeed={10}
                                 sequence={["Code Example", 5000, "Your first application", 2000, "Code Example"]}
                             />
