@@ -33,7 +33,7 @@ const features: Feature.Feature[] = [
         description: (
             <>
                 Dead simple setup. Bring your favorite frontend framework and create beautiful desktop applications in
-                seconds
+                seconds!
             </>
         ),
     },
@@ -42,7 +42,7 @@ const features: Feature.Feature[] = [
         button: "Learn more",
         link: "/docs/getting-started/dependencies",
         icon: <IconDeviceDesktopBolt color="white" size={45} />,
-        description: <>Deploy to Windows, MacOS and Linux - No code changes required. Saucer handles them all!</>,
+        description: <>Deploy to Windows, MacOS and Linux - No code changes required.</>,
     },
     {
         title: "Interoperability",
@@ -61,7 +61,7 @@ const features: Feature.Feature[] = [
         button: "Embedding",
         link: "/docs/embedding",
         icon: <IconPackage color="white" size={45} />,
-        description: <>Seamlessly embed all of your frontend code into saucer and ship a contained binary</>,
+        description: <>Seamlessly embed all of your frontend code into saucer and ship a contained binary.</>,
     },
     {
         title: "Customizability",
@@ -69,7 +69,7 @@ const features: Feature.Feature[] = [
         link: "/docs/advanced/modules",
         icon: <IconAdjustments color="white" size={45} />,
         description: (
-            <>Modules allow extensive customization and access to underlying platform specific implementations</>
+            <>Modules allow for extensive customization and access to underlying platform specific implementations.</>
         ),
     },
     {
@@ -80,7 +80,7 @@ const features: Feature.Feature[] = [
         description: (
             <>
                 By using the the operating systems native web renderer<sup>*</sup>{" "}
-                it's possible to produce binaries that are just ~250KB
+                it's possible to produce binaries that are just ~250KB.
                 <br />
 
                 <sup>
@@ -105,7 +105,7 @@ const features: Feature.Feature[] = [
         icon: <IconCpu2 color="white" size={45} />,
         description: (
             <>
-                All methods are fully thread-safe and annotated for your convenience. No special care required
+                All methods are fully thread-safe and annotated for your convenience. No special care required.
             </>
         ),
     },
@@ -116,7 +116,7 @@ const features: Feature.Feature[] = [
         icon: <IconScale color="white" size={45} />,
         description: (
             <>
-                Saucer is, and will always be, Free and Open Source
+                Saucer is, and will always be, Free and Open Source.
                 <br />
                 <br />
                 <i>Licensed under MIT where applicable</i>
