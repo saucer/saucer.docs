@@ -2,7 +2,13 @@
 
 int main()
 {
-    saucer::smartview webview;
+    auto app = saucer::application::acquire({
+        .id = "example",
+    });
+
+    saucer::smartview webview{{
+        .application = app,
+    }};
 
     webview.set_size(900, 700);
     webview.set_title("Hello World!");
@@ -19,7 +25,7 @@ int main()
     webview.set_file("index.html");
     
     webview.show();
-    webview.run();
+    app->run();
 
     return 0;
 }

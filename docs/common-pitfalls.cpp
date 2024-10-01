@@ -3,7 +3,13 @@
 
 int main() 
 {
-  saucer::smartview webview;
+  auto app = saucer::application::acquire({
+      .id = "pitfalls",
+  });
+
+  saucer::smartview webview{{
+      .application = app,
+  }};
   
   webview.set_size(500, 600);
   webview.set_title("Hello World!");
@@ -13,13 +19,13 @@ int main()
   webview.expose(
       "add_random",
       [&](float number) {
-        auto random = webview.eval<float>("Math.random()").get();
+        auto random = webview.evaluate<float>("Math.random()").get();
         return number + random;
       },
-      true);
+      saucer::launch::async);
 
   webview.show();
-  webview.run();
+  app->run();
 
   return 0;
 }
@@ -27,7 +33,14 @@ int main()
 // begin: execution-order-fixed
 int main() 
 {
-  saucer::smartview webview;
+  auto app = saucer::application::acquire({
+      .id = "pitfalls",
+  });
+
+  saucer::smartview webview{{
+      .application = app,
+  }};
+
   webview.set_size(500, 600);
   webview.set_title("Hello World!");
 
@@ -37,16 +50,16 @@ int main()
   webview.expose(
       "add_random",
       [&](float number) {
-        auto random = webview.eval<float>("Math.random()").get();
+        auto random = webview.evaluate<float>("Math.random()").get();
         return number + random;
       },
-      true);
-
+      saucer::launch::async);
 
   // green
   webview.set_url("https://github.com");
   webview.show();
-  webview.run();
+  
+  app->run();
 
   return 0;
 }
@@ -54,12 +67,19 @@ int main()
 // begin: run-blocking
 int main() 
 {
-  saucer::smartview webview;
+  auto app = saucer::application::acquire({
+      .id = "pitfalls",
+  });
+
+  saucer::smartview webview{{
+      .application = app,
+  }};
+
   webview.set_size(500, 600);
   webview.set_title("Hello World!");
 
   webview.show();
-  webview.run();
+  app->run();
 
   webview.set_url("https://github.com");
 
@@ -69,7 +89,14 @@ int main()
 // begin: run-blocking-fixed
 int main() 
 {
-  saucer::smartview webview;
+  auto app = saucer::application::acquire({
+      .id = "pitfalls",
+  });
+
+  saucer::smartview webview{{
+      .application = app,
+  }};
+
   webview.set_size(500, 600);
   webview.set_title("Hello World!");
 
@@ -77,7 +104,7 @@ int main()
   webview.set_url("https://github.com");
 
   webview.show();
-  webview.run();
+  app->run();
 
   // red
   webview.set_url("https://github.com");
@@ -85,44 +112,3 @@ int main()
   return 0;
 }
 // end: run-blocking-fixed
-// begin: static-init
-saucer::smartview webview;
-
-int main() 
-{
-  webview.set_size(500, 600);
-  webview.set_title("Hello World!");
-
-  webview.set_url("https://github.com");
-
-  webview.show();
-  webview.run();
-
-  return 0;
-}
-// end: static-init
-// begin: static-init-fixed
-// red
-saucer::smartview webview;
-// green
-std::unique_ptr<saucer::smartview<>> webview;
-
-int main() 
-{
-  // green
-  webview = std::make_unique<saucer::smartview<>>();
-
-  webview->set_size(500, 600);
-  webview->set_title("Hello World!");
-
-  webview->set_url("https://github.com");
-
-  webview->show();
-  webview->run();
-
-  // green
-  webview.reset();
-
-  return 0;
-}
-// end: static-init-fixed

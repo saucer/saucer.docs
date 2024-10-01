@@ -96,7 +96,14 @@ To serve the files simply call `serve` and specify the file name.
 
 int main()
 {
-    saucer::smartview smartview;
+    auto app = saucer::application::acquire({
+        .id = "embedding",
+    });
+
+    saucer::smartview smartview{{
+        .application = app,
+    }};
+
     smartview.set_title("Hello World!");
 
     smartview.expose("add_ten", [](int i)
@@ -112,7 +119,7 @@ int main()
     smartview.serve("index.html");
 
     smartview.show();
-    smartview.run();
+    app->run();
 
     return 0;
 }
@@ -131,7 +138,13 @@ The example below demonstrates how to embed a file that will load the given reso
 
 int main()
 {
-    saucer::smartview smartview;
+    auto app = saucer::application::acquire({
+        .id = "embedding",
+    });
+
+    saucer::smartview smartview{{
+        .application = app,
+    }};
 
     smartview.embed({{"index.html", saucer::embedded_file{
                                       .content = saucer::stash<>::lazy(
@@ -146,7 +159,7 @@ int main()
     smartview.serve("index.html");
 
     smartview.show();
-    smartview.run();
+    app->run();
 
     return 0;
 }

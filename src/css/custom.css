@@ -89,7 +89,7 @@
 }
 
 nav .navbar__items:nth-child(1) a:nth-of-type(2)::after {
-  content: "v3.x";
+  content: "v4.x";
 
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;

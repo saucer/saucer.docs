@@ -1,7 +1,7 @@
-std::function<bool()>
+std::function<saucer::policy()>
 
 smartview.on<saucer::window_event::close>([]()
 {
     std::println("Preventing a close!");
-    return true;
+    return saucer::policy::block;
 });

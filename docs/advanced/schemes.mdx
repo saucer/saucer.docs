@@ -11,13 +11,19 @@ To add a new custom scheme, you must register the scheme-name **before creating 
 
 int main()
 {
+    // green
     saucer::webview::register_scheme("demo");
-    saucer::smartview smartview;
 
-    // ...
+    auto app = saucer::application::acquire({
+        .id = "scheme-demo",
+    });
 
-    smartview.show();
-    smartview.run();
+    saucer::smartview smartview{{
+        .application = app,
+    }};
+
+    smartview.show();    
+    app->run();
 
     return 0;
 }
@@ -26,26 +32,34 @@ int main()
 ## Handle Scheme
 
 After registering a scheme it can be handled per-instance. To do so, call `webview.handle_scheme("name", <callback>)`. 
-The callback will receive a `const saucer::request &` and should return either a `saucer::response` or an error.
+The callback will receive a `const saucer::scheme::request &` and should return either a `saucer::scheme::response` or an error.
 
 The given request data contains various information on the requested resource, such as the url, request method, body and headers.  
 
 ```cpp title="Example: Handle Scheme"
-#include <print>
 #include <saucer/smartview.hpp>
+#include <print>
 
 int main()
 {
+    // green
     saucer::webview::register_scheme("demo");
-    saucer::smartview smartview;
+
+    auto app = saucer::application::acquire({
+        .id = "scheme-demo",
+    });
+
+    saucer::smartview smartview{{
+        .application = app,
+    }};
 
     // green-start
     smartview.handle_scheme("demo",
-                            [](const saucer::request &req) -> saucer::scheme_handler::result_type
+                            [](const saucer::scheme::request &req) -> saucer::scheme::handler::result_type
                             {
                                 std::println("Requested: \"{}\" ({})", req.url(), req.method());
 
-                                return saucer::response{
+                                return saucer::scheme::response{
                                     .data = saucer::make_stash("<html><body>Hello from scheme handler!</body></html>"),
                                     .mime = "text/html",
                                 };
@@ -55,7 +69,7 @@ int main()
     // green-end
 
     smartview.show();
-    smartview.run();
+    app->run();
 
     return 0;
 }

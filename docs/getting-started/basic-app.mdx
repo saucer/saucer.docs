@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 import { VersionedCode } from '../../src/components/CodeBlock';
@@ -31,7 +31,16 @@ Now that you've setup your CMakeLists you can go ahead and create your first bas
 int main()
 {
 // highlight-start
-    saucer::smartview smartview;         // Instantiate smartview
+    auto app = saucer::application::acquire({   // Instantiate application
+        .id = "hello-world",                    // Choose a suitable ID for your program
+    });
+// highlight-end
+
+// highlight-start
+    saucer::smartview smartview{{        // Instantiate smartview
+        .application = app,
+    }};
+
     smartview.set_title("Hello World!"); // Set the window title to "Hello World!"
 // highlight-end
 
@@ -46,7 +55,8 @@ int main()
 // highlight-start
     smartview.set_url("https://google.com"); // Navigate to google.com
     smartview.show();                        // Show the smartview
-    smartview.run();                         // And finally enter the run-loop.
+    
+    app->run();                             // And finally enter the run-loop.
 // highlight-end
 
     return 0;

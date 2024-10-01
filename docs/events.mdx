@@ -15,12 +15,12 @@ import minimize from './events/minimize.cpp';
 import focus from './events/focus.cpp';
 import decorated from './events/decorated.cpp';
 
-import urlChanged from './events/url-changed.cpp';
-import loadFinished from './events/load-finished.cpp';
-import loadStarted from './events/load-started.cpp';
+import navigate from './events/navigate.cpp';
+import navigated from './events/navigated.cpp';
+import load from './events/load.cpp';
 import domReady from './events/dom-ready.cpp';
-import titleChanged from './events/title-changed.cpp';
-import iconChanged from './events/icon-changed.cpp';
+import title from './events/title.cpp';
+import favicon from './events/favicon.cpp';
 
 # Events
 
@@ -84,39 +84,14 @@ smartview.clear(saucer::window_event::resize);
 <Tabs block>
   <TabItem value="window" label="Window">
     <Tabs>
-      <TabItem value="resize" label="Resize">
-        Called when the Window is resized.
+      <TabItem value="decorated" label="Decorated">
+        Called when the Window decorations change.
         <br />
         <CodeBlock language="cpp" title="Signature">
-          {resize.split('\n')[0]}
+          {decorated.split('\n')[0]}
         </CodeBlock>
         <CodeBlock language="cpp" title="Example">
-          {resize.split('\n').slice(2).join('\n')}
-        </CodeBlock>
-      </TabItem>
-
-      <TabItem value="closed" label="Closed">
-        Called when the Window is closed.
-        <br />
-        <CodeBlock language="cpp" title="Signature">
-          {closed.split('\n')[0]}
-        </CodeBlock>
-        <CodeBlock language="cpp" title="Example">
-          {closed.split('\n').slice(2).join('\n')}
-        </CodeBlock>
-      </TabItem>
-
-      <TabItem value="close" label="Close">
-        Called when the Window is about to be closed.
-        <br />
-        <Admonition type="info">
-          Returning <code>true</code> from within the callback prevents the close.
-        </Admonition>
-        <CodeBlock language="cpp" title="Signature">
-          {close.split('\n')[0]}
-        </CodeBlock>
-        <CodeBlock language="cpp" title="Example">
-          {close.split('\n').slice(2).join('\n')}
+          {decorated.split('\n').slice(2).join('\n')}
         </CodeBlock>
       </TabItem>
 
@@ -141,6 +116,28 @@ smartview.clear(saucer::window_event::resize);
           {minimize.split('\n').slice(2).join('\n')}
         </CodeBlock>
       </TabItem>
+
+      <TabItem value="closed" label="Closed">
+        Called when the Window is closed.
+        <br />
+        <CodeBlock language="cpp" title="Signature">
+          {closed.split('\n')[0]}
+        </CodeBlock>
+        <CodeBlock language="cpp" title="Example">
+          {closed.split('\n').slice(2).join('\n')}
+        </CodeBlock>
+      </TabItem>
+
+      <TabItem value="resize" label="Resize">
+        Called when the Window is resized.
+        <br />
+        <CodeBlock language="cpp" title="Signature">
+          {resize.split('\n')[0]}
+        </CodeBlock>
+        <CodeBlock language="cpp" title="Example">
+          {resize.split('\n').slice(2).join('\n')}
+        </CodeBlock>
+      </TabItem>
       
       <TabItem value="focus" label="Focus">
         Called when the Window gains or loses focus.
@@ -153,53 +150,23 @@ smartview.clear(saucer::window_event::resize);
         </CodeBlock>
       </TabItem>
 
-      <TabItem value="decorated" label="Decorated">
-        Called when the Window decorations change.
+      <TabItem value="close" label="Close">
+        Called when the Window is about to be closed.
         <br />
+        <Admonition type="info">
+          Returning <code>saucer::policy::block</code> from within the callback prevents the close.
+        </Admonition>
         <CodeBlock language="cpp" title="Signature">
-          {decorated.split('\n')[0]}
+          {close.split('\n')[0]}
         </CodeBlock>
         <CodeBlock language="cpp" title="Example">
-          {decorated.split('\n').slice(2).join('\n')}
+          {close.split('\n').slice(2).join('\n')}
         </CodeBlock>
       </TabItem>
     </Tabs>
   </TabItem>
   <TabItem value="webview" label="WebView">
     <Tabs>
-      <TabItem value="url-changed" label="URL Changed">
-        Called when a new URL is loaded.
-        <br />
-        <CodeBlock language="cpp" title="Signature">
-          {urlChanged.split('\n')[0]}
-        </CodeBlock>
-        <CodeBlock language="cpp" title="Example">
-          {urlChanged.split('\n').slice(2).join('\n')}
-        </CodeBlock>
-      </TabItem>
-
-      <TabItem value="load-finished" label="Load Finished">
-        Called when a webpage finished loading.
-        <br />
-        <CodeBlock language="cpp" title="Signature">
-          {loadFinished.split('\n')[0]}
-        </CodeBlock>
-        <CodeBlock language="cpp" title="Example">
-          {loadFinished.split('\n').slice(2).join('\n')}
-        </CodeBlock>
-      </TabItem>
-
-      <TabItem value="load-started" label="Load Started">
-        Called when a webpage starts loading.
-        <br />
-        <CodeBlock language="cpp" title="Signature">
-          {loadStarted.split('\n')[0]}
-        </CodeBlock>
-        <CodeBlock language="cpp" title="Example">
-          {loadStarted.split('\n').slice(2).join('\n')}
-        </CodeBlock>
-      </TabItem>
-
       <TabItem value="dom-ready" label="DOM Ready">
         Called when the DOM Content loaded.
         <br />
@@ -211,25 +178,61 @@ smartview.clear(saucer::window_event::resize);
         </CodeBlock>
       </TabItem>
 
+      <TabItem value="navigated" label="Navigated">
+        Called when a new URL was loaded.
+        <br />
+        <CodeBlock language="cpp" title="Signature">
+          {navigated.split('\n')[0]}
+        </CodeBlock>
+        <CodeBlock language="cpp" title="Example">
+          {navigated.split('\n').slice(2).join('\n')}
+        </CodeBlock>
+      </TabItem>
+
+      <TabItem value="navigate" label="Navigate">
+        Called when the URL is about to change.
+        <br />
+        <Admonition type="info">
+          Returning <code>saucer::policy::block</code> from within the callback prevents the navigation.
+        </Admonition>
+        <CodeBlock language="cpp" title="Signature">
+          {navigate.split('\n')[0]}
+        </CodeBlock>
+        <CodeBlock language="cpp" title="Example">
+          {navigate.split('\n').slice(2).join('\n')}
+        </CodeBlock>
+      </TabItem>
+
+      <TabItem value="favicon" label="Favicon Changed">
+        Called when the favicon changes.
+        <br />
+        <CodeBlock language="cpp" title="Signature">
+          {favicon.split('\n')[0]}
+        </CodeBlock>
+        <CodeBlock language="cpp" title="Example">
+          {favicon.split('\n').slice(2).join('\n')}
+        </CodeBlock>
+      </TabItem>
+
       <TabItem value="title-changed" label="Title Changed">
         Called when the document title changes.
         <br />
         <CodeBlock language="cpp" title="Signature">
-          {titleChanged.split('\n')[0]}
+          {title.split('\n')[0]}
         </CodeBlock>
         <CodeBlock language="cpp" title="Example">
-          {titleChanged.split('\n').slice(2).join('\n')}
+          {title.split('\n').slice(2).join('\n')}
         </CodeBlock>
       </TabItem>
 
-      <TabItem value="icon-changed" label="Icon Changed">
-        Called when the favicon changes.
+      <TabItem value="load" label="Load">
+        Called when the web-page load progresses.
         <br />
         <CodeBlock language="cpp" title="Signature">
-          {iconChanged.split('\n')[0]}
+          {load.split('\n')[0]}
         </CodeBlock>
         <CodeBlock language="cpp" title="Example">
-          {iconChanged.split('\n').slice(2).join('\n')}
+          {load.split('\n').slice(2).join('\n')}
         </CodeBlock>
       </TabItem>
     </Tabs>

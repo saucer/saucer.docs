@@ -16,26 +16,17 @@ Define the backend to use. By default, the most appropriate for your platform wi
 
 ## Modules
 
-```cmake
-option(saucer_modules           "Enable smartview modules"                          ON)
+```cmake title="Example: Enable Modules"
+set(saucer_modules ON)
 ```
 
-This option is used to enable module support for saucer. While all the headers required to use modules are always included, 
+Enable module support for saucer. While all the headers required to use modules are always included, 
 this option is used to ensure proper library and header visibility so that you can use the underlying platform internals without issues.
-
-## Polyfills
-
-```cmake
-option(saucer_polyfill          "Enable polyfills. Mainly used for macOS"          OFF)
-```
-
-Use third-party polyfills in case your standard library is missing `std::move_only_function` and `std::jthread`.  
-This option is always used on MacOS as libc++ is lacking behind in terms of C++23 library features.
 
 ## MSVC-Hack
 
-```cmake
-option(saucer_msvc_hack         "Fix mutex crashes on mismatching runtimes"        OFF)
+```cmake title="Example: Enable MSVC Hack"
+set(saucer_msvc_hack ON)
 ```
 
 :::note

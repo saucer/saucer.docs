@@ -10,10 +10,10 @@ Saucer tries its best to make all backends behave the same, however, there are c
 <Tabs>
     <TabItem value="qt" label="Qt">
     
-        * There is no way to specify a status code for custom schemes, thus the user specified one in `saucer::response` is ignored
+        * There is no way to specify a status code for custom schemes, thus the user specified one in `saucer::scheme::response` is ignored
         * Usage of JS `fetch` with custom schemes (and embedded files for that matter) is only possible since Qt 6.6
-        * `saucer::response::headers` are only respected from Qt 6.7 onwards
-        * `saucer::request::content()` is only available from Qt 6.7 onwards
+        * `saucer::scheme::::response::headers` are only respected from Qt 6.7 onwards
+        * `saucer::scheme::request::content()` is only available from Qt 6.7 onwards
         * Force-Dark is only available from Qt 6.7 onwards
     
     </TabItem>
@@ -30,7 +30,7 @@ Saucer tries its best to make all backends behave the same, however, there are c
     </TabItem>
     <TabItem value="macos" label="MacOS / WebKit">
     
-        The `saucer::options::storage_path` may behave unexpected on macOS. 
+        The `saucer::preferences::storage_path` may behave unexpected on macOS. 
         WKWebView does not offer any way to store webview data to a specific file, instead it associates the data with a UUID through some opaque means.
         Thus a UUID derived from the provided `storage_path` is given to WKWebView.
 
@@ -42,7 +42,7 @@ Saucer tries its best to make all backends behave the same, however, there are c
 
 ## Browser Flags
 
-It is possible to pass certain browser flags to the underlying webview through `saucer::options::browser_flags`.  
+It is possible to pass certain browser flags to the underlying webview through `saucer::preferences::browser_flags`.  
 For all Chromium based webviews (Qt, WebView2) these can be usual chromium flags.
 
 For WebKit based backends (WebKitGtk, WKWebView) these flags behave slightly different.  
@@ -53,7 +53,10 @@ WebKitGtk accepts browser-flags as key-value pairs in the following form: `prope
 A list of available properties can be found [in the webkitgtk documentation](https://webkitgtk.org/reference/webkitgtk/stable/class.Settings.html#properties).
 
 ```cpp title="Example: Disable JavaScript"
-saucer::webview webview{{ .browser_flags = { "enable-javascript=false" } }};
+saucer::webview webview{{ 
+    .application   = app,
+    .browser_flags = {"enable-javascript=false"},
+}};
 ```
 
 ### WKWebView Flags
@@ -62,7 +65,9 @@ The WebKit backend also accepts browser-flags as key-value pairs.
 The available properties are all those of the [`WKWebViewConfiguration`](https://developer.apple.com/documentation/webkit/wkwebviewconfiguration?language=objc) and it's members.
 
 ```cpp title="Example: WebKit Browser-Flags"
-saucer::webview webview{
-    {.browser_flags = {"upgradeKnownHostsToHTTPS=true", "defaultWebpagePreferences.allowsContentJavaScript=false",
-                        "preferences.minimumFontSize=10", "applicationNameForUserAgent=\"Saucer App\""}}};
+saucer::webview webview{{
+    .application   = app,
+    .browser_flags = {"upgradeKnownHostsToHTTPS=true", "defaultWebpagePreferences.allowsContentJavaScript=false",
+                        "preferences.minimumFontSize=10", "applicationNameForUserAgent=\"Saucer App\""},
+}};
 ```

@@ -33,7 +33,14 @@ You can use the `set_decorations` method to remove the window frame.
 
 int main()
 {
-    saucer::smartview smartview;
+    auto app = saucer::application::acquire({
+        .id = "frameless",
+    });
+
+    saucer::smartview smartview{{
+        .application = app,
+    }};
+
     smartview.set_title("Hello World!");
 
 // green-start
@@ -47,7 +54,8 @@ int main()
 
     smartview.set_url("https://google.com");
     smartview.show(); 
-    smartview.run();
+
+    app->run();
 
     return 0;
 }

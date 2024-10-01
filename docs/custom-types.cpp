@@ -18,7 +18,14 @@ struct glz::meta<custom_data>
 
 int main() 
 {
-  saucer::smartview smartview;
+  auto app = saucer::application::acquire({
+      .id = "hello-world",
+  });
+
+  saucer::smartview smartview{{
+      .application = app,
+  }};
+
   smartview.set_title("Hello World!");
 
   // highlight-next-line
@@ -28,7 +35,8 @@ int main()
 
   smartview.set_url("https://google.com");
   smartview.show();
-  smartview.run();
+
+  app->run();
 
   return 0;
 }

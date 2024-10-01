@@ -60,7 +60,7 @@ There is no exception handling for exposed functions. You need to make sure to h
 All async methods are executed by saucers internal thread-pool.  
 By default the thread-pool size is determined by a call to `std::thread::hardware_concurrency()`.
 
-You can specify the amount of threads used in the `saucer::options` taken by the smartview constructor.
+You can specify the amount of threads used in the `saucer::preferences` taken by the smartview constructor.
 
 ```cpp title="Example: Custom Thread Count"
 saucer::smartview{{.threads = 1}};
