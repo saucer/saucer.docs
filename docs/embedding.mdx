@@ -5,7 +5,7 @@ sidebar_position: 3
 # Embedding
 
 Instead of always shipping the frontend files alongside your binary it is also possible to embed all the web-content into your saucer application.
-The easiest way to accomplish this is to use the [saucer-cli](https://github.com/saucer/saucer-cli).
+The easiest way to accomplish this is to use the [saucer-cli](https://github.com/saucer/cli).
 
 ## Pre-Requisites
 
@@ -17,7 +17,7 @@ The easiest way to accomplish this is to use the [saucer-cli](https://github.com
 
 We recommend to use the saucer-cli within your `package.json` build script.
 
-Simply add `saucer-app` as a dependency _(i.e. `pnpm install saucer-app`)_ and then conduct the following changes:
+Simply add `@saucer-dev/cli` as a dependency _(i.e. `pnpm install @saucer-dev/cli`)_ and then conduct the following changes:
 
 ```json
 {
@@ -34,7 +34,7 @@ Simply add `saucer-app` as a dependency _(i.e. `pnpm install saucer-app`)_ and t
 As we've seen above, the CLI simply consumes a given folder and produces C++ headers which handle the embedding.  
 
 You can also install the CLI globally.  
-This can be achieved by installing it as a global npm package: `npm i -g saucer-app`.
+This can be achieved by installing it as a global npm package: `npm i -g @saucer-dev/cli`.
 
 If you now want to embed some specific files simply place them into a single directory _("out" in the example below)_.
 
