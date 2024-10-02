@@ -81,7 +81,7 @@ const config: Config = {
                         ],
                     },
                 ],
-                copyright: `Copyright © 2021 Saucer`,
+                copyright: `Copyright © 2021-${new Date().getFullYear()} Saucer`,
             },
             prism: {
                 theme: themes.github,
