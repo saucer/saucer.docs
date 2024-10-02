@@ -9,6 +9,11 @@ export default function Logo({ ...props }: ComponentProps<"svg">)
     {
         setTimeout(() =>
         {
+            if (!ref || !ref.current)
+            {
+                return;
+            }
+
             hover(ref.current, {
                 y: [0, 10, 0, -10, 0],
             }, {
