@@ -18,7 +18,7 @@ On Windows the [WebView2 Runtime](https://developer.microsoft.com/microsoft-edge
   </TabItem>
   <TabItem value="linux" label="Linux" default>
 
-Saucer supports both WebKitGtk and Qt on Linux. The default backend is WebKitGtk, but it can be configured through the `saucer_backend` CMake variable.  
+Saucer supports both WebKitGtk and Qt5 as well as Qt6 on Linux. The default backend is WebKitGtk, but it can be configured through the `saucer_backend` CMake variable.  
 Both Qt and WebKitGtk are well established in the Linux world and most systems have either of them installed already.
 
 In case you dont have either installed on your system, you may refer to your distribution on how to install the following packages: 
@@ -43,6 +43,15 @@ Package names may differ on your distribution!
 <li>qt5-qtwebchannel</li>
 <li>qt5-qtbase-gui</li>
 <li>qt5-qtbase</li>
+</ul>
+
+...or if you're targetting Qt6:
+
+<ul>
+<li>qt6-qtwebengine</li>
+<li>qt6-qtwebchannel</li>
+<li>qt6-qtbase-gui</li>
+<li>qt6-qtbase</li>
 </ul>
 
   </TabItem>
