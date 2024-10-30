@@ -5,13 +5,7 @@
 </div>
 
 <p align="center"> 
-    Build cross-platform desktop apps with C++ & Web Technologies 
+    The documentation for <a href="https://github.com/saucer/saucer">saucer</a>
 </p>
 
 ---
-
-<div align="center"> 
-    
-This project hosts the source code of [documentation]((https://saucer.github.io/)).
-
-</div> 
