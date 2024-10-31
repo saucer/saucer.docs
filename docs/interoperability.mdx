@@ -111,17 +111,17 @@ const result = await saucer.exposed.add_ten(10);
 
 ## Calling JavaScript
 
-You can also execute JavaScript code and capture it's result using the `evaluate` method.
+You can also execute JavaScript code and capture it's result using the `evaluate` method, in case you don't need to capture the result, use `execute` instead.
 
 ```cpp
 auto random = smartview.evaluate<float>("Math.random()").get();
 ```
 
-You can also pass C++ objects as parameters when calling `evaluate`.
+You can also pass C++ objects as parameters when calling `evaluate`/`execute`.
 
 ```cpp
 auto random = smartview.evaluate<float>("Math.pow({}, {})", 2, 5).get();
-smartview.evaluate<void>("console.log({})", std::vector<int>{10}).get();
+smartview.execute("console.log({})", std::vector<int>{10});
 ```
 
 :::tip
@@ -171,21 +171,24 @@ smartview.evaluate<float>("Math.random()") | saucer::then([](float result)
 
 ### Forget
 
+:::danger
+This function is deprecated since saucer v4.2.0!  
+In case you don't care about the result of an evaluation, use execute instead.
+
+```cpp title="Example Usage"
+smartview.execute("Math.random()");
+smartview.execute("Math.pow({}, {})", 2, 5);
+```
+:::
+
+<s>
 Use `saucer::forget` in case you want to discard _(not use)_ the result of the evaluation.
 
 ```cpp title="Example Usage"
 saucer::forget(smartview.evaluate<float>("Math.random()"));
-
 smartview.evaluate<float>("Math.random()") | saucer::forget();
 ```
-
-:::caution
-A `std::future` will also block on destruction if:
-
-> (2) the shared state is not yet ready[¹](https://en.cppreference.com/w/cpp/thread/future/%7Efuture)
-
-As a result, most calls to `smartview.evaluate<void>(...)` should probably be forwarded to `saucer::forget` unless they originated from within an async context.
-:::
+</s>
 
 ### All
 
