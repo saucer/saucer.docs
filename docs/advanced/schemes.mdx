@@ -14,7 +14,7 @@ int main()
     // green
     saucer::webview::register_scheme("demo");
 
-    auto app = saucer::application::acquire({
+    auto app = saucer::application::init({
         .id = "scheme-demo",
     });
 
@@ -31,8 +31,19 @@ int main()
 
 ## Handle Scheme
 
-After registering a scheme it can be handled per-instance. To do so, call `webview.handle_scheme("name", <callback>)`. 
-The callback will receive a `const saucer::scheme::request &` and should return either a `saucer::scheme::response` or an error.
+After registering a scheme it can be handled per-instance. To do so, call `webview.handle_scheme("name", <callback>, <policy>)`. 
+
+The policy is the same as seen in [Exposing Functions](../interoperability.mdx#exposing-functions).  
+The callback can have any of the following signatures:
+
+* `(saucer::scheme::request) -> saucer::scheme::response`
+* `(saucer::scheme::request) -> std::expected<saucer::scheme::response, saucer::scheme::error>`
+* `(saucer::scheme::request, saucer::scheme::executor) -> void`
+
+:::tip
+You can also manually handle the threading by taking an `executor` as the last parameter _(see last signature)_.  
+Simply copy the `scheme::request` and `scheme::executor` and resolve the latter whenever you are ready. 
+:::
 
 The given request data contains various information on the requested resource, such as the url, request method, body and headers.  
 
@@ -45,7 +56,7 @@ int main()
     // green
     saucer::webview::register_scheme("demo");
 
-    auto app = saucer::application::acquire({
+    auto app = saucer::application::init({
         .id = "scheme-demo",
     });
 
@@ -55,7 +66,7 @@ int main()
 
     // green-start
     smartview.handle_scheme("demo",
-                            [](const saucer::scheme::request &req) -> saucer::scheme::handler::result_type
+                            [](const saucer::scheme::request &req)
                             {
                                 std::println("Requested: \"{}\" ({})", req.url(), req.method());
 

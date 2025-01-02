@@ -11,38 +11,43 @@ import Admonition from '@theme/Admonition';
 Modules are an extension to smartviews that can access the native window and webview data used by saucer.  
 Thus they're a really powerful tool that can be used to implement completely new features or to alter the current behavior of saucer.
 
+## Official Modules
+
+The following offical modules exist:
+
+* [saucer/desktop](https://github.com/saucer/desktop)
+  > Provides a File-Picker as well as functionality to open a given URI with the default system handler.
+
 ## Native Header
 
 :::tip
-If you're using CMake, make sure you have module support enabled!  
-This can be achieved by setting `saucer_modules` to `ON`.  
-In case you're not using CMake, please refer to your package distributor on how to enable modules.
+If yo are using CMake, make sure you have module support enabled!  
+This can be achieved by setting `saucer_modules` to `ON` _(enabled by default)_.  
 :::
 
-First, grab the respective native header for your platform.  
-
+First, include the header that provides the stable native interface for your respective platform.
 
 <Tabs block>
   <TabItem value="qt" label="Linux">
 
 ```cpp
-#include <saucer/modules/native/webkitgtk.hpp>
+#include <saucer/modules/stable/webkitgtk.hpp>
 // or
-#include <saucer/modules/native/qt.hpp>
+#include <saucer/modules/stable/qt.hpp>
 ```
 
   </TabItem>
   <TabItem value="windows" label="Windows">
 
 ```cpp
-#include <saucer/modules/native/webview2.hpp>
+#include <saucer/modules/stable/webview2.hpp>
 ```
 
   </TabItem>
   <TabItem value="macos" label="MacOS">
 
 ```cpp
-#include <saucer/modules/native/webkit.hpp>
+#include <saucer/modules/stable/webkit.hpp>
 ```
 
   </TabItem>
@@ -50,31 +55,31 @@ First, grab the respective native header for your platform.
 
 ## Setup Module
 
-Now I'll setup a basic module by making a class that fullfulls the `saucer::Module` concept.
+Now we will setup a basic `webview`-module. The modules constructor will receive a pointer to the class it aims to extend _(e.g. `saucer:webview` or `saucer::application`)_ as the first parameter.
 
 ```cpp title="Example: Basic Module"
 class awesome_module
 {
-    saucer::natives m_natives;
-    saucer::smartview_core *m_smartview;
+    saucer::webview *m_parent;
 
   public:
-    awesome_module(saucer::smartview_core *smartview, saucer::natives natives)
-        : m_natives(natives), m_smartview(smartview)
+    awesome_module(saucer::webview *parent) : m_parent(parent)
     {
     }
 
-    void my_awesome_feature()
+    void mute(bool enabled)
     {
-        auto [window, webview] = m_natives;
-
-        window->window->setWindowTitle("Hello from Module!");
-        webview->web_view->page()->setAudioMuted(true);
+        m_parent->native().webview->page()->setAudioMuted(enabled);
     }
 };
 
-static_assert(saucer::Module<awesome_module>);
+static_assert(saucer::Module<awesome_module, saucer::webview>);
 ```
+
+:::note
+When extending a `saucer::webview` it is possible to intercept IPC messages by defining a `bool on_message(const std::string&)` member function in your module.
+A return value of `true` means that the message has been handled. 
+:::
 
 :::tip
 You can use the compile time macros `SAUCER_QT5`, `SAUCER_QT6`, `SAUCER_WEBKITGTK`, `SAUCER_WEBVIEW2` and `SAUCER_WEBKIT` to find out which backend is currently used.  
@@ -82,26 +87,30 @@ You can use the compile time macros `SAUCER_QT5`, `SAUCER_QT6`, `SAUCER_WEBKITGT
 
 ## Use Module
 
-To use the module, extend your `smartview` declaration as shown in the following snippet.
+To use the module, call `add_module` on the `saucer::webview` or `saucer::application` you want to extend.
 
 ```cpp
 int main()
 {
-    auto app = saucer::application::acquire({
+    auto app = saucer::application::init({
         .id = "modules",
     });
 
-    // green-start
-    saucer::smartview<saucer::default_serializer, awesome_module> webview{{
+    saucer::smartview webview{{
         .application = app,
     }};
+
+    // green-start
+    auto& module = webview.add_module<awesome_module>();
     // green-end
 
     webview.set_url("https://github.com/saucer/saucer");
     webview.set_dev_tools(true);
 
     // green-start
-    webview.module<awesome_module>().my_awesome_feature();
+    module.mute(true);
+    // or...
+    webview.module<awesome_module>()->mute(true);
     // green-end
 
     webview.show();
@@ -109,45 +118,4 @@ int main()
 
     return 0;
 }
-```
-
-## Use with Serializer
-
-You might've noticed that our module constructor receives a `smartview_core`.  
-
-This is a stripped down version of the `smartview` you're used to and does not include all the advantages of being coupled with a serializer _(namely, it does not allow seamless interoperability)_.
-
-However, we can modify our module code slightly to also use the fully featured `smartview`.
-
-```cpp title="Example: Module with smartview"
-class awesome_module
-{
-    saucer::natives m_natives;
-    saucer::smartview_core *m_smartview;
-
-  public:
-    awesome_module(saucer::smartview_core *smartview, saucer::natives natives)
-        : m_natives(natives), m_smartview(smartview)
-    {
-    }
-
-    // green-start
-    template <typename Serializer, typename... Modules>
-    awesome_module(saucer::smartview<Serializer, Modules...> *smartview, saucer::natives natives)
-        : m_natives(natives), m_smartview(smartview)
-    {
-        smartview->expose("module_add", [](int a, int b) { return a + b; });
-    }
-    // green-end
-
-    void my_awesome_feature()
-    {
-        auto [window, webview] = m_natives;
-
-        window->window->setWindowTitle("Hello from Module!");
-        webview->web_view->page()->setAudioMuted(true);
-    }
-};
-
-static_assert(saucer::Module<awesome_module>);
 ```

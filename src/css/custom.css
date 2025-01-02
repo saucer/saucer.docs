@@ -2,6 +2,7 @@
   --ifm-color-primary: #8d3de0;
   --ifm-color-primary-dark: #8559ff;
   --ifm-color-primary-darker: #9d7cd8;
+  --search-local-modal-shadow: var(--ifm-global-shadow-tl);
 }
 
 .hero .theme-code-block {
@@ -20,8 +21,13 @@
   --ifm-badge-color: #f9cabd;
   --ifm-background-color: #fdf0ed !important;
   --ifm-hero-background-color: #fce9e4;
-  --ifm-card-background-color: #f9cec34d;
+  --ifm-card-background-color: #fce6e0;
   --ifm-navbar-background-color: #fdf0ed80;
+  --ifm-navbar-search-input-background-color: #fce9e4;
+  --ifm-navbar-search-input-icon:  url('data:image/svg+xml;utf8,<svg fill="gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="16px" width="16px"><path d="M6.02945,10.20327a4.17382,4.17382,0,1,1,4.17382-4.17382A4.15609,4.15609,0,0,1,6.02945,10.20327Zm9.69195,4.2199L10.8989,9.59979A5.88021,5.88021,0,0,0,12.058,6.02856,6.00467,6.00467,0,1,0,9.59979,10.8989l4.82338,4.82338a.89729.89729,0,0,0,1.29912,0,.89749.89749,0,0,0-.00087-1.29909Z" /></svg>');
+
+  --search-local-hit-background: #fce6e0;
+  --search-local-modal-background: #fce9e4;
 }
 
 [data-theme="light"] footer {
@@ -41,6 +47,11 @@
   --ifm-hero-background-color: #3a415e;
   --ifm-font-color-base-inverse: #c0caf5;
   --ifm-navbar-background-color: #31364e80;
+  --ifm-navbar-search-input-background-color: #3a415e;
+  --ifm-navbar-search-input-icon:  url('data:image/svg+xml;utf8,<svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="16px" width="16px"><path d="M6.02945,10.20327a4.17382,4.17382,0,1,1,4.17382-4.17382A4.15609,4.15609,0,0,1,6.02945,10.20327Zm9.69195,4.2199L10.8989,9.59979A5.88021,5.88021,0,0,0,12.058,6.02856,6.00467,6.00467,0,1,0,9.59979,10.8989l4.82338,4.82338a.89729.89729,0,0,0,1.29912,0,.89749.89749,0,0,0-.00087-1.29909Z" /></svg>');
+  
+  --search-local-hit-background: #3a415e; 
+  --search-local-modal-background: #373d58; 
 }
 
 [data-theme="dark"] footer {
@@ -88,8 +99,12 @@
   padding: 0 var(--ifm-pre-padding);
 }
 
-nav .navbar__items:nth-child(1) a:nth-of-type(2)::after {
-  content: "v4.x";
+/* 
+ * Docs Button
+ */
+
+ nav .navbar__items:nth-child(1) a:nth-of-type(2)::after {
+  content: "v5.x";
 
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;

@@ -3,7 +3,7 @@
 
 int main() 
 {
-  auto app = saucer::application::acquire({
+  auto app = saucer::application::init({
       .id = "pitfalls",
   });
 
@@ -33,7 +33,7 @@ int main()
 // begin: execution-order-fixed
 int main() 
 {
-  auto app = saucer::application::acquire({
+  auto app = saucer::application::init({
       .id = "pitfalls",
   });
 
@@ -67,7 +67,7 @@ int main()
 // begin: run-blocking
 int main() 
 {
-  auto app = saucer::application::acquire({
+  auto app = saucer::application::init({
       .id = "pitfalls",
   });
 
@@ -89,7 +89,7 @@ int main()
 // begin: run-blocking-fixed
 int main() 
 {
-  auto app = saucer::application::acquire({
+  auto app = saucer::application::init({
       .id = "pitfalls",
   });
 

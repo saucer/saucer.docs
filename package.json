@@ -1,6 +1,6 @@
 {
   "name": "saucer-docs",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
@@ -13,31 +13,33 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@docusaurus/core": "^3.5.2",
-    "@docusaurus/preset-classic": "^3.5.2",
-    "@mantine/hooks": "^7.13.1",
-    "@mdx-js/react": "^3.0.1",
-    "@tabler/icons-react": "^3.19.0",
+    "@docusaurus/core": "^3.6.3",
+    "@docusaurus/preset-classic": "^3.6.3",
+    "@easyops-cn/docusaurus-search-local": "^0.46.1",
+    "@mantine/hooks": "^7.15.2",
+    "@mdx-js/react": "^3.1.0",
+    "@tabler/icons-react": "^3.26.0",
     "clsx": "^2.1.1",
-    "framer-motion": "^11.9.0",
-    "prism-react-renderer": "^2.4.0",
+    "eslint": "^9.10.0",
+    "framer-motion": "^11.15.0",
+    "prism-react-renderer": "^2.4.1",
     "raw-loader": "^4.0.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-type-animation": "^3.2.0"
   },
   "devDependencies": {
-    "@docusaurus/eslint-plugin": "^3.5.2",
-    "@docusaurus/module-type-aliases": "^3.5.2",
-    "@docusaurus/theme-classic": "^3.5.2",
-    "@docusaurus/tsconfig": "^3.5.2",
-    "@docusaurus/types": "^3.5.2",
-    "@eslint/compat": "^1.1.1",
-    "@types/node": "^22.7.4",
-    "@types/react": "^18.3.11",
-    "dprint": "^0.47.2",
+    "@docusaurus/eslint-plugin": "^3.6.3",
+    "@docusaurus/module-type-aliases": "^3.6.3",
+    "@docusaurus/theme-classic": "^3.6.3",
+    "@docusaurus/tsconfig": "^3.6.3",
+    "@docusaurus/types": "^3.6.3",
+    "@eslint/compat": "^1.2.4",
+    "@types/node": "^22.10.3",
+    "@types/react": "^18.3.18",
+    "dprint": "^0.47.6",
     "typescript": "~5.2.2",
-    "typescript-eslint": "^8.8.0"
+    "typescript-eslint": "^8.19.0"
   },
   "browserslist": {
     "production": [

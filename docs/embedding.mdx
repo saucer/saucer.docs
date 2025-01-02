@@ -96,7 +96,7 @@ To serve the files simply call `serve` and specify the file name.
 
 int main()
 {
-    auto app = saucer::application::acquire({
+    auto app = saucer::application::init({
         .id = "embedding",
     });
 
@@ -138,7 +138,7 @@ The example below demonstrates how to embed a file that will load the given reso
 
 int main()
 {
-    auto app = saucer::application::acquire({
+    auto app = saucer::application::init({
         .id = "embedding",
     });
 

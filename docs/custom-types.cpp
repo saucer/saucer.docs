@@ -18,7 +18,7 @@ struct glz::meta<custom_data>
 
 int main() 
 {
-  auto app = saucer::application::acquire({
+  auto app = saucer::application::init({
       .id = "hello-world",
   });
 

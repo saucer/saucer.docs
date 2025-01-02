@@ -33,7 +33,7 @@ You can use the `set_decorations` method to remove the window frame.
 
 int main()
 {
-    auto app = saucer::application::acquire({
+    auto app = saucer::application::init({
         .id = "frameless",
     });
 
@@ -102,8 +102,6 @@ window_edge:
   right,
 }
 ```
-
-The `data-webview-resize` attribute should use the short-form of the given edges, e.g. _top-left_ as `tl`.
 
 :::tip
 Should an element trigger a move / resize when it shouldn't _(this can happen if the given element is a child of a parent with special attributes)_, you can give it the `data-webview-ignore` attribute.  

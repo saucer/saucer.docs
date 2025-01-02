@@ -4,7 +4,7 @@ import { themes } from "prism-react-renderer";
 
 const config: Config = {
     title: "Saucer",
-    tagline: "Next-Gen desktop apps with web-frontend in C++",
+    tagline: "A modern, cross-platform C++ webview library",
 
     projectName: "saucer-docs",
     organizationName: "saucer",
@@ -53,14 +53,29 @@ const config: Config = {
                         docId: "getting-started/readme",
                     },
                     {
-                        href: "https://github.com/saucer/saucer",
-                        label: "GitHub",
+                        type: "search",
                         position: "right",
                     },
                     {
-                        href: "https://discord.gg/ndhmQE4225",
-                        label: "Discord",
+                        type: "custom-separator",
                         position: "right",
+                    },
+                    {
+                        link: "https://github.com/saucer/saucer",
+                        name: "GitHub",
+                        position: "right",
+                        type: "custom-icon",
+                    },
+                    {
+                        link: "https://discord.gg/ndhmQE4225",
+                        name: "Discord",
+                        position: "right",
+                        type: "custom-icon",
+                    },
+                    {
+                        type: "custom-separator",
+                        position: "right",
+                        margin: 5,
                     },
                 ],
             },
@@ -133,6 +148,17 @@ const config: Config = {
                 };
             },
         }),
+    ],
+    themes: [
+        [
+            require.resolve("@easyops-cn/docusaurus-search-local"),
+            /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
+            ({
+                hashed: true,
+                indexBlog: false,
+                language: ["en"],
+            }),
+        ],
     ],
 };
 

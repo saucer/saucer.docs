@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { ComponentProps } from "react";
+import { ComponentProps, forwardRef } from "react";
 
 interface HeaderProps extends ComponentProps<"header">
 {
@@ -14,32 +14,27 @@ interface SubtitleProps extends ComponentProps<"p">
 
 namespace Hero
 {
-    export function Header({ children, color, banner, ...props }: HeaderProps)
-    {
-        return (
-            <header
-                {...props}
-                className={clsx("hero", { [`hero--${color}`]: color })}
-                style={{
-                    ...(banner
-                        ? { padding: "4rem 0", textAlign: "center", position: "relative", overflow: "hidden" }
-                        : {}),
-                    ...props.style,
-                }}
-            >
-                {children}
-            </header>
-        );
-    }
+    export const Header = forwardRef<HTMLHeadingElement, HeaderProps>(({ children, color, banner, ...props }, ref) => (
+        <header
+            {...props}
+            ref={ref}
+            className={clsx("hero", { [`hero--${color}`]: color })}
+            style={{
+                ...(banner
+                    ? { padding: "4rem 0", textAlign: "center", position: "relative", overflow: "hidden" }
+                    : {}),
+                ...props.style,
+            }}
+        >
+            {children}
+        </header>
+    ));
 
-    export function Subtitle({ children, color, ...props }: SubtitleProps)
-    {
-        return (
-            <p {...props} style={{ ...(color ? { color } : {}) }} className="hero__subtitle">
-                {children}
-            </p>
-        );
-    }
+    export const Subtitle = forwardRef<HTMLParagraphElement, SubtitleProps>(({ children, color, ...props }, ref) => (
+        <p {...props} ref={ref} style={{ ...(color ? { color } : {}) }} className="hero__subtitle">
+            {children}
+        </p>
+    ));
 }
 
 export { Hero };

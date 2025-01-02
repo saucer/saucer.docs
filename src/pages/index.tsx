@@ -64,7 +64,7 @@ const features: Feature.Feature[] = [
         description: <>Seamlessly embed all of your frontend code into saucer and ship a contained binary.</>,
     },
     {
-        title: "Customizability",
+        title: "Customizable",
         button: "Modules",
         link: "/docs/advanced/modules",
         icon: <IconAdjustments color="white" size={45} />,
@@ -159,9 +159,10 @@ export default function Home(): JSX.Element
                     {features.map(feature => (
                         <motion.div
                             key={feature.title}
-                            transition={{ duration: 0.5, delay: 0.15 }}
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
+                            transition={{ type: "spring", duration: 0.5, delay: 0.15 }}
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            whileHover={{ translateY: -15 }}
                             viewport={{ once: true }}
                         >
                             <Feature.Item feature={feature} />
@@ -173,7 +174,7 @@ export default function Home(): JSX.Element
                 && (
                     <Hero.Header banner>
                         <motion.div
-                            transition={{ duration: 0.5, delay: 0.15 }}
+                            transition={{ duration: 1, delay: 0.5 }}
                             initial={{ opacity: 0 }}
                             whileInView={{ opacity: 1 }}
                             viewport={{ once: true }}

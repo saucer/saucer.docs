@@ -7,26 +7,22 @@ import CodeBlock from '@theme/CodeBlock';
 
 # Interoperability
 
-In the previous chapter, you've created your first saucer application.  
-
-Without diving into the library headers, you've probably not noticed, that `saucer::smartview` has a defaulted template parameter `Serializer`.  
-
-I'll now go into more detail on how exactly Interoperability works and will briefly talk about what a serializer is.
+In this chapter we will look into how Interoperability (i.e. the `expose`/`evaluate` interface of the smartview) works.
 
 ## What is a Serializer
 
-In short, a serializer is something that transforms native types into something that both JavaScript and C++ understand.  
+Without diving into the library headers you may not have noticed that `saucer::smartview` has a defaulted template parameter `Serializer`.  
 
-Saucer currently ships a default serializer that is based on [glaze](https://github.com/stephenberry/glaze), however you're free to implement your own if desired (see [Custom Serializers](./advanced/serializers.mdx)).
+A serializer is the core component that allows proper communication with the JavaScript world. 
 
-## What is a `smartview`
+Saucer currently ships with two JSON based serializers out of the box, one based on [glaze](https://github.com/stephenberry/glaze) and the other based on [reflect-cpp](https://github.com/getml/reflect-cpp).
+The former being the default. To change the defaul serializer see: [CMake Configuration](getting-started/cmake.mdx#serializer).
 
-A `smartview` is a type of `webview` that makes use of a serializer to exchange data between C++ and JavaScript.
+You are not tied to the default serializers saucer provides. It is possible to write a [custom serializer](advanced/serializers.mdx) if desired.
 
-For more information see:
-
-- [Exposing Functions](#exposing-functions)
-- [Calling JavaScript](#calling-javascript)
+:::note
+To exchange data between C++ and JavaScript you will need to use a `saucer::smartview` - a `saucer::webview` will not suffice.
+:::
 
 ## Exposing Functions
 
@@ -60,10 +56,10 @@ There is no exception handling for exposed functions. You need to make sure to h
 All async methods are executed by saucers internal thread-pool.  
 By default the thread-pool size is determined by a call to `std::thread::hardware_concurrency()`.
 
-You can specify the amount of threads used in the `saucer::preferences` taken by the smartview constructor.
+You can customize the amount of threads used in the `saucer::options` passed to `saucer::application::init`.
 
 ```cpp title="Example: Custom Thread Count"
-saucer::smartview{{.threads = 1}};
+auto app = saucer::application::init({ .id = "...", .threads = 10 });
 ```
 :::
 
@@ -72,7 +68,7 @@ saucer::smartview{{.threads = 1}};
 All calls to the exposed functions are resolved by a promise.  
 If you wish to manually reject or resolve these, you can take a `saucer::executor` as the last argument of your callback.
 
-```cpp title="Example: Exposing a function asynchronously"
+```cpp title="Example: Taking executor to manually resolve promise"
 // green
 smartview.expose("add_ten", [](int i, const saucer::executor<int>& exec)
                             {
@@ -90,6 +86,22 @@ smartview.expose("add_ten", [](int i, const saucer::executor<int>& exec)
                                 resolve(i + 10);
                             }, saucer::launch::async);
 ```
+
+:::tip
+Since version `5.0.0` saucer also supports using `std::expected` for promise rejection.  
+
+```cpp title="Example: Using std::expected to resolve promise"
+smartview.expose("add_ten", [](int i) -> std::expected<int, std::string> 
+                            {
+                                if (i < 0)
+                                {
+                                    return std::unexpected{"Value should be >=0"};
+                                }
+
+                                return i + 10;
+                            }, saucer::launch::async);
+```
+:::
 
 ### Invoke from JavaScript
 
@@ -111,7 +123,8 @@ const result = await saucer.exposed.add_ten(10);
 
 ## Calling JavaScript
 
-You can also execute JavaScript code and capture it's result using the `evaluate` method, in case you don't need to capture the result, use `execute` instead.
+You can also execute JavaScript code and capture it's result using the `evaluate` method. 
+In case you don't care about the result, use `execute` instead.
 
 ```cpp
 auto random = smartview.evaluate<float>("Math.random()").get();
@@ -168,27 +181,6 @@ smartview.evaluate<float>("Math.random()") | saucer::then([](float result)
     std::cout << "Result: " << result << std::endl;
 });
 ```
-
-### Forget
-
-:::danger
-This function is deprecated since saucer v4.2.0!  
-In case you don't care about the result of an evaluation, use execute instead.
-
-```cpp title="Example Usage"
-smartview.execute("Math.random()");
-smartview.execute("Math.pow({}, {})", 2, 5);
-```
-:::
-
-<s>
-Use `saucer::forget` in case you want to discard _(not use)_ the result of the evaluation.
-
-```cpp title="Example Usage"
-saucer::forget(smartview.evaluate<float>("Math.random()"));
-smartview.evaluate<float>("Math.random()") | saucer::forget();
-```
-</s>
 
 ### All
 

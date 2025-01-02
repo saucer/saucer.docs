@@ -11,11 +11,11 @@ Saucer tries its best to make all backends behave the same, however, there are c
     <TabItem value="qt" label="Qt">
     
         * There is no way to specify a status code for custom schemes, thus the user specified one in `saucer::scheme::response` is ignored
-        * Usage of JS `fetch` with custom schemes (and embedded files for that matter) is only possible since Qt 6.6
-        * `saucer::scheme::::response::headers` are only respected from Qt 6.7 onwards
-        * `saucer::scheme::request::content()` is only available from Qt 6.7 onwards
-        * `saucer::navigation` is only available from Qt 6.2 onwards
-        * Force-Dark is only available from Qt 6.7 onwards
+        * Usage of JS `fetch` with custom schemes (and embedded files for that matter) is only possible since Qt6
+        * `saucer::scheme::::response::headers` are only respected since Qt6
+        * `saucer::scheme::request::content()` is only available since Qt6
+        * `saucer::navigation` is only available since Qt6
+        * Force-Dark is only available since Qt6
     
     </TabItem>
     <TabItem value="gtk" label="WebKitGtk">
@@ -31,9 +31,9 @@ Saucer tries its best to make all backends behave the same, however, there are c
     </TabItem>
     <TabItem value="macos" label="MacOS / WebKit">
     
-        The `saucer::preferences::storage_path` may behave unexpected on macOS. 
+        The `saucer::preferences::storage_path` may behave unexpected on MacOS. 
         WKWebView does not offer any way to store webview data to a specific file, instead it associates the data with a UUID through some opaque means.
-        Thus a UUID derived from the provided `storage_path` is given to WKWebView.
+        Thus a UUID derived from the provided `storage_path` given to WKWebView.
 
         * WKWebView provides no way to access favicons
         * WKWebView does not allow to control hardware-acceleration

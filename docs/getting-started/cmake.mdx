@@ -8,20 +8,32 @@ There are several configurable CMake options. I'll quickly go over the most impo
 
 ## Backend
 
-```cmake title="Example: Using Qt6 backend"
+```cmake title="Example: Use Qt6 backend"
 set(saucer_backend "Qt6")
 ```
 
 Define the backend to use. By default, the most appropriate for your platform will be used.
 
-## Modules
+## Serializer
 
-```cmake title="Example: Enable Modules"
-set(saucer_modules ON)
+```cmake title="Example: Use Rflpp serializer"
+set(saucer_serializer "Rflpp")
 ```
 
-Enable module support for saucer. While all the headers required to use modules are always included, 
-this option is used to ensure proper library and header visibility so that you can use the underlying platform internals without issues.
+Define the serializer to use. See [interoperability](../interoperability.mdx) for more information.
+
+## MacOS Private API
+
+```cmake title="Example: Disable Private API usage on MacOS"
+set(saucer_private_webkit OFF)
+```
+
+Disable private API usage for MacOS. You may want to disable this when submitting your application to the AppStore.  
+Doing so will have the following consequences:
+
+* Full-Screen support will be removed
+* Dev-Tools will be disabled
+* Custom Schemes will no longer be treated as secure
 
 ## MSVC-Hack
 
@@ -35,6 +47,15 @@ You may require this option when developing language bindings.
 
 Fixes crashes related to constexpr mutex constructor on Windows.  
 See the `VS 2022 17.10` entry in the [Microsoft/STL Changelog](https://github.com/microsoft/STL/wiki/Changelog#vs-2022-1710).
+
+## Modules
+
+```cmake title="Example: Disable Modules"
+set(saucer_modules OFF)
+```
+
+Enable module support for saucer. While all the headers required to use modules are always included, 
+this option is used to ensure proper library and header visibility so that you can use the underlying platform internals without issues.
 
 ## WebView2 Version
 

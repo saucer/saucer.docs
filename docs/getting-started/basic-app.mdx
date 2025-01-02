@@ -31,7 +31,7 @@ Now that you've setup your CMakeLists you can go ahead and create your first bas
 int main()
 {
 // highlight-start
-    auto app = saucer::application::acquire({   // Instantiate application
+    auto app = saucer::application::init({      // Instantiate application
         .id = "hello-world",                    // Choose a suitable ID for your program
     });
 // highlight-end
