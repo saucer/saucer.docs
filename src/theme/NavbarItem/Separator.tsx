@@ -7,5 +7,14 @@ export interface SeparatorProps
 
 export default function Separator({ margin }: SeparatorProps)
 {
-    return <IconMinusVertical color="gray" stroke={1} style={{ margin: margin }} />;
+    return (
+        // <div  style={{ display: "flex", alignItems: "center" }}>
+        <IconMinusVertical
+            className="navbar__item"
+            color="gray"
+            stroke={1}
+            style={{ margin: margin, padding: 0 }}
+        />
+        // </div>
+    );
 }
