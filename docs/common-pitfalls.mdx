@@ -16,6 +16,20 @@ export const getCode = name => {
 The API aims to be easy to use and hard to misuse, however there are still some pitfalls saucer can't detect.  
 This page tries to document the most common mistakes and how to avoid them.
 
+## Construction from another thread
+
+Constructing a `saucer::webview` or `saucer::smartview` in a thread different from the one used to initialize the `saucer::application` is unsafe and will trigger an assertion.
+
+<CodeBlock language="cpp" title="Example: Ill formed program">
+  {getCode('constructor-thread-safety')}
+</CodeBlock>
+
+To safely construct an object in the main-thread and have it automatically deleted in the main-thread as well, use `saucer::application::make`.
+
+<CodeBlock language="cpp" title="Example: Well formed program">
+  {getCode('constructor-thread-safety-fixed')}
+</CodeBlock>
+
 ## Execution Order Matters
 
 The order in which you call some methods matters!  

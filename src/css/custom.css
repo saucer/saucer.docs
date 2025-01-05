@@ -104,7 +104,7 @@
  */
 
  nav .navbar__items:nth-child(1) a:nth-of-type(2)::after {
-  content: "v5.x";
+  content: "v6.x";
 
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;

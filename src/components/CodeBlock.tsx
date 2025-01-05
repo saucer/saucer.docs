@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 export function VersionedCode({ children, ...props }: Props)
 {
-    const [version, setVersion] = useState("v5.0.0");
+    const [version, setVersion] = useState("v6.0.0");
 
     useEffect(() =>
     {
